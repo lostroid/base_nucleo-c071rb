@@ -8,9 +8,13 @@ green LED (LD1) 100ms on off
 blue LED (LD2) 500ms on off  
 USB debug Print  
   
-현재 개발 중이므로 계속 기능이 추가 또는 변경이 될 수 있습니다.  
-DBOT기반으로 코드가 일부 포함되어 있어서 필요없는 기능이 있을 수 있음.  
+현재 개발 중이므로 계속 기능이 추가 또는 변경이 될 수 있습니다.    
+DBOT(STM32C071G8UX) 기반 코드를 복사 하여 만들었으며  
+일부 불필요한 코드가 있을 수 있음.    
 
+현재 DBOT 구현 중이라 이 프로젝트는 지연이 있을수 있습니다.   
+단순 동작 구조 학습 용으로 이용 하면 될 것 같습니다.  
+  
 추후 내부동작구조가 결정이 되면 설명 자료를 작성 예정 (직장인 이라 느림)  
 <img width="601" height="737" alt="image" src="https://github.com/user-attachments/assets/22ed1940-1508-47d5-b40b-7300c174aa11" />  
    
