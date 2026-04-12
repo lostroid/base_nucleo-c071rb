@@ -29,5 +29,6 @@ USB (VCP)
 
 향후 구현리스트  
 1. 1.3 OLED LCD SPI  
-<img width="648" height="603" alt="image" src="https://github.com/user-attachments/assets/fc785a91-e53e-49a3-bfc1-81a20135fd61" />
+<img width="357" height="344" alt="image" src="https://github.com/user-attachments/assets/315981af-798f-4b90-8c5f-0d376b1ca55b" />
+
 
