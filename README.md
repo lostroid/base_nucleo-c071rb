@@ -16,7 +16,8 @@ DBOT(STM32C071G8UX) 기반 코드를 복사 하여 만들었으며
 단순 동작 구조 학습 용으로 이용 하면 될 것 같습니다.  
   
 추후 내부동작구조가 결정이 되면 설명 자료를 작성 예정 (직장인 이라 느림)  
-<img width="601" height="737" alt="image" src="https://github.com/user-attachments/assets/22ed1940-1508-47d5-b40b-7300c174aa11" />  
+<img width="349" height="429" alt="image" src="https://github.com/user-attachments/assets/b0908237-f395-4812-808c-3c72ade3e329" />
+
    
 USB (VCP)   
 <img width="452" height="442" alt="Image" src="https://github.com/user-attachments/assets/218c6777-365a-4117-aa58-e8b9c24781d8" />  
@@ -24,4 +25,9 @@ USB (VCP)
 
 컴파일 용량은 다음과 같습니다.  
 <img width="686" height="117" alt="image" src="https://github.com/user-attachments/assets/c734e1f0-8d52-490e-ae41-cba9321798b9" />
+
+
+향후 구현리스트  
+1. 1.3 OLED LCD SPI  
+<img width="648" height="603" alt="image" src="https://github.com/user-attachments/assets/fc785a91-e53e-49a3-bfc1-81a20135fd61" />
 
