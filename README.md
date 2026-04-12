@@ -19,7 +19,7 @@ DBOT(STM32C071G8UX) 기반 코드를 복사 하여 만들었으며
 <img width="349" height="429" alt="image" src="https://github.com/user-attachments/assets/b0908237-f395-4812-808c-3c72ade3e329" />
 
    
-USB (VCP)   
+USB (VCP)   1Mbps CLI   
 <img width="452" height="442" alt="Image" src="https://github.com/user-attachments/assets/218c6777-365a-4117-aa58-e8b9c24781d8" />  
 <img width="661" height="418" alt="Image" src="https://github.com/user-attachments/assets/093b6bf0-09a5-4a8b-a563-d20537c2bcdf" />  
 
