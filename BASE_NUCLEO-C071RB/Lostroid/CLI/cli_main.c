@@ -1,20 +1,14 @@
-/******************************************************************************
+/********************************************************************
 * File:    base_cli.c
 * Author:  Lostroid
 * Created: 2025-08-06
-*
-* Description:
-* This is the CLI control.
-*
-* Revision History:
-*   2025-08-06  New.
-*   2025-08-13  v2.0
-******************************************************************************/
+* Encoding: UTF-8
+********************************************************************/
 
 #include "../DBG/dbg.h"
-#include "../Base_LL/stm32c071xx.h"
-#include "../Base_LL/base_ll_main_type.h"
-#include "../Base_LL/base_ll_uart.h"
+#include "../Base/stm32c071xx.h"
+#include "../Base/base_main_type.h"
+#include "../Base/base_uart.h"
 #include "cli_01_ae.h"
 #include "cli_02_fj.h"
 #include "cli_03_ko.h"
@@ -22,7 +16,7 @@
 #include "cli_05_uz.h"
 #include "cli_main.h"
 
-#define d_CLI_SEND_TARGET(DATA,LEN)   f_LL_UART2_TX_Buff_Write(DATA,LEN)
+#define d_CLI_SEND_TARGET(DATA,LEN)   f_Base_UART2_TX_Buff_Write(DATA,LEN)
 static tu32 (*gfpa_base_cli_func[d_CLI_MAIN_FUNC_SIZE])(tu8** pa_Data) = {
     f_Cli_Check_a,   // 00
     f_Cli_Check_b,   // 01
@@ -58,15 +52,10 @@ static tu32 gv_base_cli_cmd_history_RunPos;     /// UP키로 기존 내역 선�
 static tu32 gv_base_cli_cmd_history_NewPos;     /// 현재 저장할 위치
 static tu32 gv_Base_Cli_CMD_DataPos;            /// 현재까지 저장된 문자열 위치치
 
-static const tu8 cga_base_cli_string_help[] = "help";
-static const tu8 cga_Base_Cli_String_Cam[] = "cam";
-static const tu8 cga_Base_Cli_String_r[] = "r";
-static const tu8 cga_Base_Cli_String_w[] = "w";
-static const tu8 cga_Base_Cli_String_all[] = "all";
 //----------------------------------------------------------------------------
 // Command line interface Initialize
 //----------------------------------------------------------------------------
-void f_Base_Cli_Init(void)
+void f_Cli_Init(void)
 {
     gv_base_cli_cmd_history_SetFlag = 0;
     gv_base_cli_cmd_history_RunPos = 0;
@@ -91,7 +80,7 @@ void f_Base_CLI_Name(void)
 //----------------------------------------------------------------------------
 // Message Error
 //----------------------------------------------------------------------------
-void f_Base_Cli_MsgError(te_CLI_MAIN_MSG e_Massage)
+void f_Cli_MsgError(te_CLI_MAIN_MSG e_Massage)
 {
     switch(e_Massage)
     {
@@ -131,7 +120,7 @@ void f_Base_Cli_MsgError(te_CLI_MAIN_MSG e_Massage)
 //----------------------------------------------------------------------------
 // Command line interface Module
 //----------------------------------------------------------------------------
-void f_Base_Cli_BuffCheck(tu8* pa_Data, ts_LL_Uart_Ctrol* s_Postion)
+void f_Cli_BuffCheck(tu8* pa_Data, ts_Base_Uart_Buff_Ctrol* s_Postion)
 {
     /// 순환 버퍼에 command 를 수집 하여 정상적이면 다음 순환 위치로 가는 방식 입니다.
     /// command 가 잘못되면 현재 순환 버퍼를 다시 덥어쓰기 하여 사용 합니다.
@@ -151,7 +140,7 @@ void f_Base_Cli_BuffCheck(tu8* pa_Data, ts_LL_Uart_Ctrol* s_Postion)
                     if(gv_Base_Cli_CMD_DataPos < d_CLI_MAIN_CMD_BUFF_SIZE)
                     {
                         gv_base_cli_cmd_historyBuff[gv_base_cli_cmd_history_NewPos][gv_Base_Cli_CMD_DataPos] = 0;          /// NULL 삽입
-                        if(f_Base_Cli_Command_Check(&gv_base_cli_cmd_historyBuff[gv_base_cli_cmd_history_NewPos][1]) == 0)    /// 수신된 문자열 전송
+                        if(f_Cli_Command_Check(&gv_base_cli_cmd_historyBuff[gv_base_cli_cmd_history_NewPos][1]) == 0)    /// 수신된 문자열 전송
                         {
                             gv_base_cli_cmd_history_NewPos++;                                                            /// 다음 순환버퍼 내역 이동동
                             if(gv_base_cli_cmd_history_NewPos >= d_CLI_MAIN_CMD_HISTORY_SIZE)                            /// 순환 버퍼 끝 확인.
@@ -164,7 +153,7 @@ void f_Base_Cli_BuffCheck(tu8* pa_Data, ts_LL_Uart_Ctrol* s_Postion)
                             /// Command Fail.
                             gv_Base_Cli_CMD_DataPos = 1;
                             gv_base_cli_cmd_history_SetFlag = 0;
-                            f_Base_Cli_MsgError(m_CLI_MAIN_MSG_NO_CMD);
+                            f_Cli_MsgError(m_CLI_MAIN_MSG_NO_CMD);
                         }
                     }
                     else
@@ -172,7 +161,7 @@ void f_Base_Cli_BuffCheck(tu8* pa_Data, ts_LL_Uart_Ctrol* s_Postion)
                         /// MAX Over
                         gv_Base_Cli_CMD_DataPos = 1;
                         gv_base_cli_cmd_history_SetFlag = 0;
-                        f_Base_Cli_MsgError(m_CLI_MAIN_MSG_NO_CMD);
+                        f_Cli_MsgError(m_CLI_MAIN_MSG_NO_CMD);
                     }
                 }
                 else
@@ -281,7 +270,7 @@ void f_Base_Cli_BuffCheck(tu8* pa_Data, ts_LL_Uart_Ctrol* s_Postion)
 //----------------------------------------------------------------------------
 // Command line interface Module
 //----------------------------------------------------------------------------
-tu32 f_Base_Cli_Command_Check(tu8* pa_Data)
+tu32 f_Cli_Command_Check(tu8* pa_Data)
 {
     tu32 v_error = 1;
     tu8 *p_Token[d_CLI_MAIN_CMD_BUFF_SIZE] = {0};
@@ -329,7 +318,7 @@ tu32 f_Base_Cli_Command_Check(tu8* pa_Data)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Compare String
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tu32 f_Base_Cli_CompareString(tu8 *p_Data1, const tu8 *p_Data2)
+tu32 f_Cli_CompareString(tu8 *p_Data1, const tu8 *p_Data2)
 {
     tu32 v_Err = 0;
     tu8 v_Loop;
@@ -350,7 +339,7 @@ tu32 f_Base_Cli_CompareString(tu8 *p_Data1, const tu8 *p_Data2)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  String Dec -> Dec ("999999" -> 999999)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tu32 f_Base_Cli_StringToDec(tu8 *p_Data)
+tu32 f_Cli_StringToDec(tu8 *p_Data)
 {
     tu32 v_Data = 0xFFFFFFFFu;	//- Set Err Velue.
     tu8 v_Pos = 0;
@@ -378,7 +367,7 @@ tu32 f_Base_Cli_StringToDec(tu8 *p_Data)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  String Hex -> Dec ("FF" -> 255)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tu32 f_Base_Cli_StringToHex(tu8 *p_Data)
+tu32 f_Cli_StringToHex(tu8 *p_Data)
 {
     tu32 v_Data = 0xFFFFFFFFu;     //- Set Err Velue.
     tu8 v_Pos = 0;

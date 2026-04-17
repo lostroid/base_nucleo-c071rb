@@ -1,35 +1,13 @@
-/******************************************************************************
+/********************************************************************
 * File:    dbg_type.h
 * Author:  LOSTROID
 * Created: 2025-08-06
-*
-* Description:
-* This is the debug Type.
-*
-* Revision History:
-*   2025-08-06  New.
--------------------------------------------------------------------------------
-01. a = array variable                      e.g. a_Data[]
-02. b = bit fields                          e.g. b_Data
-03. c = const                               e.g, c_Data
-04. d = define                              e.g. d_Data
-05. e = enum Type                           e.g. e_Data
-06. f = Function                            e.g. f_Data
-07. g = Source file static variable         e.g. gv_Data
-08. i = Inline                              e.g. i_Data
-09. l = Static variables inside functions   e.g. lv_Data
-10. m = enum member                         e.g. m_Data
-11. p = Pointer                             e.g. p_Data 
-12. s = struct                              e.g. s_Data 
-13. t = typedef                             e.g. t_Data 
-14. u = Union                               e.g. u_Data 
-15. v = variable                            e.g. v_Data
-16. x = extern                              e.g. xv_data
-******************************************************************************/
+* Encoding: UTF-8
+********************************************************************/
 #ifndef H_DBG_TYPE_H
 #define H_DBG_TYPE_H
 
-#include "../Base_LL/base_ll_config.h"
+#include "../Base/config.h"
 
 #define d_DBG_ZONE_00   0
 #define d_DBG_ZONE_01   (1 << 0)
@@ -67,51 +45,30 @@
 
 typedef enum
 {
-    m_DBG_ZONE_LIST_SYSTEM = d_DBG_ZONE_00,     // SYSTEM ERROR (시스템 에러 상시)
-
-}te_DBG_Zone_List;
-
-typedef enum
-{
     m_DBG_COLOR_MODE_DISABLE,
     m_DBG_COLOR_MODE_ENABLE
 }te_DBG_Color_Mode;
 
 typedef enum
 {
-    m_DBG_ERR_NO_ERROR,     /* 에러 없음 (No error) */
-    m_DBG_ERR_BUG,          /* 버그 (Bug) */
-    m_DBG_ERR_TYPE,         /* 타입 (Type)) */
-    m_DBG_ERR_LEN,          /* 길이 (Len) */
-    m_DBG_ERR_CRC,          /* CRC 에러 */
-    m_DBG_ERR_VALUE,        /* 값 (Value) */
-    m_DBG_ERR_TIME_OUT,     /* 타임 아웃 (Timeout) */
-    m_DBG_ERR_READ,         
-    m_DBG_ERR_READ_OVF,
-    m_DBG_ERR_WRITE,
-    m_DBG_ERR_WRITE_OVF
-}te_DBG_ERR_Code;
-
-typedef enum
-{
-    m_DBG_MODE_SYSTEM = d_DBG_ZONE_01,       /* 디버그 기본 */
+    m_DBG_MODE_SYSTEM   = d_DBG_ZONE_01,
     m_DBG_MODE_SCHEDLUE = d_DBG_ZONE_02,
-    m_DBG_MODE_UART = d_DBG_ZONE_03,
-    m_DBG_MODE_SPI = d_DBG_ZONE_04,
-    m_DBG_MODE_SAI = d_DBG_ZONE_05,
-    m_DBG_MODE_CAN = d_DBG_ZONE_06,
-    m_DBG_MODE_RTC = d_DBG_ZONE_07,
-    m_DBG_MODE_WDG = d_DBG_ZONE_08,
-    m_DBG_MODE_TIM = d_DBG_ZONE_09,
-    m_DBG_MODE_I2C = d_DBG_ZONE_10,
-    m_DBG_MODE_I3C = d_DBG_ZONE_11,
-    m_DBG_MODE_I2S = d_DBG_ZONE_12,
-    m_DBG_MODE_ADC = d_DBG_ZONE_13,
-    m_DBG_MODE_DAC = d_DBG_ZONE_14,
-    m_DBG_MODE_USB = d_DBG_ZONE_15,
-    m_DBG_MODE_ETH = d_DBG_ZONE_16,
-    m_DBG_MODE_SDIO = d_DBG_ZONE_17,
-    m_DBG_MODE_DCMI = d_DBG_ZONE_18
+    m_DBG_MODE_UART     = d_DBG_ZONE_03,
+    m_DBG_MODE_SPI      = d_DBG_ZONE_04,
+    m_DBG_MODE_SAI      = d_DBG_ZONE_05,
+    m_DBG_MODE_CAN      = d_DBG_ZONE_06,
+    m_DBG_MODE_RTC      = d_DBG_ZONE_07,
+    m_DBG_MODE_WDG      = d_DBG_ZONE_08,
+    m_DBG_MODE_TIM      = d_DBG_ZONE_09,
+    m_DBG_MODE_I2C      = d_DBG_ZONE_10,
+    m_DBG_MODE_I3C      = d_DBG_ZONE_11,
+    m_DBG_MODE_I2S      = d_DBG_ZONE_12,
+    m_DBG_MODE_ADC      = d_DBG_ZONE_13,
+    m_DBG_MODE_DAC      = d_DBG_ZONE_14,
+    m_DBG_MODE_USB      = d_DBG_ZONE_15,
+    m_DBG_MODE_ETH      = d_DBG_ZONE_16,
+    m_DBG_MODE_SDIO     = d_DBG_ZONE_17,
+    m_DBG_MODE_DCMI     = d_DBG_ZONE_18
 }te_DBG_Mode;
 
 #endif
