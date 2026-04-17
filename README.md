@@ -1,4 +1,5 @@
 # base_nucleo-c071rb
+!!! English is not my native language, so I use a translator!!! 
   
 This project is demo code for configuring operation in 
 a bare-metal environment.  
