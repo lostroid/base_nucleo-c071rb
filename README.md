@@ -23,6 +23,7 @@ a bare-metal environment.
     
 ## NUCLEO-C071RB  
 <img width="349" height="429" alt="image" src="https://github.com/user-attachments/assets/b0908237-f395-4812-808c-3c72ade3e329" />  
+Operation video link https://youtube.com/shorts/IMGCvuJAUY4?si=FYez4cNHNqbf89no  
 
 ## ST-LINK PORT UART  
 <img width="452" height="442" alt="Image" src="https://github.com/user-attachments/assets/218c6777-365a-4117-aa58-e8b9c24781d8" />   
