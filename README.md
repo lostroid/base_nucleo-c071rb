@@ -4,7 +4,7 @@
 This project is demo code for configuring operation in 
 a bare-metal environment.  
 
-## development environment  
+## Development environment  
 - STM32CubeIDE  
 - NUCLEO-C071RB  
 - C Code  
