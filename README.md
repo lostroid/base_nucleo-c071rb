@@ -11,12 +11,12 @@ a bare-metal environment.
 - UART 1Mbps  
    
 ## We plan to implement the following features  
-- ✅ Green LED (LD1) blinks 100ms [video link https://youtube.com/shorts/IMGCvuJAUY4?si=FYez4cNHNqbf89no]
+- ✅ Green LED (LD1) blinks 100ms (https://youtube.com/shorts/IMGCvuJAUY4?si=FYez4cNHNqbf89no)
 - ✅ Blue LED (LD2) blinks 500ms
 - ✅ ADC CH0
 - ✅ ADC CH1
 - ✅ UART Debug print  
-- ✅ 1.8 TFT-LCD SPI 128x160
+- ✅ 1.8 TFT-LCD SPI 128x160 (https://youtu.be/QZbChkDfWNI?si=kkYyCHoomGtlhRTD)  
 -  1.3 OLED LCD SPI 128x128 
 -  USB Device  
    
