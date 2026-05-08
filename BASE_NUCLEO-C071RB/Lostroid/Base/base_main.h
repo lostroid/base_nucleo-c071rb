@@ -8,11 +8,10 @@
 #define H_BASE_MAIN_H
 
 #include "../Scheduler/scheduler_type.h"
-#include "base_timer_type.h"
+#include "base_tim_type.h"
 #include "base_main_type.h"
 
-typedef struct
-{
+typedef struct{
     ts_Base_Tick_Context gs_time_1ms;
     ts_Base_Tick_Context gs_time_10ms;
     ts_Base_Tick_Context gs_time_100ms;

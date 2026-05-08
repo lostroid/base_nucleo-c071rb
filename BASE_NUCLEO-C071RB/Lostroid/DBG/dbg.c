@@ -7,11 +7,11 @@
 #include "../Base/base_uart.h"
 #include "dbg.h"
 
-#define d_DBG_STRING_MAX          512
+#define d_DBG_STRING_MAX          256
 #define d_SPI_SEND_DBG_TARGET(DATA,LEN)   f_Base_UART2_TX_Buff_Write(DATA,LEN)
 static tu32 gv_dbg_mode = 0;
 //===================================================================
-/*### DBG Init
+/*#### DBG Init
 ---------------------------------------------------------------------
 
 ------------------------------------------------------------------ */
@@ -21,11 +21,11 @@ void f_DBG_Init(void)
     f_DBG_Set_Enable_Mode(m_DBG_MODE_SCHEDLUE);
 }
 //===================================================================
-/*### Get debug mode
+/*#### Get debug mode
 ---------------------------------------------------------------------
 + e_mode : enum value
 + return : m_YESNO_NO, m_YESNO_YES
----------------------------------------------------------------------------- */
+-------------------------------------------------------------------*/
 te_YesNo f_DBG_Get_Mode(te_DBG_Mode e_mode)
 {
     if((gv_dbg_mode & (tu32)e_mode) == 0)
@@ -34,202 +34,189 @@ te_YesNo f_DBG_Get_Mode(te_DBG_Mode e_mode)
         { return m_YESNO_YES; }
 }
 //===================================================================
-/*### Active debug mode "디버깅 활성화"
+/*#### Active debug mode "디버깅 활성화"
 ---------------------------------------------------------------------
 + e_mode : enum value "디버깅 정보"
----------------------------------------------------------------------------- */
+-------------------------------------------------------------------*/
 void f_DBG_Set_Enable_Mode(te_DBG_Mode e_mode)
 {
     gv_dbg_mode |= (tu32)e_mode;
 }
 //===================================================================
-/*### Reset debug mode
+/*#### Reset debug mode
 ---------------------------------------------------------------------
 + e_mode : enum value
----------------------------------------------------------------------------- */
+-------------------------------------------------------------------*/
 void f_DBG_Set_Disable_Mode(te_DBG_Mode e_mode)
 {
     gv_dbg_mode &= (tu32)(~e_mode);
 }
 //===================================================================
-/*### print string "문자열 출력"
+/*#### print string "문자열 출력"
 ---------------------------------------------------------------------
 + *p_data : String "배열 문자 포인터"
----------------------------------------------------------------------------- */
++ return :  0(ok), 1(error)
+-------------------------------------------------------------------*/
 tu32 f_DBG_Print_String(char *p_data)
 {
-    tu32 v_err = 0;
     tu32 v_len = 0;
-    if(p_data == d_NULL)	                /* NULL Check */
-        { v_err++; }
-    else
+    if(p_data == d_NULL)    //+ NULL Point Check
+        { return 1; }
+    if(p_data[0] == '\0')   //+ NULL Check
+        { return 1; }
+
+    while(p_data[v_len] != '\0')
     {
-        while((tu8)p_data[v_len] != 0)
-        {
-            if(v_len > d_DBG_STRING_MAX)    /* MAX Len Cut */
-                { break; }
-            v_len++;
-        }
-       d_SPI_SEND_DBG_TARGET((tu8 *)p_data, v_len);
+        v_len++;
+        if(v_len >= d_DBG_STRING_MAX)    //+ MAX Len Cut
+            { break; }
     }
-    return(v_err);
+    d_SPI_SEND_DBG_TARGET((const tu8 *)p_data, v_len);
+    return 0;
 }
 //===================================================================
-/*### Print Dec64 "64비트 숫자 출력"
+/*#### Print Dec64 "64비트 숫자 출력"
 ---------------------------------------------------------------------
 + v_dec : 64bit "64bit 입력"
----------------------------------------------------------------------------- */
+-------------------------------------------------------------------*/
 void f_DBG_Print_Dec64(tu64 v_dec)
 {
     tu8 a_data[20];
-    tu8 v_start = 0u;
-    tu8 v_while = 0u;
-    tu8 v_start_pos = 0u;
-    tu64 v_temp = 10000000000000000000ull;
-    while(v_while < 20u)
+    tu8 v_index = 20;
+
+    if(v_dec == 0)  //+ zero
     {
-        a_data[v_while] =  ((v_dec / v_temp) + (tu8)'0');
-        v_dec %= v_temp;
-        v_temp /= 10u;
-        if(v_start == 0)
-        {
-            if(a_data[v_while] != (tu8)'0')
-            {
-                v_start_pos = v_while;
-                v_start++;
-            }
-        }
-        v_while++;
+        a_data[0] = '0';
+        d_SPI_SEND_DBG_TARGET(a_data, 1);
+        return;
     }
-    if(v_start == 0)
-        { v_start_pos = 19; }
-   d_SPI_SEND_DBG_TARGET(&a_data[v_start_pos], (tu8)(20u - v_start_pos));
+    while(v_dec > 0 && v_index > 0)
+    {
+        a_data[--v_index] = (v_dec % 10) + '0';
+        v_dec /= 10;
+    }
+    d_SPI_SEND_DBG_TARGET(&a_data[v_index], 20 - v_index);
 }
 //===================================================================
-/*### Print Digit Dec64  "자리수 고정 64bit 숫자 출력"
+/*#### Print Digit Dec64  "자리수 고정 64bit 숫자 출력"
 ---------------------------------------------------------------------
 DigtNum:5, 100 -> "00100"
-+ v_digt_num : 32bit Fixed  "자리수 고정"
-+ v_dec : 64bit             "64비트 입력"
----------------------------------------------------------------------------- */
-void f_DBG_Print_Dec64_Digit(tu32 v_digt_num, tu64 v_dec)
++ v_min_digits : max 20 zero padding  "자리수 고정"
++ v_dec : 64bit                     "64비트 입력"
+-------------------------------------------------------------------*/
+void f_DBG_Print_Dec64_Digit(tu32 v_min_digits, tu64 v_dec)
 {
     tu8 a_data[20];
-    tu8 v_start = 0u;
-    tu8 v_while = 0u;
-    tu8 v_start_pos = 0u;
-    tu64 v_temp = 10000000000000000000ull;
-    if(v_digt_num > 20)
-    { v_digt_num = 20; }
+    tu8 v_index = 20;
+    tu32 v_total_len = 0;
 
-    v_digt_num = 20 - v_digt_num;
-    while(v_while < 20u)
+    if(v_min_digits == 0) 
+        { return; }
+
+    if(v_min_digits > 20)
+        { v_min_digits = 20; }
+
+    //+ number convert 
+    if(v_dec == 0)
     {
-        if(v_while == v_digt_num)
-        {
-        	v_start_pos = v_while;
-            v_start++;
-        }
-        a_data[v_while] =  ((v_dec / v_temp) + (tu8)'0');
-        v_dec %= v_temp;
-        v_temp /= 10u;
-        if(v_start == 0)
-        {
-            if(a_data[v_while] != (tu8)'0')
-            {
-                v_start_pos = v_while;
-                v_start++;
-            }
-        }
-        v_while++;
+        a_data[--v_index] = '0';
+        v_total_len = 1;
     }
-    if(v_start == 0)
-    { v_start_pos = 19; }
+    else
+    {
+        while(v_dec > 0 && v_index > 0)
+        {
+            a_data[--v_index] = (v_dec % 10) + '0';
+            v_dec /= 10;
+        }
+        v_total_len = 20 - v_index;
+    }
 
-   d_SPI_SEND_DBG_TARGET(&a_data[v_start_pos], (tu8)(20u - v_start_pos));
+    //= zero padding (minimum width)
+    while(v_total_len < v_min_digits)
+    {
+        a_data[--v_index] = '0';
+        v_total_len++;
+    }
+
+    d_SPI_SEND_DBG_TARGET(&a_data[v_index], v_total_len);
 }
 //===================================================================
-/*### Print Dec32
+/*#### Print Dec32
 ---------------------------------------------------------------------
 100 -> "100"
 + v_dec : 32bit
----------------------------------------------------------------------------- */
+-------------------------------------------------------------------*/
 void f_DBG_Print_Dec32(tu32 v_dec)
 {
     tu8 a_data[10];
-    tu8 v_start = 0u;
-    tu8 v_while = 0u;
-    tu8 v_start_pos = 0u;
-    tu32 v_temp = 1000000000;
-    while(v_while < 10u)
-    {
-        a_data[v_while] =  ((v_dec / v_temp) + (tu8)'0');
-        v_dec %= v_temp;
-        v_temp /= 10u;
-        if(v_start == 0)
-        {
-            if(a_data[v_while] != (tu8)'0')
-            {
-                v_start_pos = v_while;
-                v_start++;
-            }
-        }
-        v_while++;
-    }
-    if(v_start == 0)
-        { v_start_pos = 9; }
+    tu8 v_index = 10;
 
-   d_SPI_SEND_DBG_TARGET(&a_data[v_start_pos], (tu8)(10u - v_start_pos));
+    if(v_dec == 0)  //+ zero
+    {
+        a_data[0] = '0';
+        d_SPI_SEND_DBG_TARGET(a_data, 1);
+        return;
+    }
+
+    while(v_dec > 0 && v_index > 0)
+    {
+        a_data[--v_index] = (v_dec % 10) + '0';
+        v_dec /= 10;
+    }
+
+    d_SPI_SEND_DBG_TARGET(&a_data[v_index], 10 - v_index);
 }
 //===================================================================
-/*### Print Digit Dec32
+/*#### Print Digit Dec32
 ---------------------------------------------------------------------
-DigtNum:5, 100 -> "00100"
-+ v_digt_num : 32bit Fixed
+v_min_digits : 5(332 -> 00332), (12345678 -> 12345678)
++ v_min_digits : max 10
 + v_dec : 32bit
----------------------------------------------------------------------------- */
-void f_DBG_Print_Dec32_Digit(tu32 v_digt_num, tu32 v_dec)
+-------------------------------------------------------------------*/
+void f_DBG_Print_Dec32_Digit(tu32 v_min_digits, tu32 v_dec)
 {
     tu8 a_data[10];
-    tu8 v_start = 0u;
-    tu8 v_while = 0u;
-    tu8 v_start_pos = 0u;
-    tu32 v_temp = 1000000000;
-    if(v_digt_num > 10)
-        { v_digt_num = 10; }
+    tu8 v_index = 10;
+    tu32 v_total_len = 0;
 
-    v_digt_num = 10 - v_digt_num;
-    while(v_while < 10u)
+    if(v_min_digits == 0) 
+        { return; }
+
+    if(v_min_digits > 10)
+        { v_min_digits = 10; }
+
+    //+ number convert 
+    if(v_dec == 0)
     {
-        if(v_while == v_digt_num)
-        {
-        	v_start_pos = v_while;
-            v_start++;
-        }
-        a_data[v_while] =  ((v_dec / v_temp) + (tu8)'0');
-        v_dec %= v_temp;
-        v_temp /= 10u;
-        if(v_start == 0)
-        {
-            if(a_data[v_while] != (tu8)'0')
-            {
-                v_start_pos = v_while;
-                v_start++;
-            }
-        }
-        v_while++;
+        a_data[--v_index] = '0';
+        v_total_len = 1;
     }
-    if(v_start == 0)
-        { v_start_pos = 9; }
+    else
+    {
+        while(v_dec > 0 && v_index > 0)
+        {
+            a_data[--v_index] = (v_dec % 10) + '0';
+            v_dec /= 10;
+        }
+        v_total_len = 10 - v_index;
+    }
 
-   d_SPI_SEND_DBG_TARGET(&a_data[v_start_pos], (tu8)(10u - v_start_pos));
+    //= zero padding (minimum width)
+    while(v_total_len < v_min_digits)
+    {
+        a_data[--v_index] = '0';
+        v_total_len++;
+    }
+
+    d_SPI_SEND_DBG_TARGET(&a_data[v_index], v_total_len);
 }
 //===================================================================
-/*### Print Hex64 (테스트 필요)
+/*#### Print Hex64 (테스트 필요)
 ---------------------------------------------------------------------
  18,446,744,073,709,551,615 -> "FFFFFFFFFFFFFFFF"
 + v_hex64 : 64bit
----------------------------------------------------------------------------- */
+-------------------------------------------------------------------*/
 void f_DBG_Print_Hex64(tu64 v_hex64)
 {
     tu8 a_data[16];
@@ -239,22 +226,20 @@ void f_DBG_Print_Hex64(tu64 v_hex64)
 
     while(v_while < 16u)
     {
-        v_shift -= 4; 
-        v_temp = (0x0F & (v_hex64 >> v_shift));
-        if((v_temp >= 0u) && (v_temp <= 9u))
-            { a_data[v_while] = (tu8) (v_temp + (tu8)'0'); }
-        else if((v_temp >= 10u) && (v_temp <= 15u))
-            { a_data[v_while] = (tu8) (v_temp + (tu8)'7'); }    //- 65('A') = 10 + 55('7')
+        v_shift -= 4; // + 4bit = 0xF
+        v_temp = (tu8)(0x0F & (v_hex64 >> v_shift));
+        //+ 65('A') = 10 + 55('7')
+        a_data[v_while] = (v_temp <= 9u) ? (v_temp + (tu8)'0') : (v_temp + (tu8)'7'); 
         v_while++;
     }
     d_SPI_SEND_DBG_TARGET(a_data, 16u);
 }
 //===================================================================
-/*### Print Hex32
+/*#### Print Hex32
 ---------------------------------------------------------------------
  4,294,967,295 -> "FFFFFFFF"
 + v_hex32 : 32bit
----------------------------------------------------------------------------- */
+-------------------------------------------------------------------*/
 void f_DBG_Print_Hex32(tu32 v_hex32)
 {
     tu8 a_data[8];
@@ -263,22 +248,20 @@ void f_DBG_Print_Hex32(tu32 v_hex32)
     tu32 v_shift = 32;
     while(v_while < 8u)
     {
-        v_shift -= 4; 
-        v_temp = (0x0F & (v_hex32 >> v_shift));
-        if((v_temp >= 0u) && (v_temp <= 9u))
-            { a_data[v_while] = (tu8) (v_temp + (tu8)'0'); }
-        else if((v_temp >= 10u) && (v_temp <= 15u))
-            { a_data[v_while] = (tu8) (v_temp + (tu8)'7'); }	//- 65('A') = 10 + 55('7')
+        v_shift -= 4;  // + 4bit = 0xF
+        v_temp = (tu8)(0x0F & (v_hex32 >> v_shift));
+        //+ 65('A') = 10 + 55('7')
+        a_data[v_while] = (v_temp <= 9u) ? (v_temp + (tu8)'0') : (v_temp + (tu8)'7'); 
         v_while++;
     }
     d_SPI_SEND_DBG_TARGET(a_data, 8u);
 }
 //===================================================================
-/*### Print Hex16
+/*#### Print Hex16
 ---------------------------------------------------------------------
  65,535 -> "FFFF"
 + v_hex16 : 16bit
----------------------------------------------------------------------------- */
+-------------------------------------------------------------------*/
 void f_DBG_Print_Hex16(tu16 v_hex16)
 {
     tu8 a_data[4];
@@ -287,36 +270,31 @@ void f_DBG_Print_Hex16(tu16 v_hex16)
     tu8 v_shift = 16;
     while(v_while < 4u)
     {
-        v_shift -= 4; 
-        v_temp = (0x0F & (v_hex16 >> v_shift));
-        if((v_temp >= 0u) && (v_temp <= 9u))
-            { a_data[v_while] = (tu8) (v_temp + (tu8)'0'); }
-        else if((v_temp >= 10u) && (v_temp <= 15u))
-            { a_data[v_while] = (tu8) (v_temp + (tu8)'7'); }    //- 65('A') = 10 + 55('7')
+        v_shift -= 4;  // + 4bit = 0xF
+        v_temp = (tu8)(0x0F & (v_hex16 >> v_shift));
+        //+ 65('A') = 10 + 55('7')
+        a_data[v_while] = (v_temp <= 9u) ? (v_temp + (tu8)'0') : (v_temp + (tu8)'7');
         v_while++;
     }
     d_SPI_SEND_DBG_TARGET(a_data, 4u);
 }
 //===================================================================
-/*### Print Hex8
+/*#### Print Hex8
 ---------------------------------------------------------------------
  255 -> "FF"
 + v_hex8 : 8bit
----------------------------------------------------------------------------- */
+-------------------------------------------------------------------*/
 void f_DBG_Print_Hex8(tu8 v_hex8)
 {
     tu8 a_data[2];
     tu8 v_temp = 0u;
 
     v_temp = (0x0F & (v_hex8 >> 4));
-    if((v_temp >= 0u) && (v_temp <= 9u))
-        { a_data[0] = (tu8) (v_temp + (tu8)'0'); }
-    else if((v_temp >= 10u) && (v_temp <= 15u))
-        { a_data[0] = (tu8) (v_temp + (tu8)'7'); }  //- 65('A') = 10 + 55('7')
+    //+ 65('A') = 10 + 55('7')
+    a_data[0] = (v_temp <= 9u) ? (v_temp + (tu8)'0') : (v_temp + (tu8)'7'); 
+
     v_temp = (0x0F & v_hex8);
-    if((v_temp >= 0u) && (v_temp <= 9u))
-        { a_data[1] = (tu8) (v_temp + (tu8)'0'); }
-    else if((v_temp >= 10u) && (v_temp <= 15u))
-        { a_data[1] = (tu8) (v_temp + (tu8)'7'); }	//- 65('A') = 10 + 55('7')
+    //+ 65('A') = 10 + 55('7')
+    a_data[1] = (v_temp <= 9u) ? (v_temp + (tu8)'0') : (v_temp + (tu8)'7');
     d_SPI_SEND_DBG_TARGET(a_data, 2u);
 }

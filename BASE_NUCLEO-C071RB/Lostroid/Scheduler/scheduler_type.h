@@ -3,6 +3,23 @@
 * Author:  LOSTROID
 * Created: 2025-06-23
 * Encoding: UTF-8
+---------------------------------------------------------------------
+01. a_ = array                         e.g. a_data[]
+02. b_ = bit field                     e.g. b_Data
+03. c_ = constant                      e.g, c_Data
+04. d_ = #define macro                 e.g. d_Data
+05. e_ = enum type                     e.g. e_Data
+06. f_ = function                      e.g. f_Data
+07. g_ = global (source file static)   e.g. gv_Data
+08. i_ = inline function               e.g. i_Data
+09. l_ = local static variable         e.g. lv_Data
+10. m_ = enum member                   e.g. m_Data
+11. p_ = pointer                       e.g. p_Data 
+12. s_ = struct                        e.g. s_Data 
+13. t_ = typedef                       e.g. t_Data 
+14. u_ = union                         e.g. u_Data 
+15. v_ = variable                      e.g. v_Data
+16. x_ = extern variable               e.g. xv_data
 ********************************************************************/
 #ifndef H_SCHEDULER_TYPE_H
 #define H_SCHEDULER_TYPE_H
@@ -37,26 +54,27 @@ typedef enum
 typedef struct ts_Scheduler_Control 
 {
     te_SCHEDULER_ERR e_error;                               //+ Error information "에러 정보"
-    tu32 v_wait_penalty_count;                              //+ Wait weight "대기 가중치"
-    tu32 v_wait_down_count;                                 //+ Wait decrement counter "대기 감소 카운터"
-    tu32 v_retry_max_count;                                 //+ Retry count setting "재시도 횟수 설정"
+    tu32 v_penalty_set_value;                               //+ Wait weight "대기 가중치"
+    tu32 v_penalty_down_count;                              //+ Wait decrement counter "대기 감소 카운터"
+    tu32 v_retry_set_value;                                 //+ Retry count setting "재시도 횟수 설정"
     tu32 v_retry_down_count;                                //+ Retry counter "재시도 횟수 카운터"
-    ts_Base_Tick_Context s_Run_Time_Interval;               //+ Module cycle time "모듈 1주기 타임"
+    ts_Base_Tick_Context s_time_interval;                   //+ Module cycle time "모듈 1주기 타임"
 
     tu32 v_time_run_count;                                  //+ Function execution time counter "함수 수행 시간 카운터"
     tu32 v_time_run_now_us;                                 //+ Current function execution time (us) "함수 현재 수행시간 us"
-    tu32 v_time_run_avg100_us;                              //+ Average function execution time (approximate average in us) "함수 평균 수행시간 us 근사치 평균"
+    tu32 v_time_run_tick_us;                                //+ Average function execution time (approximate average in us) "함수 평균 수행시간 us 근사치 평균"
     tu32 v_time_run_max_us;                                 //+ Maximum function execution time (us) "함수 최대 수행시간 us"
     tu32 v_time_loop_count;                                 //+ Total loop execution time counter "전체 loop 수행 시간 카운터"
     tu32 v_time_loop_now_us;                                //+ Current total loop execution time (us) "전체 loop 현재 수행시간 us"
-    tu32 v_time_loop_avg100_us;                             //+ Average total loop execution time (approximate average in us) "전체 loop 평균 수행시간 us 근사치 평균"
+    tu32 v_time_loop_tick_us;                               //+ Average total loop execution time (approximate average in us) "전체 loop 평균 수행시간 us 근사치 평균"
     tu32 v_time_loop_max_us;                                //+ Maximum total loop execution time (us) "전체 loop 최대 수행시간 us"
-    tu32 v_timeout_us_cfg;                                  //+ Operation timeout setting "동작 타임아웃 설정값"
-    tu32 v_timeout_count;                                   //+ Operation timeout counter "동작 타임아웃 카운터"
-    tu32 v_delay_interval_target_us;                        //+ Continuous transfer wait time setting "연속 전송 대기시간 설정값"
-    tu32 v_delay_interval_tick_count;                       //+ Continuous transfer wait time counter "연속 전송 대기시간 카운터"
-    tu32 v_delay_operation_target_us;                       //+ Function execution wait time setting "기능수행 대기시간 설정값"
-    tu32 v_delay_operation_tick_count;                      //+ Function execution wait time counter "기능수행 대기시간 카운터"
+
+    tu32 v_timeout_set_value_us;                            //+ Operation timeout setting "동작 타임아웃 설정값"
+    tu32 v_timeout_tick_count;                              //+ Operation timeout counter "동작 타임아웃 카운터"
+    tu32 v_delay_set_us;                                    //+ Delay time us "설정 대기시간 us"
+    tu32 v_delay_tick_count;                                //+ Delay tick counter "연속 전송 대기시간 카운터"
+    tu32 v_wait_set_us;                                     //+ Wait time us "설정 대기시간 us"
+    tu32 v_wait_tick_count;                                 //+ Wait tick counter "틱 카운터 변수"
 
     void (**ps_table_list)(struct ts_Scheduler_Control*);   //+ Function Table list "함수 테이블 리스트"
     char* p_table_name;                                     //+ Table name (string) "테이블 이름 string"

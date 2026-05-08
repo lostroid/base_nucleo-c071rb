@@ -7,41 +7,45 @@
 
 #include "stm32c071xx.h"
 #include "base_uart.h"
+#include "base_tim.h"
 #include "base_dma.h"
+#include "base_spi.h"
 #include "base_nvic.h"
 
 //===================================================================
-/* LL NVIC initialize
+/* Base NVIC initialize
 -------------------------------------------------------------------*/
 void f_Base_NVIC_Init(void)
 {
     f_Base_NVIC_Set_Flag(m_NVIC_DMA1_Channel1);
     f_Base_NVIC_Set_Flag(m_NVIC_DMA1_Channel2_3);
     f_Base_NVIC_Set_Flag(m_NVIC_DMAMUX1_DMA1_CH4_5);
+    f_Base_NVIC_Set_Flag(m_NVIC_TIM1_CC);
+    f_Base_NVIC_Set_Flag(m_NVIC_TIM3);
 }
 //===================================================================
-/*### Interrupt Setting
+/*#### Interrupt Setting
 -------------------------------------------------------------------*/
 void f_Base_NVIC_Set_Flag(te_NVIC e_nvic)
 {
     NVIC->ISER[0] = (0x01 << e_nvic);
 }
 //===================================================================
-/*### Interrupt setting clear
+/*#### Interrupt setting clear
 -------------------------------------------------------------------*/
 void f_Base_NVIC_Set_Clear(te_NVIC e_nvic)
 {
     NVIC->ICER[0] = (0x01 << e_nvic);
 }
 //===================================================================
-/*### Interrupt Call reset
+/*#### Interrupt Call reset
 -------------------------------------------------------------------*/
 void f_Base_NVIC_Pending_Clear(te_NVIC e_nvic)
 {
     NVIC->ICPR[0] = (0x01 << e_nvic);
 }
 //===================================================================
-/*### Priority Set
+/*#### Priority Set
 -------------------------------------------------------------------*/
 void f_Base_NVIC_Set_Priority(te_IRQ e_irq, tu32 v_priority)
 {
@@ -50,133 +54,134 @@ void f_Base_NVIC_Set_Priority(te_IRQ e_irq, tu32 v_priority)
     NVIC->IP[v_ip_num] |= ((v_priority & 0x04) << v_shift);
 }
 //===================================================================
-/* Interrupt NMI
+/*#### Interrupt NMI
 -------------------------------------------------------------------*/
 void NMI_Handler(void)
 {
 
 }
 //===================================================================
-/* Interrupt HardFault
+/*#### Interrupt HardFault
 -------------------------------------------------------------------*/
 void HardFault_Handler(void)
 {
 
 }
 //===================================================================
-/* Interrupt SVC
+/*#### Interrupt SVC
 -------------------------------------------------------------------*/
 void SVC_Handler(void)
 {
 
 }
 //===================================================================
-/* Interrupt PenSV
+/*#### Interrupt PenSV
 -------------------------------------------------------------------*/
 void PendSV_Handler(void)
 {
 
 }
 //===================================================================
-/* Interrupt SysTick
+/*#### Interrupt SysTick
 -------------------------------------------------------------------*/
 void SysTick_Handler(void)
 {
 
 }
 //===================================================================
-/* Interrupt WWDG
+/*#### Interrupt WWDG
 -------------------------------------------------------------------*/
 void WWDG_IRQHandler(void)
 {
 
 }
 //===================================================================
-/* Interrupt PVD
+/*#### Interrupt PVD
 -------------------------------------------------------------------*/
 void PVD_VDDIO2_IRQHandler(void)
 {
 
 }
 //===================================================================
-/* Interrupt RTC
+/*#### Interrupt RTC
 -------------------------------------------------------------------*/
 void RTC_IRQHandler(void)
 {
 
 }
 //===================================================================
-/* Interrupt FLASH
+/*#### Interrupt FLASH
 -------------------------------------------------------------------*/
 void FLASH_IRQHandler(void)
 {
 
 }
 //===================================================================
-/* Interrupt RCC_CRS
+/*#### Interrupt RCC_CRS
 -------------------------------------------------------------------*/
 void RCC_CRS_IRQHandler(void)
 {
 
 }
 //===================================================================
-/* Interrupt EXTI0_1
+/*#### Interrupt EXTI0_1
 -------------------------------------------------------------------*/
 void EXTI0_1_IRQHandler(void)
 {
 
 }
 //===================================================================
-/* Interrupt EXTI2_3
+/*#### Interrupt EXTI2_3
 -------------------------------------------------------------------*/
 void EXTI2_3_IRQHandler(void)
 {
 
 }
 //===================================================================
-/* Interrupt EXTI4_15
+/*#### Interrupt EXTI4_15
 -------------------------------------------------------------------*/
 void EXTI4_15_IRQHandler(void)
 {
 
 }
 //===================================================================
-/* Interrupt USB
+/*#### Interrupt USB
 -------------------------------------------------------------------*/
 void USB_DRD_FS_IRQHandler(void)
 {
 
 }
 //===================================================================
-/* Interrupt DMA1 CH1
+/*#### Interrupt DMA1 CH1
 -------------------------------------------------------------------*/
 void DMA1_Channel1_IRQHandler(void)
 {
-    if (d_BASE_DMA1_CH1_UART1_TX_TC())           //+ Channel 1 Transfer Complete flag
+    if (d_BASE_DMA1_CH1_SPI1_TX_TC())               //+ Channel 1 Transfer Complete flag
     {
-        f_Base_UART1_TX_Done_Count_UP();
-        f_Base_DMA1_CH1_UART1_TX_CTC();          //+  Channel 1 Transfer Complete clear
-        f_Base_DMA_Stop(d_BASE_DMA1_UART1_TX);
+        f_Base_DMA1_CH1_SPI1_TX_CTC();              //+ Channel 1 Transfer Complete clear
+        // f_Base_DMA_Stop(d_BASE_DMA1_CH1_SPI1_TX);   //+ Option Circular
     }
 }
 //===================================================================
-/* Interrupt DMA1 CH2,3
+/*#### Interrupt DMA1 CH2,3
 -------------------------------------------------------------------*/
 void DMA1_Channel2_3_IRQHandler(void)
 {
-    if (d_BASE_DMA1_CH2_UART1_RX_TC())           //+ Channel 2 Transfer Complete flag
+    if (d_BASE_DMA1_CH2_SPI1_RX_TC())           //+ Channel 2 Transfer Complete flag
     {
-        f_Base_DMA1_CH2_UART1_RX_CTC();          //+ Channel 2 Transfer Complete clear
+        f_Base_DMA1_CH2_SPI1_RX_CTC();              //+ Channel 2 Transfer Complete clear
+        f_Base_SPI1_DMA_Count_UP();
+        // f_Base_DMA_Stop(d_BASE_DMA1_CH2_SPI1_RX);   //+ Option Circular
     }
     else if (d_BASE_DMA1_CH3_UART2_TX_TC())      //+ Channel3 Transfer Complete flag
     {
         f_Base_UART2_TX_Done_Count_UP();
         f_Base_DMA1_CH3_UART2_TX_CTC();          //+ Channel3 Transfer Complete clear
-        f_Base_DMA_Stop(d_BASE_DMA1_UART2_TX);
+        //f_Base_DMA_Stop(d_BASE_DMA1_CH3_UART2_TX);   //+ Option Circular
     }
 }
 //===================================================================
-/* Interrupt DMAMUX1 CH4,5
+/*#### Interrupt DMAMUX1 CH4,5
 -------------------------------------------------------------------*/
 void DMAMUX1_DMA1_CH4_5_IRQHandler(void)
 {
@@ -186,98 +191,111 @@ void DMAMUX1_DMA1_CH4_5_IRQHandler(void)
     }
 }
 //===================================================================
-/* Interrupt ADC1
+/*#### Interrupt ADC1
 -------------------------------------------------------------------*/
 void ADC1_IRQHandler(void)
 {
 
 }
 //===================================================================
-/* Interrupt TIM1 BRK_UP
+/*#### Interrupt TIM1 BRK_UP
 -------------------------------------------------------------------*/
 void TIM1_BRK_UP_TRG_COM_IRQHandler(void)
 {
 
 }
 //===================================================================
-/* Interrupt TIM1_CC
+/*#### Interrupt TIM1_CC
 -------------------------------------------------------------------*/
 void TIM1_CC_IRQHandler(void)
 {
-
+    if((TIM1->SR & TIM_SR_CC2IF) != 0u)
+    {
+        f_Base_TIM1_CH2_SW_A_Count_Up();
+        TIM1->SR &= (~TIM_SR_CC2IF);
+    }
+    else if((TIM1->SR & TIM_SR_CC3IF) != 0u)
+    {
+        f_Base_TIM1_CH3_SW_B_Count_Up();
+        TIM1->SR &= (~TIM_SR_CC3IF);
+    }
 }
 //===================================================================
-/* Interrupt TIM2
+/*#### Interrupt TIM2
 -------------------------------------------------------------------*/
 void TIM2_IRQHandler(void)
 {
 
 }
 //===================================================================
-/* Interrupt TIM3
+/*#### Interrupt TIM3
 -------------------------------------------------------------------*/
 void TIM3_IRQHandler(void)
 {
-
+    if((TIM3->SR & TIM_SR_CC1IF) != 0u)
+    {
+        f_Base_TIM3_CH1_SW_OK_Count_Up();
+        TIM3->SR &= (~TIM_SR_CC1IF);
+    }
 }
 //===================================================================
-/* Interrupt TIM14
+/*#### Interrupt TIM14
 -------------------------------------------------------------------*/
 void TIM14_IRQHandler(void)
 {
 
 }
 //===================================================================
-/* Interrupt TIM16
+/*#### Interrupt TIM16
 -------------------------------------------------------------------*/
 void TIM16_IRQHandler(void)
 {
 
 }
 //===================================================================
-/* Interrupt TIM17
+/*#### Interrupt TIM17
 -------------------------------------------------------------------*/
 void TIM17_IRQHandler(void)
 {
 
 }
 //===================================================================
-/* Interrupt I2C1
+/*#### Interrupt I2C1
 -------------------------------------------------------------------*/
 void I2C1_IRQHandler(void)
 {
 
 }
 //===================================================================
-/* Interrupt I2C2
+/*#### Interrupt I2C2
 -------------------------------------------------------------------*/
 void I2C2_IRQHandler(void)
 {
 
 }
 //===================================================================
-/* Interrupt SPI1
+/*#### Interrupt SPI1
 -------------------------------------------------------------------*/
 void SPI1_IRQHandler(void)
 {
 
 }
 //===================================================================
-/* Interrupt SPI2
+/*#### Interrupt SPI2
 -------------------------------------------------------------------*/
 void SPI2_IRQHandler(void)
 {
 
 }
 //===================================================================
-/* Interrupt USART1
+/*#### Interrupt USART1
 -------------------------------------------------------------------*/
 void USART1_IRQHandler(void)
 {
 
 }
 //===================================================================
-/* Interrupt USART2
+/*#### Interrupt USART2
 -------------------------------------------------------------------*/
 void USART2_IRQHandler(void)
 {

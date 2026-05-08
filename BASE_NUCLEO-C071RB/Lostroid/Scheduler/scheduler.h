@@ -12,9 +12,9 @@
 
 void f_Scheduler_Config(
     ts_Scheduler_Control *ps_sch_control
-    , tu32 v_wait_penalty_count
-    , tu32 v_retry_max_count
-    , tu32 v_timeout_us_cfg
+    , tu32 v_penalty_set_value
+    , tu32 v_retry_set_value
+    , tu32 v_timeout_set_value_us
     , tu32 v_cycle_run_time_us
     , void *p_user_struct);
 
@@ -29,11 +29,18 @@ void f_Scheduler_Next(ts_Scheduler_Control *ps_sch_control);
 void f_Scheduler_Jump(ts_Scheduler_Control *ps_sch_control, tu32 v_jump_num);
 tu32 f_Scheduler_Retry(ts_Scheduler_Control *ps_sch_control);
 void f_Scheduler_Error(ts_Scheduler_Control *ps_sch_control, te_SCHEDULER_ERR e_error);
+
 void f_Scheduler_RunTime_Start(ts_Scheduler_Control *ps_sch_control);
 void f_Scheduler_RunTime_Finish(ts_Scheduler_Control *ps_sch_control);
 void f_Scheduler_LoopTime_Update(ts_Scheduler_Control *ps_sch_control);
 void f_Scheduler_RunTime_Info_Reset(ts_Scheduler_Control *ps_sch_control);
 void f_Scheduler_LoopTime_Info_Reset(ts_Scheduler_Control *ps_sch_control);
+
+void f_Scheduler_Job_To_Job_Set_Delay(ts_Scheduler_Control *ps_sch_control, tu32 v_time_us);
+void f_Scheduler_Job_To_Job_Delay(ts_Scheduler_Control *ps_sch_control);
+void f_Scheduler_Job_To_Job_Set_Delay(ts_Scheduler_Control *ps_sch_control, tu32 v_time_us);
+void f_Scheduler_Job_To_Job_Wait(ts_Scheduler_Control *ps_sch_control);
+
 void f_Scheduler_RunTime_Title_print(void);
 void f_Scheduler_RunTime_Info_print(ts_Scheduler_Control *ps_sch_control);
 void f_Scheduler_Error_Table_print(ts_Scheduler_Control *ps_sch_control);

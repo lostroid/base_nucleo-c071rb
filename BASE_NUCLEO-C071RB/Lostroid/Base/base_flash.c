@@ -9,14 +9,14 @@
 #include "base_flash.h"
 
 //===================================================================
-/* Base LL flash initialize
+/* Base Base flash initialize
 -------------------------------------------------------------------*/
 void f_Base_Flash_Init(void)
 {
     
 }
 //===================================================================
-/* Base LL flash Latency initialize
+/* Base Base flash Latency initialize
 -------------------------------------------------------------------*/
 void f_Base_Flash_Set_Latency01(void)
 {
