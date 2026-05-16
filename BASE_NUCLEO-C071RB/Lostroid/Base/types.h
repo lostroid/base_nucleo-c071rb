@@ -70,25 +70,25 @@ extern const tu8 xca_return_err_lock[];
 extern const tu8 xca_return_err_unknown[];
 
 typedef enum {
-    m_STATE_IDLE = 0,       //+ Idle: 대기 상태
-    m_STATE_DONE,           //+ Done: 완료 상태
-    m_STATE_BUSY            //+ Busy: 작업 중
+    m_STATE_IDLE = 0,       //+ Idle    "대기 상태"
+    m_STATE_DONE,           //+ Done    "완료 상태"
+    m_STATE_BUSY            //+ Busy    "작업 중"
 } te_state;
 
 typedef enum {
-    m_RESULT_OK = 0,        //+ OK: 정상
-    m_RESULT_PASS = 0,      //+ Pass: 통과
-    m_RESULT_FAIL           //+ Fail: 실패
+    m_RESULT_OK = 0,        //+ OK      "정상"
+    m_RESULT_PASS = 0,      //+ Pass    "통과"
+    m_RESULT_FAIL           //+ Fail    "실패"
 } te_result;
 
 typedef enum {
-    m_ENABLE_OFF = 0,       //+ Off: 꺼짐
-    m_ENABLE_ON             //+ On: 켜짐
+    m_ENABLE_OFF = 0,       //+ Off     "꺼짐"
+    m_ENABLE_ON             //+ On      "켜짐"
 } te_enable;
 
 typedef enum {
-    m_YESNO_NO = 0,         //+ No: 아니오
-    m_YESNO_YES             //+ Yes: 예
+    m_YESNO_NO = 0,         //+ No      "아니오"
+    m_YESNO_YES             //+ Yes     "예"
 } te_yes_no;
 
 typedef enum {
@@ -101,6 +101,8 @@ typedef enum {
     m_RETURN_ERR_FRAME,     //+ Frame Error             "프레임 오류"
     m_RETURN_ERR_TIMEOUT,   //+ Timeout                 "시간오버 오류"
     m_RETURN_ERR_SETTING,   //+ Configuration Error     "설정값 오류"
+    m_RETURN_ERR_STACK,     //+ Stack error             "스택 오류"
+    m_RETURN_ERR_TARGET,    //+ Target error            "대상 오류"
     m_RETURN_ERR_BUSY,      //+ Resource Busy           "바쁨 오류"
     m_RETURN_ERR_OVERFLOW,  //+ Buffer Overflow         "버퍼 오버플로우 오류"
     m_RETURN_ERR_UNDERFLOW, //+ Buffer Underflow        "버퍼 언더플로우 오류"
@@ -108,7 +110,8 @@ typedef enum {
     m_RETURN_ERR_HW,        //+ Hardware Error          "하드웨어 오류"
     m_RETURN_ERR_ARG,       //+ Invalid Argument        "잘못된 인자 오류"
     m_RETURN_ERR_LOCK,      //+ Failed to Lock Resource "리소스 잠금 실패 오류"
-    m_RETURN_ERR_UNKNOWN    //+ Unknown Error           "알 수 없는 오류 오류"
+    m_RETURN_ERR_UNKNOWN,   //+ Unknown Error           "알 수 없는 오류 오류"
+    m_RETURN_ERR_BUG        //+ BUG Error               "버그"
 } te_return;
 
 #endif

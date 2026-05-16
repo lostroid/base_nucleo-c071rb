@@ -33,8 +33,8 @@ void f_scheduler_error(ts_scheduler_control *ps_sch_control, te_schedule_error e
 //+ Scheduler time
 void f_scheduler_run_time_start(ts_scheduler_control *ps_sch_control);
 void f_scheduler_run_time_finish(ts_scheduler_control *ps_sch_control);
-void f_scheduler_run_time_info_reset(ts_scheduler_control *ps_sch_control);
 void f_scheduler_loop_time_update(ts_scheduler_control *ps_sch_control);
+void f_scheduler_run_time_info_reset(ts_scheduler_control *ps_sch_control);
 void f_scheduler_loop_time_info_reset(ts_scheduler_control *ps_sch_control);
 //+ Shceduler delay
 void f_scheduler_wait_set(ts_scheduler_control *ps_sch_control, tu32 v_time_us);

@@ -41,74 +41,74 @@
 #define d_GPIO_PUPD_DOWN        (0x02UL)
 #define d_GPIO_PUPD_RES         (0x03UL)
 
-#define d_GPIO_MODE_00(D_MODE)      (D_MODE << 0UL)
-#define d_GPIO_MODE_01(D_MODE)      (D_MODE << 2UL)
-#define d_GPIO_MODE_02(D_MODE)      (D_MODE << 4UL)
-#define d_GPIO_MODE_03(D_MODE)      (D_MODE << 6UL)
-#define d_GPIO_MODE_04(D_MODE)      (D_MODE << 8UL)
-#define d_GPIO_MODE_05(D_MODE)      (D_MODE << 10UL)
-#define d_GPIO_MODE_06(D_MODE)      (D_MODE << 12UL)
-#define d_GPIO_MODE_07(D_MODE)      (D_MODE << 14UL)
-#define d_GPIO_MODE_08(D_MODE)      (D_MODE << 16UL)
-#define d_GPIO_MODE_09(D_MODE)      (D_MODE << 18UL)
-#define d_GPIO_MODE_10(D_MODE)      (D_MODE << 20UL)
-#define d_GPIO_MODE_11(D_MODE)      (D_MODE << 22UL)
-#define d_GPIO_MODE_12(D_MODE)      (D_MODE << 24UL)
-#define d_GPIO_MODE_13(D_MODE)      (D_MODE << 26UL)
-#define d_GPIO_MODE_14(D_MODE)      (D_MODE << 28UL)
-#define d_GPIO_MODE_15(D_MODE)      (D_MODE << 30UL)
+#define d_GPIO_MODE_00(MODE)        (MODE << 0UL)
+#define d_GPIO_MODE_01(MODE)        (MODE << 2UL)
+#define d_GPIO_MODE_02(MODE)        (MODE << 4UL)
+#define d_GPIO_MODE_03(MODE)        (MODE << 6UL)
+#define d_GPIO_MODE_04(MODE)        (MODE << 8UL)
+#define d_GPIO_MODE_05(MODE)        (MODE << 10UL)
+#define d_GPIO_MODE_06(MODE)        (MODE << 12UL)
+#define d_GPIO_MODE_07(MODE)        (MODE << 14UL)
+#define d_GPIO_MODE_08(MODE)        (MODE << 16UL)
+#define d_GPIO_MODE_09(MODE)        (MODE << 18UL)
+#define d_GPIO_MODE_10(MODE)        (MODE << 20UL)
+#define d_GPIO_MODE_11(MODE)        (MODE << 22UL)
+#define d_GPIO_MODE_12(MODE)        (MODE << 24UL)
+#define d_GPIO_MODE_13(MODE)        (MODE << 26UL)
+#define d_GPIO_MODE_14(MODE)        (MODE << 28UL)
+#define d_GPIO_MODE_15(MODE)        (MODE << 30UL)
 
-#define d_GPIO_SPEED_00(D_SPEED)    (D_SPEED << 0UL)
-#define d_GPIO_SPEED_01(D_SPEED)    (D_SPEED << 2UL)
-#define d_GPIO_SPEED_02(D_SPEED)    (D_SPEED << 4UL)
-#define d_GPIO_SPEED_03(D_SPEED)    (D_SPEED << 6UL)
-#define d_GPIO_SPEED_04(D_SPEED)    (D_SPEED << 8UL)
-#define d_GPIO_SPEED_05(D_SPEED)    (D_SPEED << 10UL)
-#define d_GPIO_SPEED_06(D_SPEED)    (D_SPEED << 12UL)
-#define d_GPIO_SPEED_07(D_SPEED)    (D_SPEED << 14UL)
-#define d_GPIO_SPEED_08(D_SPEED)    (D_SPEED << 16UL)
-#define d_GPIO_SPEED_09(D_SPEED)    (D_SPEED << 18UL)
-#define d_GPIO_SPEED_10(D_SPEED)    (D_SPEED << 20UL)
-#define d_GPIO_SPEED_11(D_SPEED)    (D_SPEED << 22UL)
-#define d_GPIO_SPEED_12(D_SPEED)    (D_SPEED << 24UL)
-#define d_GPIO_SPEED_13(D_SPEED)    (D_SPEED << 26UL)
-#define d_GPIO_SPEED_14(D_SPEED)    (D_SPEED << 28UL)
-#define d_GPIO_SPEED_15(D_SPEED)    (D_SPEED << 30UL)
+#define d_GPIO_SPEED_00(SPEED)      (SPEED << 0UL)
+#define d_GPIO_SPEED_01(SPEED)      (SPEED << 2UL)
+#define d_GPIO_SPEED_02(SPEED)      (SPEED << 4UL)
+#define d_GPIO_SPEED_03(SPEED)      (SPEED << 6UL)
+#define d_GPIO_SPEED_04(SPEED)      (SPEED << 8UL)
+#define d_GPIO_SPEED_05(SPEED)      (SPEED << 10UL)
+#define d_GPIO_SPEED_06(SPEED)      (SPEED << 12UL)
+#define d_GPIO_SPEED_07(SPEED)      (SPEED << 14UL)
+#define d_GPIO_SPEED_08(SPEED)      (SPEED << 16UL)
+#define d_GPIO_SPEED_09(SPEED)      (SPEED << 18UL)
+#define d_GPIO_SPEED_10(SPEED)      (SPEED << 20UL)
+#define d_GPIO_SPEED_11(SPEED)      (SPEED << 22UL)
+#define d_GPIO_SPEED_12(SPEED)      (SPEED << 24UL)
+#define d_GPIO_SPEED_13(SPEED)      (SPEED << 26UL)
+#define d_GPIO_SPEED_14(SPEED)      (SPEED << 28UL)
+#define d_GPIO_SPEED_15(SPEED)      (SPEED << 30UL)
 
-#define d_GPIO_PUPD_00(D_PUDU)      (D_PUDU << 0UL)
-#define d_GPIO_PUPD_01(D_PUDU)      (D_PUDU << 2UL)
-#define d_GPIO_PUPD_02(D_PUDU)      (D_PUDU << 4UL)
-#define d_GPIO_PUPD_03(D_PUDU)      (D_PUDU << 6UL)
-#define d_GPIO_PUPD_04(D_PUDU)      (D_PUDU << 8UL)
-#define d_GPIO_PUPD_05(D_PUDU)      (D_PUDU << 10UL)
-#define d_GPIO_PUPD_06(D_PUDU)      (D_PUDU << 12UL)
-#define d_GPIO_PUPD_07(D_PUDU)      (D_PUDU << 14UL)
-#define d_GPIO_PUPD_08(D_PUDU)      (D_PUDU << 16UL)
-#define d_GPIO_PUPD_09(D_PUDU)      (D_PUDU << 18UL)
-#define d_GPIO_PUPD_10(D_PUDU)      (D_PUDU << 20UL)
-#define d_GPIO_PUPD_11(D_PUDU)      (D_PUDU << 22UL)
-#define d_GPIO_PUPD_12(D_PUDU)      (D_PUDU << 24UL)
-#define d_GPIO_PUPD_13(D_PUDU)      (D_PUDU << 26UL)
-#define d_GPIO_PUPD_14(D_PUDU)      (D_PUDU << 28UL)
-#define d_GPIO_PUPD_15(D_PUDU)      (D_PUDU << 30UL)
+#define d_GPIO_PUPD_00(PUDU)        (PUDU << 0UL)
+#define d_GPIO_PUPD_01(PUDU)        (PUDU << 2UL)
+#define d_GPIO_PUPD_02(PUDU)        (PUDU << 4UL)
+#define d_GPIO_PUPD_03(PUDU)        (PUDU << 6UL)
+#define d_GPIO_PUPD_04(PUDU)        (PUDU << 8UL)
+#define d_GPIO_PUPD_05(PUDU)        (PUDU << 10UL)
+#define d_GPIO_PUPD_06(PUDU)        (PUDU << 12UL)
+#define d_GPIO_PUPD_07(PUDU)        (PUDU << 14UL)
+#define d_GPIO_PUPD_08(PUDU)        (PUDU << 16UL)
+#define d_GPIO_PUPD_09(PUDU)        (PUDU << 18UL)
+#define d_GPIO_PUPD_10(PUDU)        (PUDU << 20UL)
+#define d_GPIO_PUPD_11(PUDU)        (PUDU << 22UL)
+#define d_GPIO_PUPD_12(PUDU)        (PUDU << 24UL)
+#define d_GPIO_PUPD_13(PUDU)        (PUDU << 26UL)
+#define d_GPIO_PUPD_14(PUDU)        (PUDU << 28UL)
+#define d_GPIO_PUPD_15(PUDU)        (PUDU << 30UL)
 
-#define d_GPIO_00_AFSEL(D_AF)       (D_AF << 0UL)      //+ AFR[0]
-#define d_GPIO_01_AFSEL(D_AF)       (D_AF << 4UL)      //+ AFR[0]
-#define d_GPIO_02_AFSEL(D_AF)       (D_AF << 8UL)      //+ AFR[0]
-#define d_GPIO_03_AFSEL(D_AF)       (D_AF << 12UL)     //+ AFR[0]
-#define d_GPIO_04_AFSEL(D_AF)       (D_AF << 16UL)     //+ AFR[0]
-#define d_GPIO_05_AFSEL(D_AF)       (D_AF << 20UL)     //+ AFR[0]
-#define d_GPIO_06_AFSEL(D_AF)       (D_AF << 24UL)     //+ AFR[0]
-#define d_GPIO_07_AFSEL(D_AF)       (D_AF << 28UL)     //+ AFR[0]
+#define d_GPIO_00_AFSEL(AF)         (AF << 0UL)      //+ AFR[0]
+#define d_GPIO_01_AFSEL(AF)         (AF << 4UL)      //+ AFR[0]
+#define d_GPIO_02_AFSEL(AF)         (AF << 8UL)      //+ AFR[0]
+#define d_GPIO_03_AFSEL(AF)         (AF << 12UL)     //+ AFR[0]
+#define d_GPIO_04_AFSEL(AF)         (AF << 16UL)     //+ AFR[0]
+#define d_GPIO_05_AFSEL(AF)         (AF << 20UL)     //+ AFR[0]
+#define d_GPIO_06_AFSEL(AF)         (AF << 24UL)     //+ AFR[0]
+#define d_GPIO_07_AFSEL(AF)         (AF << 28UL)     //+ AFR[0]
 
-#define d_GPIO_08_AFSEL(D_AF)       (D_AF << 0UL)      //+ AFR[1]
-#define d_GPIO_09_AFSEL(D_AF)       (D_AF << 4UL)      //+ AFR[1]
-#define d_GPIO_10_AFSEL(D_AF)       (D_AF << 8UL)      //+ AFR[1]
-#define d_GPIO_11_AFSEL(D_AF)       (D_AF << 12UL)     //+ AFR[1]
-#define d_GPIO_12_AFSEL(D_AF)       (D_AF << 16UL)     //+ AFR[1]
-#define d_GPIO_13_AFSEL(D_AF)       (D_AF << 20UL)     //+ AFR[1]
-#define d_GPIO_14_AFSEL(D_AF)       (D_AF << 24UL)     //+ AFR[1]
-#define d_GPIO_15_AFSEL(D_AF)       (D_AF << 28UL)     //+ AFR[1]
+#define d_GPIO_08_AFSEL(AF)         (AF << 0UL)      //+ AFR[1]
+#define d_GPIO_09_AFSEL(AF)         (AF << 4UL)      //+ AFR[1]
+#define d_GPIO_10_AFSEL(AF)         (AF << 8UL)      //+ AFR[1]
+#define d_GPIO_11_AFSEL(AF)         (AF << 12UL)     //+ AFR[1]
+#define d_GPIO_12_AFSEL(AF)         (AF << 16UL)     //+ AFR[1]
+#define d_GPIO_13_AFSEL(AF)         (AF << 20UL)     //+ AFR[1]
+#define d_GPIO_14_AFSEL(AF)         (AF << 24UL)     //+ AFR[1]
+#define d_GPIO_15_AFSEL(AF)         (AF << 28UL)     //+ AFR[1]
 
 #define d_GPIO_A00_MODE_ADC_IN0             d_GPIO_MODE_00(d_GPIO_MODE_ANALOG)
 #define d_GPIO_A01_MODE_ADC_IN1             d_GPIO_MODE_01(d_GPIO_MODE_ANALOG)

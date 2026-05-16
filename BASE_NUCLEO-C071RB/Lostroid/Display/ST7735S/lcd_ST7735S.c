@@ -62,21 +62,21 @@ static void (*paf_lcd_st7735s_run_job_table[m_LCD_ST7735S_RUN_JOB_TABLE_SIZE])
 };
 
 //===================================================================
-/*#### LCD ST7735S initialize
+/*### LCD ST7735S initialize
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_init(void)
 {
     f_lcd_st7735s_set_start_mode();
 }
 //===================================================================
-/*#### LCD ST7753S Module
+/*### LCD ST7753S Module
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_module(void)
 {
     f_scheduler_run(&gs_lcd_st7735s_Job_ctrl);
 }
 //===================================================================
-/*#### LCD ST7735S initialize
+/*### LCD ST7735S initialize
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_set_start_mode(void)
 {
@@ -96,7 +96,7 @@ void f_lcd_st7735s_set_start_mode(void)
     f_dbg_print_string("\r\nI: LCD ST7735S Start.");
 }
 //===================================================================
-/*#### LCD ST7735S initialize
+/*### LCD ST7735S initialize
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_set_run_mode(void)
 {
@@ -116,21 +116,21 @@ void f_lcd_st7735s_set_run_mode(void)
     f_dbg_print_string("\r\nI: LCD ST7735S Run.");
 }
 //===================================================================
-/*#### LCD ST7753S Error Send
+/*### LCD ST7753S Error Send
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_error_send_fail(void)
 {
     f_dbg_print_string("\r\nE: LCD ST7735S send failed.");
 }
 //===================================================================
-/*#### LCD ST7753S Error Send
+/*### LCD ST7753S Error Send
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_error_case(void)
 {
     f_dbg_print_string("\r\nE: LCD ST7735S case failed.");
 }
 //===================================================================
-/*#### Font 8x16 
+/*### Font 8x16 
 ---------------------------------------------------------------------
 v_offset_char : max 10 char[8x16]
 -------------------------------------------------------------------*/
@@ -170,7 +170,7 @@ void f_lcd_st7735s_font_print(tu32 v_offset_x, const char *p_ascii, tu16 v_color
     }
 }
 //===================================================================
-/*#### LCD ST7753S Error Send
+/*### LCD ST7753S Error Send
 ------------------------------------------------------------------*/
 void f_lcd_st7735s_Log_Print(tu32 v_line, tu32 v_postion)
 {
@@ -178,7 +178,7 @@ void f_lcd_st7735s_Log_Print(tu32 v_line, tu32 v_postion)
 
 }
 //===================================================================
-/*#### LCD ST7753S Job Start
+/*### LCD ST7753S Job Start
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_job_start(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
 {
@@ -186,7 +186,7 @@ void f_lcd_st7735s_job_start(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
     f_scheduler_next(ps_lcd_st7735s_Job_ctrl);
 }
 //===================================================================
-/*#### LCD ST7753S Job Reset Low
+/*### LCD ST7753S Job Reset Low
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_job_reset_low(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
 {
@@ -195,32 +195,32 @@ void f_lcd_st7735s_job_reset_low(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
     d_LCD_ST7735S_PIN_DC_H;
     d_LCD_ST7735S_PIN_BL_H;
     ps_lcd_st7735s_Job_ctrl->v_delay_set_us = 100u;      //+ 100us
-    f_base_tick_systick32_start(&ps_lcd_st7735s_Job_ctrl->v_delay_tick_count);
+    f_base_tick_time32_start_timer(&ps_lcd_st7735s_Job_ctrl->v_delay_tick_count);
     f_scheduler_next(ps_lcd_st7735s_Job_ctrl);
 }
 //===================================================================
-/*#### LCD ST7753S Job Delay
+/*### LCD ST7753S Job Delay
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_job_delay(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
 {
-    if( f_base_tick_systick32_finish(&ps_lcd_st7735s_Job_ctrl->v_delay_tick_count)
+    if( f_base_tick_time32_check_timer(&ps_lcd_st7735s_Job_ctrl->v_delay_tick_count)
         >=  ps_lcd_st7735s_Job_ctrl->v_delay_set_us)
     {
         f_scheduler_next(ps_lcd_st7735s_Job_ctrl);
     }
 }
 //===================================================================
-/*#### LCD ST7753S Job Reset High
+/*### LCD ST7753S Job Reset High
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_job_reset_high(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
 {
     d_LCD_ST7735S_PIN_RES_H;
     ps_lcd_st7735s_Job_ctrl->v_delay_set_us = 5000u;    //+ Run Wait time 5s
-    f_base_tick_systick32_start(&ps_lcd_st7735s_Job_ctrl->v_delay_tick_count);
+    f_base_tick_time32_start_timer(&ps_lcd_st7735s_Job_ctrl->v_delay_tick_count);
     f_scheduler_next(ps_lcd_st7735s_Job_ctrl);
 }
 //===================================================================
-/*#### LCD ST7753S Job SW reset
+/*### LCD ST7753S Job SW reset
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_job_swreset(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
 {
@@ -256,7 +256,7 @@ void f_lcd_st7735s_job_swreset(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
     }
 }
 //===================================================================
-/*#### LCD ST7753S Job Reset High
+/*### LCD ST7753S Job Reset High
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_Job_slpout(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
 {
@@ -292,7 +292,7 @@ void f_lcd_st7735s_Job_slpout(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
     }
 }
 //===================================================================
-/*#### LCD ST7753S Job Reset High
+/*### LCD ST7753S Job Reset High
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_job_dispon(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
 {
@@ -328,7 +328,7 @@ void f_lcd_st7735s_job_dispon(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
     }
 }
 //===================================================================
-/*#### LCD ST7753S Job INVON
+/*### LCD ST7753S Job INVON
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_job_invoff(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
 {
@@ -364,7 +364,7 @@ void f_lcd_st7735s_job_invoff(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
     }
 }
 //===================================================================
-/*#### LCD ST7753S Job INVOFF
+/*### LCD ST7753S Job INVOFF
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_job_invon(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
 {
@@ -400,7 +400,7 @@ void f_lcd_st7735s_job_invon(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
     }
 }
 //===================================================================
-/*#### LCD ST7753S Job MADCTL
+/*### LCD ST7753S Job MADCTL
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_job_madctl(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
 {
@@ -459,7 +459,7 @@ void f_lcd_st7735s_job_madctl(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
     }
 }
 //===================================================================
-/*#### LCD ST7753S Job CASET
+/*### LCD ST7753S Job CASET
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_job_caset(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
 {
@@ -520,7 +520,7 @@ void f_lcd_st7735s_job_caset(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
     }
 }
 //===================================================================
-/*#### LCD ST7753S Job RASET
+/*### LCD ST7753S Job RASET
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_job_raset(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
 {
@@ -581,7 +581,7 @@ void f_lcd_st7735s_job_raset(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
     }
 }
 //===================================================================
-/*#### LCD ST7753S Job COLMOD
+/*### LCD ST7753S Job COLMOD
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_job_colmod(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
 {
@@ -639,7 +639,7 @@ void f_lcd_st7735s_job_colmod(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
     }
 }
 //===================================================================
-/*#### LCD ST7753S Job RAMWR
+/*### LCD ST7753S Job RAMWR
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_job_ramwr(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
 {
@@ -675,7 +675,7 @@ void f_lcd_st7735s_job_ramwr(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
     }
 }
 //===================================================================
-/*#### LCD ST7753S Job Image
+/*### LCD ST7753S Job Image
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_job_image(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
 {
@@ -685,7 +685,7 @@ void f_lcd_st7735s_job_image(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
     {
         case 0:
         {
-            if(f_base_tick_systick32_stopwatch_check(&gs_lcd_st7735s_Job_ctrl.s_time_interval) == m_RETURN_OK)
+            if(f_base_tick_time32_check_lap(&gs_lcd_st7735s_Job_ctrl.s_time_interval) == m_RETURN_OK)
             {
                 lv_cont = 0;
                 d_LCD_ST7735S_PIN_DC_H;     //+ Data Mode;
@@ -735,21 +735,21 @@ void f_lcd_st7735s_job_image(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
     }
 }
 //===================================================================
-/*#### LCD ST7753S Job Init Finish
+/*### LCD ST7753S Job Init Finish
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_job_init_finish(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl)
 {
     f_lcd_st7735s_set_run_mode();
 }
 //===================================================================
-/*#### LCD module load print "LCD 모듈 사용률 보기"
+/*### LCD module load print "LCD 모듈 사용률 보기"
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_load_print(void)
 {
     f_scheduler_run_time_info_print(&gs_lcd_st7735s_Job_ctrl);
 }
 //===================================================================
-/*#### LCD module load print "LCD 모듈 사용률 보기"
+/*### LCD module load print "LCD 모듈 사용률 보기"
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_color_fill(tu16 v_color)
 {
@@ -763,7 +763,7 @@ void f_lcd_st7735s_color_fill(tu16 v_color)
     }
 }
 //===================================================================
-/*#### LCD Voltage Bar "LCD 전압 발"
+/*### LCD Voltage Bar "LCD 전압 발"
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_voltage_bar(tu32 v_voltage, tu16 v_color_f)
 {
@@ -781,7 +781,7 @@ void f_lcd_st7735s_voltage_bar(tu32 v_voltage, tu16 v_color_f)
     }
 }
 //===================================================================
-/*#### LCD module LCD viwe "화면 구성"
+/*### LCD module LCD viwe "화면 구성"
 -------------------------------------------------------------------*/
 void f_lcd_st7735s_monitor_view(tu32 v_line)
 {

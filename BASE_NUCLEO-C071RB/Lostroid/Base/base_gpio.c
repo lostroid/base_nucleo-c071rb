@@ -12,9 +12,9 @@
 void f_base_gpio_init(void)
 {
     f_base_gpio_mode_init();
-    f_base_gpio_speed_initialize();
-    f_base_gpio_speed_initialize();
-    f_base_gpio_af_initialize();
+    f_base_gpio_speed_init();
+    f_base_gpio_speed_init();
+    f_base_gpio_af_init();
 }
 //===================================================================
 /* Base GPIO MODE initialize (Input,Output,AF,Analog)
@@ -75,7 +75,7 @@ void f_base_gpio_mode_init(void)
 //===================================================================
 /* Base GPIO SPEED initialize (Very-Low, Low, High, Very-High)
 -------------------------------------------------------------------*/
-void f_base_gpio_speed_initialize(void)
+void f_base_gpio_speed_init(void)
 {
     GPIOA->OSPEEDR = d_GPIO_SPEED_06(d_GPIO_SPEED_VERY_HIGH)    //+ SPI MISO
                    | d_GPIO_SPEED_07(d_GPIO_SPEED_VERY_HIGH)    //+ SPI MOSI
@@ -90,7 +90,7 @@ void f_base_gpio_speed_initialize(void)
 //===================================================================
 /* Base GPIO Pull-up, pull-down initialize
 -------------------------------------------------------------------*/
-void f_base_gpio_pupd_initialize(void)
+void f_base_gpio_pupd_init(void)
 {
     GPIOA->PUPDR = d_GPIO_PUPD_14(d_GPIO_PUPD_DOWN)
                  | d_GPIO_PUPD_13(d_GPIO_PUPD_UP);    //+ Reset value
@@ -100,7 +100,7 @@ void f_base_gpio_pupd_initialize(void)
 //===================================================================
 /* Base GPIO AF initialize
 -------------------------------------------------------------------*/
-void f_base_gpio_af_initialize(void)
+void f_base_gpio_af_init(void)
 {
     GPIOA->AFR[0] = d_GPIO_02_AFSEL(1)      //+ USART2 TX 
                   | d_GPIO_03_AFSEL(1)      //+ USART2 RX

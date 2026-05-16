@@ -45,7 +45,7 @@ static void (*paf_base_uart_Job_table[m_BASE_UART_JOB_TABLE_SIZE])(ts_scheduler_
     f_base_uart2_job_rx_check           //+ 03
 };
 //===================================================================
-/*#### UART Initialize
+/*### UART Initialize
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
@@ -68,7 +68,7 @@ void f_base_uart_init(void)
     f_base_uart2_init();
 }
 //===================================================================
-/*#### UART Module
+/*### UART Module
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
@@ -77,7 +77,7 @@ void f_base_uart_module(void)
     f_scheduler_run(&gs_base_uart_Job_ctrl);
 }
 //===================================================================
-/*#### UART2 Initialize
+/*### UART2 Initialize
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
@@ -96,7 +96,7 @@ void f_base_uart2_init(void)
     f_base_dma_start(d_BASE_DMA1_CH4_UART2_RX);
 }
 //===================================================================
-/*#### UART2 TX done count up
+/*### UART2 TX done count up
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
@@ -105,7 +105,7 @@ void f_base_uart2_tx_done_count_up(void)
     gv_base_uart2_tx_cnt_curr++;
 }
 //===================================================================
-/*#### UART2 TX done check
+/*### UART2 TX done check
 ---------------------------------------------------------------------
 + return: m_YES, m_NO
 -------------------------------------------------------------------*/
@@ -198,7 +198,7 @@ te_return f_base_uart_tx_idle_check(USART_TypeDef *ps_uart)
         { return m_RETURN_OK; }
 }
 //===================================================================
-/*#### Uart module load print : Uart 모듈 사용률 보기
+/*### Uart module load print : Uart 모듈 사용률 보기
 -------------------------------------------------------------------*/
 void f_base_uart_load_print(void)
 {
@@ -222,7 +222,7 @@ void f_base_uart2_job_rx_counter_update(ts_scheduler_control *ps_uart_ctrl)
     f_scheduler_next(ps_uart_ctrl);
 }
 //===================================================================
-/*#### UART2 TX DMA Send : UART2 TX 실제 버퍼를 통해 DMA 전송
+/*### UART2 TX DMA Send : UART2 TX 실제 버퍼를 통해 DMA 전송
 ---------------------------------------------------------------------
 + *ps_uart  USART_TypeDef
 + Return : m_RETURN_WAIT, m_RETURN_OK
@@ -265,7 +265,7 @@ void f_base_uart2_job_tx_check(ts_scheduler_control *ps_uart_ctrl)
     f_scheduler_next(ps_uart_ctrl);
 }
 //===================================================================
-/*#### Check UART2 RX data "UART2의 수신데이터를 확인"
+/*### Check UART2 RX data "UART2의 수신데이터를 확인"
 ---------------------------------------------------------------------
 + *ps_uart_ctrl: Control pointer "제어 변수 포인터"
 -------------------------------------------------------------------*/

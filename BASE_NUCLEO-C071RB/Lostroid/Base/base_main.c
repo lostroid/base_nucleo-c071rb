@@ -63,7 +63,7 @@ void f_base_main_init(void)
     f_base_syscfg_init();
     f_base_flash_init();
     f_base_nvic_init();
-    f_base_dma_init();
+    f_base_dma_Init();
     f_base_gpio_init();
     f_base_uart_init();
     f_base_tick_init();
@@ -105,11 +105,11 @@ void f_base_main_module(void)
 -------------------------------------------------------------------*/
 void f_base_main_time_init(void)
 {
-    f_base_tick_systick32_stopwatch_start(&gs_base_main_context.gs_time_1ms,    d_BASE_TICK_1MS);
-    f_base_tick_systick32_stopwatch_start(&gs_base_main_context.gs_time_10ms,   d_BASE_TICK_10MS);
-    f_base_tick_systick32_stopwatch_start(&gs_base_main_context.gs_time_100ms,  d_BASE_TICK_100MS);
-    f_base_tick_systick32_stopwatch_start(&gs_base_main_context.gs_time_500ms,  d_BASE_TICK_500MS);
-    f_base_tick_systick32_stopwatch_start(&gs_base_main_context.gs_time_1s,     d_BASE_TICK_1S);
+    f_base_tick_time32_start_lap(&gs_base_main_context.gs_time_1ms,    d_BASE_TICK_1MS);
+    f_base_tick_time32_start_lap(&gs_base_main_context.gs_time_10ms,   d_BASE_TICK_10MS);
+    f_base_tick_time32_start_lap(&gs_base_main_context.gs_time_100ms,  d_BASE_TICK_100MS);
+    f_base_tick_time32_start_lap(&gs_base_main_context.gs_time_500ms,  d_BASE_TICK_500MS);
+    f_base_tick_time32_start_lap(&gs_base_main_context.gs_time_1s,     d_BASE_TICK_1S);
 }
 //===================================================================
 /* Start Main Job.
@@ -125,7 +125,7 @@ void f_base_main_job_start(ts_scheduler_control *ps_main_job_ctrl)
 void f_base_main_job_1ms(ts_scheduler_control *ps_main_job_ctrl)
 {
     ts_base_main_context *s_context = ps_main_job_ctrl->ps_user_struct;
-    if(f_base_tick_systick32_stopwatch_check(&s_context->gs_time_1ms) == m_RETURN_OK)
+    if(f_base_tick_time32_check_lap(&s_context->gs_time_1ms) == m_RETURN_OK)
     {    
         
     }
@@ -137,7 +137,7 @@ void f_base_main_job_1ms(ts_scheduler_control *ps_main_job_ctrl)
 void f_base_main_job_10ms(ts_scheduler_control *ps_main_job_ctrl)
 {
     ts_base_main_context *s_context = ps_main_job_ctrl->ps_user_struct;
-    if(f_base_tick_systick32_stopwatch_check(&s_context->gs_time_10ms) == m_RETURN_OK)
+    if(f_base_tick_time32_check_lap(&s_context->gs_time_10ms) == m_RETURN_OK)
     {
 
     }
@@ -150,7 +150,7 @@ void f_base_main_job_100ms(ts_scheduler_control *ps_main_job_ctrl)
 {
     static tu32 lv_led_onoff = 0;
     ts_base_main_context *s_context = ps_main_job_ctrl->ps_user_struct;
-    if(f_base_tick_systick32_stopwatch_check(&s_context->gs_time_100ms) == m_RETURN_OK)
+    if(f_base_tick_time32_check_lap(&s_context->gs_time_100ms) == m_RETURN_OK)
     {
         if(lv_led_onoff == 0)
         { 
@@ -175,7 +175,7 @@ void f_base_main_job_500ms(ts_scheduler_control *ps_main_job_ctrl)
 {
     static tu32 lv_led_onoff = 0;
     ts_base_main_context *s_context = ps_main_job_ctrl->ps_user_struct;
-    if(f_base_tick_systick32_stopwatch_check(&s_context->gs_time_500ms) == m_RETURN_OK)
+    if(f_base_tick_time32_check_lap(&s_context->gs_time_500ms) == m_RETURN_OK)
     {
         if(lv_led_onoff == 0)
         { 
@@ -197,7 +197,7 @@ void f_base_main_job_1s(ts_scheduler_control *ps_main_job_ctrl)
 {
     
     ts_base_main_context *s_context = ps_main_job_ctrl->ps_user_struct;
-    if(f_base_tick_systick32_stopwatch_check(&s_context->gs_time_1s) == m_RETURN_OK)
+    if(f_base_tick_time32_check_lap(&s_context->gs_time_1s) == m_RETURN_OK)
     {
         f_display_fps_update();
     }
@@ -205,7 +205,7 @@ void f_base_main_job_1s(ts_scheduler_control *ps_main_job_ctrl)
 }
 
 //===================================================================
-/*#### Main module load print : Main 모듈 사용률 보기
+/*### Main module load print : Main 모듈 사용률 보기
 -------------------------------------------------------------------*/
 void f_base_main_load_print(void)
 {
@@ -213,12 +213,12 @@ void f_base_main_load_print(void)
 }
 
 //===================================================================
-/*#### Main System print : Main 모듈 사용률 보기
+/*### Main System print : Main 모듈 사용률 보기
 -------------------------------------------------------------------*/
 void f_base_main_system_print(void)
 {
     f_dbg_print_string("\r\n");
-    f_base_tick_systick_run_time_print();
+    f_base_tick_time64_run_time_print();
     f_scheduler_run_time_title_print();
     f_base_main_load_print();
     f_base_uart_load_print();

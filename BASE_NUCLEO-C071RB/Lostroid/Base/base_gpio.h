@@ -27,9 +27,9 @@
 
 void f_base_gpio_init(void);
 void f_base_gpio_mode_init(void);
-void f_base_gpio_speed_initialize(void);
-void f_base_gpio_pupd_initialize(void);
-void f_base_gpio_af_initialize(void);
+void f_base_gpio_speed_init(void);
+void f_base_gpio_pupd_init(void);
+void f_base_gpio_af_init(void);
 
 void f_base_gpio_led_ld1_on_off(te_gpio_output e_onoff);
 void f_base_gpio_led_ld2_on_off(te_gpio_output e_onoff);

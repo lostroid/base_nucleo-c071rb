@@ -9,6 +9,6 @@
 #include "types.h"
 
 #define d_CONFIG_START      "\r\n\r\nLOSTROID BareMetal (NUCLEO-C071RB)"
-#define d_CONFIG_FW_VER     "v00.13"
+#define d_CONFIG_FW_VER     "v00.14"
 
 #endif

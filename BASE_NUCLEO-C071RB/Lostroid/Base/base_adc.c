@@ -48,7 +48,7 @@ void f_base_adc_init(void)
         , 0
         , d_NULL);
         
-    f_base_tick_systick32_stopwatch_start(&gs_base_adc_tick_context_10ms, m_BASE_ADC_TIME_10MS);
+    f_base_tick_time32_start_lap(&gs_base_adc_tick_context_10ms, m_BASE_ADC_TIME_10MS);
 }
 //===================================================================
 /* Base Base ADC Module
@@ -58,25 +58,25 @@ void f_base_adc_module(void)
     f_scheduler_run(&gs_base_adc_Job_ctrl);
 }
 //===================================================================
-/*#### ADC Ragulator
+/*### ADC Ragulator
 -------------------------------------------------------------------*/
 void f_base_adc_regulator(void)
 {
     tu32 v_timeout;
     tu32 v_avg = 0;
     ADC1->CR = ADC_CR_ADVREGEN;
-    f_base_tick_systick32_blocking_delay(10);   //+ Blocking delay 10us
-    f_base_tick_systick32_start(&v_timeout);
+    f_base_tick_time32_blocking_delay(10);   //+ Blocking delay 10us
+    f_base_tick_time32_start_timer(&v_timeout);
     ADC1->CFGR1 = 0;
     for(tu32 v_for = 0; v_for < 8; v_for++)
     {
     	ADC1->CR = ADC_CR_ADCAL;
         while((ADC1->CR & ADC_CR_ADCAL) != 0)
         {
-            if(f_base_tick_systick32_finish(&v_timeout) > 10000000)
+            if(f_base_tick_time32_check_timer(&v_timeout) > 10000000)
             {
                 f_dbg_print_string("\r\n");
-                f_base_tick_systick_run_time_print();
+                f_base_tick_time64_run_time_print();
                 f_dbg_print_string("\r\nE: ADC FAIL");
                 return;
             }
@@ -94,14 +94,14 @@ void f_base_adc_regulator(void)
     ADC1->CR |= ADC_CR_ADEN;
 }
 //===================================================================
-/*#### ADC ADCART Start
+/*### ADC ADCART Start
 -------------------------------------------------------------------*/
 void f_base_adc_adstart(void)
 {
     ADC1->CR |= ADC_CR_ADSTART;
 }
 //===================================================================
-/*#### ADC Battery Infomaiton
+/*### ADC Battery Infomaiton
 ---------------------------------------------------------------------
 + ADC_IN0
 + ADC_IN1
@@ -122,7 +122,7 @@ void f_base_adc_info_print(void)
     f_dbg_print_string(" V");
 }
 //===================================================================
-/*#### ADC CH0 Get
+/*### ADC CH0 Get
 ---------------------------------------------------------------------
 + Return uV
 -------------------------------------------------------------------*/
@@ -131,7 +131,7 @@ tu32 f_base_adc_ch0_get(void)
     return d_BASE_ADC_TO_VOLTAGE(gs_adc_info.v_adc_ch0);
 }
 //===================================================================
-/*#### ADC CH1 Get
+/*### ADC CH1 Get
 ---------------------------------------------------------------------
 + Return uV
 -------------------------------------------------------------------*/
@@ -140,12 +140,12 @@ tu32 f_base_adc_ch1_get(void)
     return d_BASE_ADC_TO_VOLTAGE(gs_adc_info.v_adc_ch1);
 }
 //===================================================================
-/*#### ADC Job Start
+/*### ADC Job Start
 -------------------------------------------------------------------*/
 void f_base_adc_job_start(ts_scheduler_control *ps_adc_job_ctrl)
 {
      f_scheduler_loop_time_update(ps_adc_job_ctrl);
-    if(f_base_tick_systick32_stopwatch_check(&gs_base_adc_tick_context_10ms) 
+    if(f_base_tick_time32_check_lap(&gs_base_adc_tick_context_10ms)
     == m_RETURN_OK)
     {
     	f_base_dma_memory_setting(d_BASE_DMA1_CH5_ADC1, (tu8 *)gpa_adc_buff, m_BASE_ADC_BUFF_SIZE);
@@ -155,20 +155,20 @@ void f_base_adc_job_start(ts_scheduler_control *ps_adc_job_ctrl)
     }
 }
 //===================================================================
-/*#### ADC Job DMA  Transfer Complete flag
+/*### ADC Job DMA  Transfer Complete flag
 -------------------------------------------------------------------*/
 void f_base_adc_job_complete(ts_scheduler_control *ps_adc_job_ctrl)
 {
     if(d_BASE_DMA1_CH5_ADC1_TC() != 0)
     {
-        d_Base_dma1_ch5_adc_ctc();
+        f_base_dma1_ch5_adc_ctc();
         gs_adc_info.v_adc_ch0 = gpa_adc_buff[0];
         gs_adc_info.v_adc_ch1 = gpa_adc_buff[1];
         f_scheduler_next(ps_adc_job_ctrl);
     }
 }
 //===================================================================
-/*#### ADC Job Wait
+/*### ADC Job Wait
 -------------------------------------------------------------------*/
 void f_base_adc_job_check(ts_scheduler_control *ps_adc_job_ctrl)
 {
@@ -176,7 +176,7 @@ void f_base_adc_job_check(ts_scheduler_control *ps_adc_job_ctrl)
 }
 
 //===================================================================
-/*#### ADC module load print : ADC 모듈 사용률 보기
+/*### ADC module load print : ADC 모듈 사용률 보기
 -------------------------------------------------------------------*/
 void f_base_adc_load_print(void)
 {

@@ -13,7 +13,7 @@
 static tu32 gv_base_tick_strart = 0;
 static tu32 gv_base_tick_end = 0;
 //===================================================================
-/*#### Tick Initialize 
+/*### Tick Initialize 
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
@@ -24,7 +24,7 @@ void f_base_tick_init(void)
     f_base_tick_systick_time64_get();
 }
 //===================================================================
-/*#### Tick Module (Polling Type) 
+/*### Tick Module (Polling Type) 
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ void f_base_tick_module(void)
 }
 
 //===================================================================
-/*#### Tick DWT Initialize
+/*### Tick DWT Initialize
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
@@ -49,7 +49,7 @@ void f_base_tick_systick_init(void)
 }
 
 //===================================================================
-/*#### SysTick Base Time Stamp 32bit up count "32bit 틱 업 카운터"
+/*### SysTick Base Time Stamp 32bit up count "32bit 틱 업 카운터"
 ---------------------------------------------------------------------
 Max 349ms overflow "최대 349ms 넘지 않습니다"
 Call at least once per 100ms " 최소 100ms 마다 호출 권장"
@@ -66,7 +66,7 @@ tu32 f_base_tick_systick_time32_get(void)
 }
 
 //===================================================================
-/*#### SysTick Base Time Stamp 64bit up count "64bit 틱 업 카운터"
+/*### SysTick Base Time Stamp 64bit up count "64bit 틱 업 카운터"
 ---------------------------------------------------------------------
 Max 349ms overflow "최대 349ms 넘지 않습니다"
 Call at least once per 100ms " 최소 100ms 마다 호출 권장"
@@ -83,13 +83,13 @@ tu64 f_base_tick_systick_time64_get(void)
 }
 
 //===================================================================
-/*#### Systick32 Tick base capture "Systic32 틱 기반으로 시작"
+/*### Systick32 Tick base capture "Systic32 틱 기반으로 시작"
 ---------------------------------------------------------------------
 Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 + ps_timeTaget : struct variable pointer
 + v_time_us : convert microsecond to tick count "us 단위를 tick 값으로 변경저장"
 -------------------------------------------------------------------*/
-void f_base_tick_systick32_stopwatch_start(ts_base_tick_context *ps_time, tu32 v_time_us)
+void f_base_tick_time32_start_lap(ts_base_tick_context *ps_time, tu32 v_time_us)
 {
     if(ps_time == d_NULL)
         { return; }
@@ -100,13 +100,13 @@ void f_base_tick_systick32_stopwatch_start(ts_base_tick_context *ps_time, tu32 v
 }
 
 //===================================================================
-/*#### Systick32 Elapsed Check "Systick기반으로 경과 시간 여부 확인"
+/*### Systick32 Elapsed Check "Systick기반으로 경과 시간 여부 확인"
 ---------------------------------------------------------------------
 Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 + ps_time : struct variable pointer
 +  Return : m_RETURN_OK, m_RETURN_WAIT
 -------------------------------------------------------------------*/
-te_return f_base_tick_systick32_stopwatch_check(ts_base_tick_context *ps_time)
+te_return f_base_tick_time32_check_lap(ts_base_tick_context *ps_time)
 {
     if(ps_time == d_NULL)
         { return m_RETURN_ERR_NULL; }
@@ -125,13 +125,13 @@ te_return f_base_tick_systick32_stopwatch_check(ts_base_tick_context *ps_time)
 }
 
 //===================================================================
-/*#### Tick DWT Elapsed Flag: DWT 틱 경과 여부 플래그
+/*### Tick DWT Elapsed Flag: DWT 틱 경과 여부 플래그
 ---------------------------------------------------------------------
 Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 + ps_time : struct variable pointer
 +  Return : m_RETURN_OK, m_RETURN_WAIT
 -------------------------------------------------------------------*/
-te_return f_base_tick_systick32_elapsed_flag(ts_base_tick_context *ps_time)
+te_return f_base_tick_time32_flag_lap(ts_base_tick_context *ps_time)
 {
     if(ps_time == d_NULL)
         { return m_RETURN_ERR_NULL; }
@@ -145,13 +145,13 @@ te_return f_base_tick_systick32_elapsed_flag(ts_base_tick_context *ps_time)
 }
 
 //===================================================================
-/*#### DWT Blocking Delay "DWT를 사용하여 코드 실행을 블로킹하면서 지연"
+/*### DWT Blocking Delay "DWT를 사용하여 코드 실행을 블로킹하면서 지연"
 ---------------------------------------------------------------------
 Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 Timeout : 10s
 + v_time_us : microseconds Max 17,000,000 "최대 17,000,000us 를 넘지 않습니다."
 -------------------------------------------------------------------*/
-void f_base_tick_systick32_blocking_delay(tu32 v_time_us)
+void f_base_tick_time32_blocking_delay(tu32 v_time_us)
 {
     ts_base_tick_context s_time;
     s_time.v_pt = f_base_tick_systick_time32_get();
@@ -171,14 +171,14 @@ void f_base_tick_systick32_blocking_delay(tu32 v_time_us)
 }
 
 //===================================================================
-/*#### SysTick-based 32-bit tick count start "Systick 기반 32비트 틱 카운터 시작"
+/*### SysTick-based 32-bit tick count start "Systick 기반 32비트 틱 카운터 시작"
 ---------------------------------------------------------------------
 Warning: Start ~ finish 
 Overflow MAX 89s = 4,294,967,296 / 48,000,000 Hz 
 "최대 측정 시간은 89초를 넘기지 않습니다."
 + p_tick_buff: save tick count point "시간 정보 포인터"
 -------------------------------------------------------------------*/
-void f_base_tick_systick32_start(tu32 *p_tick_buff)
+void f_base_tick_time32_start_timer(tu32 *p_tick_buff)
 {
     if(p_tick_buff == d_NULL)
         { return; }
@@ -186,7 +186,7 @@ void f_base_tick_systick32_start(tu32 *p_tick_buff)
 }
 
 //===================================================================
-/*#### SysTick-based 32-bit tick count finish "Systick 기반 32비트 틱 카운터 완료"
+/*### SysTick-based 32-bit tick count finish "Systick 기반 32비트 틱 카운터 완료"
 ---------------------------------------------------------------------
 Warning: Start ~ finish
 Overflow MAX 89s = 4,294,967,296 / 48,000,000 Hz 
@@ -194,7 +194,7 @@ Overflow MAX 89s = 4,294,967,296 / 48,000,000 Hz
 + p_pave_tick_buff: Start tick count point "시작 tick정보 포인터"
 + return: Convert 32-bit tick to us
 -------------------------------------------------------------------*/
-tu32 f_base_tick_systick32_finish(tu32 *p_pave_tick_buff)
+tu32 f_base_tick_time32_check_timer(tu32 *p_pave_tick_buff)
 {
     if(p_pave_tick_buff == d_NULL)
         { return 0; }
@@ -204,12 +204,12 @@ tu32 f_base_tick_systick32_finish(tu32 *p_pave_tick_buff)
 }
  
 //===================================================================
-/*#### SysTick-based 64-bit tick count start 
+/*### SysTick-based 64-bit tick count start 
   ### "Systick 기반 64비트 틱 카운터 시작"
 ---------------------------------------------------------------------
 + ps_time: Time Context point "시간 정보 포인터"
 -------------------------------------------------------------------*/
-void f_base_tick_systick64_start(tu64 *p_tick_buff)
+void f_base_tick_time64_start_timer(tu64 *p_tick_buff)
 {
     if(p_tick_buff == d_NULL)
         { return; }
@@ -217,13 +217,13 @@ void f_base_tick_systick64_start(tu64 *p_tick_buff)
 }
 
 //===================================================================
-/*#### Base time systick64 finish
+/*### Base time systick64 finish
 ---------------------------------------------------------------------
 Warning: Start ~ finish  
 + ps_time: Time Context point "시간 정보 포인터"
 + return: Convert 64-bit tick to us
 -------------------------------------------------------------------*/
-tu64 f_base_tick_systick64_finish(tu64 *p_pave_tick_buff)
+tu64 f_base_tick_time64_check_timer(tu64 *p_pave_tick_buff)
 {
     if(p_pave_tick_buff == d_NULL)
         { return 0; }
@@ -233,13 +233,13 @@ tu64 f_base_tick_systick64_finish(tu64 *p_pave_tick_buff)
 }
 
 //===================================================================
-/*#### Print SysTick start counter
+/*### Print SysTick start counter
   ### "Systick 카운터 시작 정보 출력"
 ---------------------------------------------------------------------
 Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 + void
 -------------------------------------------------------------------*/
-void f_base_tick_systick_start_time_print(void)
+void f_base_tick_time32_start_time_print(void)
 {
     if(f_dbg_mode_get(m_DBG_MODE_SCHEDULE) == m_YESNO_YES)
     {
@@ -250,13 +250,13 @@ void f_base_tick_systick_start_time_print(void)
 }
 
 //===================================================================
-/*#### Print SysTick elapsed time
+/*### Print SysTick elapsed time
   ### "Systick 경과시간 정보 출력"
 ---------------------------------------------------------------------
 Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 + void
 -------------------------------------------------------------------*/
-void f_base_tick_systick_end_time_print(void)
+void f_base_tick_time32_end_time_print(void)
 {
     if(f_dbg_mode_get(m_DBG_MODE_SCHEDULE) == m_YESNO_YES)
     {
@@ -271,11 +271,11 @@ void f_base_tick_systick_end_time_print(void)
 }
 
 //===================================================================
-/*#### Systeick Base Log time stemp "Systick 로그 시스템 스템프"
+/*### Systeick Base Log time stemp "Systick 로그 시스템 스템프"
 ---------------------------------------------------------------------
 + Print [0d-00:00:00.000000]
 -------------------------------------------------------------------*/
-void f_base_tick_systick_run_time_print(void)
+void f_base_tick_time64_run_time_print(void)
 {
     tu64 v_time = d_BASE_TICK_SYS_GET_US(f_base_tick_systick_time64_get());
     f_dbg_print_string("\r\n[");      
@@ -304,7 +304,7 @@ void f_base_tick_systick_run_time_print(void)
 #define d_TICK_DWT_CNT          (DWT->CYCCNT)   //+ 32bit Tick counter
 
 //===================================================================
-/*#### Tick DWT Initialize
+/*### Tick DWT Initialize
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
@@ -319,7 +319,7 @@ void f_base_tick_dwt_init(void)
     #endif
 }
 //===================================================================
-/*#### DWT Base Time Stamp 64bit count "64bit 타임 카운터"
+/*### DWT Base Time Stamp 64bit count "64bit 타임 카운터"
 ---------------------------------------------------------------------
 Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 Call at least once per second " 최소 1s 마다 호출 권장"
@@ -336,13 +336,13 @@ tu64 f_base_tick_dwt_time64_get(void)
 }
 
 //===================================================================
-/*#### DWT Time us
+/*### DWT Time us
 ---------------------------------------------------------------------
 Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 + ps_timeTaget : struct variable pointer
 + v_time_us : setting microsecond
 -------------------------------------------------------------------*/
-void f_base_tick_dwt_stopwatch_start(ts_base_tick_context *ps_time, tu32 v_time_us)
+void f_base_tick_dwt_start_lap(ts_base_tick_context *ps_time, tu32 v_time_us)
 {
     if(ps_time == d_NULL)
         { return; }
@@ -353,7 +353,7 @@ void f_base_tick_dwt_stopwatch_start(ts_base_tick_context *ps_time, tu32 v_time_
 }
 
 //===================================================================
-/*#### Tick DWT Elapsed Check 1us: 1µs 단위로 DWT 틱 경과 여부를 확인
+/*### Tick DWT Elapsed Check 1us: 1µs 단위로 DWT 틱 경과 여부를 확인
 ---------------------------------------------------------------------
 Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 + ps_time : struct variable pointer
@@ -361,7 +361,7 @@ Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 m_RETURN_OK
 m_RETURN_WAIT
 -------------------------------------------------------------------*/
-te_return f_base_tick_dwt_stopwatch_check(ts_base_tick_context* ps_time)
+te_return f_base_tick_dwt_check_lap(ts_base_tick_context* ps_time)
 {
     if(ps_time == d_NULL)
         { return m_RETURN_ERR_NULL; }
@@ -380,7 +380,7 @@ te_return f_base_tick_dwt_stopwatch_check(ts_base_tick_context* ps_time)
 }
 
 //===================================================================
-/*#### Tick DWT Elapsed Flag: DWT 틱 경과 여부 플래그
+/*### Tick DWT Elapsed Flag: DWT 틱 경과 여부 플래그
 ---------------------------------------------------------------------
 Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 + ps_time : struct variable pointer
@@ -388,7 +388,7 @@ Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 m_RETURN_OK
 m_RETURN_WAIT
 -------------------------------------------------------------------*/
-te_return f_base_tick_dwt_elapsed_flag(ts_base_tick_context* ps_time)
+te_return f_base_tick_dwt_flag_lap(ts_base_tick_context* ps_time)
 {
     if(ps_time == d_NULL)
         { return m_RETURN_ERR_NULL; }
@@ -402,7 +402,7 @@ te_return f_base_tick_dwt_elapsed_flag(ts_base_tick_context* ps_time)
 }
 
 //===================================================================
-/*#### DWT Blocking Delay: DWT를 사용하여 코드 실행을 블로킹하면서 지연
+/*### DWT Blocking Delay: DWT를 사용하여 코드 실행을 블로킹하면서 지연
 ---------------------------------------------------------------------
 Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 Timeout : 10s
@@ -428,13 +428,13 @@ void f_base_tick_dwt_blocking_delay(tu32 v_time_us)
 }
 
 //===================================================================
-/*#### Save the current tick count via pointer
+/*### Save the current tick count via pointer
 ### 현재 Tick Count 정보를 포인터를 통해 저장
 ---------------------------------------------------------------------
 Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 + *v_time_us : tu32 pointor
 -------------------------------------------------------------------*/
-void f_base_tick_dwt_check_start(tu32 *p_tick)
+void f_base_tick_dwt_start_timer(tu32 *p_tick)
 {
     if(p_tick == d_NULL)
         { return; }
@@ -442,14 +442,14 @@ void f_base_tick_dwt_check_start(tu32 *p_tick)
 }
 
 //===================================================================
-/*#### Difference (in microseconds) between the Tick stored via pointer 
+/*### Difference (in microseconds) between the Tick stored via pointer 
     ### "기존에 포인터를 통해 저장한 Tick 과 현재 Tick 차이 US시간"
 ---------------------------------------------------------------------
 Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 + p_count : Tick count vaule
 + Return : us(microsecond)
 -------------------------------------------------------------------*/
-tu32 f_base_tick_dwt_check_finish(tu32 *p_tick)
+tu32 f_base_tick_dwt_check_timer(tu32 *p_tick)
 {
     if(p_tick == d_NULL)
         { return 0; }
@@ -459,7 +459,7 @@ tu32 f_base_tick_dwt_check_finish(tu32 *p_tick)
 }
 
 //===================================================================
-/*#### DBG pirnt DWT start tick counter.
+/*### DBG pirnt DWT start tick counter.
     ### "디버깅 포트를 통한 Tick 카운터 시작 정보 출력"
 ---------------------------------------------------------------------
 Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
@@ -476,7 +476,7 @@ void f_base_tick_dwt_start_time_print(void)
 }
 
 //===================================================================
-/*#### DBG Print DWT end counter, run time 
+/*### DBG Print DWT end counter, run time 
     ### "디버깅 포트를 통한 측정시간 정보 출력"
 ---------------------------------------------------------------------
 Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
@@ -497,11 +497,11 @@ void f_base_tick_dwt_end_time_print(void)
 }
 
 //===================================================================
-/*#### DWT Base Log time stemp "DWT 로그 시스템 스템프"
+/*### DWT Base Log time stemp "DWT 로그 시스템 스템프"
 ---------------------------------------------------------------------
 + Print [0d-00:00:00.000000]
 -------------------------------------------------------------------*/
-void f_base_tick_dwt_run_time_print(void)
+void f_base_tick_dwt_time64_run_time_print(void)
 {
     tu64 v_time_us = d_BASE_TICK_DWT_GET_US(f_base_tick_dwt_time64_get());
     f_dbg_print_string("\r\n[");      

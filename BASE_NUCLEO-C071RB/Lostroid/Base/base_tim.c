@@ -20,7 +20,7 @@ static tu32 v_base_tim1_ch2_sw_a_cnt = 0;
 static tu32 v_base_tim1_ch3_sw_b_cnt = 0;
 static tu32 v_base_tim3_ch1_sw_ok_cnt = 0;
 //===================================================================
-/*#### Base TIMx initialize
+/*### Base TIMx initialize
 -------------------------------------------------------------------*/
 void f_base_tim_init(void)
 {
@@ -28,14 +28,14 @@ void f_base_tim_init(void)
     f_base_tim_input_captur_init();
 }
 //===================================================================
-/*#### Base TIMx Module
+/*### Base TIMx Module
 -------------------------------------------------------------------*/
 void f_base_tim_module(void)
 {
 
 }
 //===================================================================
-/*#### TIM4 time check  (OverFlow 6.5s, Max Delay Set 6s)
+/*### TIM4 time check  (OverFlow 6.5s, Max Delay Set 6s)
 ---------------------------------------------------------------------
 +  Return : m_RETURN_OK, m_RETURN_WAIT
 -------------------------------------------------------------------*/
@@ -55,7 +55,7 @@ te_return f_base_tim14_check_100us(ts_base_tick_context* ps_time)
     }
 }
 //===================================================================
-/*#### Base TIM1 initialize
+/*### Base TIM1 initialize
 -------------------------------------------------------------------*/
 void f_base_tim2_init(void)
 {
@@ -78,7 +78,7 @@ void f_base_tim2_init(void)
     TIM3->CR1 = TIM_CR1_CEN;                            //+ Counter enable
 }
 //===================================================================
-/*#### Base Time TIM1 1CH CCR
+/*### Base Time TIM1 1CH CCR
 ---------------------------------------------------------------------
 MAX 16 bit
 + v_cnt : Compare cnt value 
@@ -88,7 +88,7 @@ void f_base_tim2_ch1_ccr(tu16 v_cnt)
     TIM2->CCR1 = v_cnt;
 }
 //===================================================================
-/*#### Base Time TIM1 2CH CCR
+/*### Base Time TIM1 2CH CCR
 ---------------------------------------------------------------------
 MAX 16 bit
 + v_cnt : Compare cnt value 
@@ -98,11 +98,11 @@ void f_base_tim2_ch2_ccr(tu16 v_cnt)
     TIM2->CCR2 = v_cnt;
 }
 //===================================================================
-/*#### Base Time TIM1 1CH MODE SET
+/*### Base Time TIM1 1CH MODE SET
 ---------------------------------------------------------------------
 + e_mode : H, L, PWM
 -------------------------------------------------------------------*/
-void f_base_tim2_ch1_mode_set(te_Base_tim_mode e_mode)
+void f_base_tim2_ch1_mode_set(te_base_tim_mode e_mode)
 {
     switch(e_mode)
     {
@@ -131,11 +131,11 @@ void f_base_tim2_ch1_mode_set(te_Base_tim_mode e_mode)
     }
 }
 //===================================================================
-/*#### Base Time TIM1 2CH MODE SET
+/*### Base Time TIM1 2CH MODE SET
 ---------------------------------------------------------------------
 + e_mode : H, L, PWM
 -------------------------------------------------------------------*/
-void f_base_tim2_ch2_mode_set(te_Base_tim_mode e_mode)
+void f_base_tim2_ch2_mode_set(te_base_tim_mode e_mode)
 {
     switch(e_mode)
     {
@@ -164,7 +164,7 @@ void f_base_tim2_ch2_mode_set(te_Base_tim_mode e_mode)
     }
 }
 //===================================================================
-/*#### Base Time Input captur
+/*### Base Time Input captur
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
@@ -200,7 +200,7 @@ void f_base_tim_input_captur_init(void)
 
 }
 //===================================================================
-/*#### TIM1 CH2 SW A Count update
+/*### TIM1 CH2 SW A Count update
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
@@ -209,7 +209,7 @@ void f_base_tim1_ch2_sw_a_count_up(void)
     v_base_tim1_ch2_sw_a_cnt++;
 }
 //===================================================================
-/*#### TIM1 CH3 SW A Count update
+/*### TIM1 CH3 SW A Count update
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
@@ -218,7 +218,7 @@ void f_base_tim1_ch3_sw_b_count_up(void)
     v_base_tim1_ch3_sw_b_cnt++;
 }
 //===================================================================
-/*#### TIM3 CH1 SW A Count update
+/*### TIM3 CH1 SW A Count update
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
@@ -227,7 +227,7 @@ void f_base_tim3_ch1_sw_ok_count_up(void)
     v_base_tim3_ch1_sw_ok_cnt++;
 }
 //===================================================================
-/*#### TIM1 CH2 SW A Count update
+/*### TIM1 CH2 SW A Count update
 ---------------------------------------------------------------------
 + return: cnt
 -------------------------------------------------------------------*/
@@ -236,7 +236,7 @@ tu32 f_base_tim1_ch2_sw_a_count_get(void)
     return v_base_tim1_ch2_sw_a_cnt;
 }
 //===================================================================
-/*#### TIM1 CH3 SW B Count update
+/*### TIM1 CH3 SW B Count update
 ---------------------------------------------------------------------
 + return: cnt
 -------------------------------------------------------------------*/
@@ -245,16 +245,16 @@ tu32 f_base_tim1_ch3_sw_b_count_get(void)
     return v_base_tim1_ch3_sw_b_cnt;
 }
 //===================================================================
-/*#### TIM3 CH1 SW A Count update
+/*### TIM3 CH1 SW A Count update
 ---------------------------------------------------------------------
 + return: cnt
 -------------------------------------------------------------------*/
-tu32 f_Base_TIM3_CH1_SW_OK_Get_Count(void)
+tu32 f_base_tim3_ch1_sw_ok_count_get(void)
 {
     return v_base_tim3_ch1_sw_ok_cnt;
 }
 //===================================================================
-/*#### Switch Count print
+/*### Switch Count print
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/

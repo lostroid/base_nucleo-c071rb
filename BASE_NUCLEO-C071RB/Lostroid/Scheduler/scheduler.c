@@ -49,14 +49,14 @@ static const char *gpa_sch_string_msg_list[M_SCH_MSG_LIST_LEN] = {
 };
 
 //===================================================================
-/*#### Setting scheduler config "스케쥴러 설정"
+/*### Setting scheduler config "스케쥴러 설정"
 ---------------------------------------------------------------------
 + *ps_sch_control           : variable pointer                  "제어 포인터"
 + v_penalty_set_value       : Penalty-based delay               "패널티에 따른 지연"
 + v_retry_set_value         : Retry count for response failure  "응답실패 재시도 횟수"
 + v_timeout_set_value_us    : Response timeout configuration    "응답 타임아웃 설정"
 + v_cycle_run_time_us       : Cycle time setting                "주기 타임 설정"
-+ *p_user_struct            : User structure registration       "사용자 구조체 등록"
++ *p_user_struct            : User structure registration       "사용자 구조체 등록 사용안하면 d_NULL"
 -------------------------------------------------------------------*/
 void f_scheduler_config(
     ts_scheduler_control *ps_sch_control    //+ variable pointer                  "제어 포인터"
@@ -76,11 +76,11 @@ void f_scheduler_config(
     ps_sch_control->v_retry_set_value       = v_retry_set_value;
     ps_sch_control->v_timeout_set_value_us  = v_timeout_set_value_us;
     ps_sch_control->ps_user_struct          = p_user_struct;
-    f_base_tick_systick32_stopwatch_start(&ps_sch_control->s_time_interval, v_cycle_run_time_us);
+    f_base_tick_time32_start_lap(&ps_sch_control->s_time_interval, v_cycle_run_time_us);
 }
 
 //===================================================================
-/*#### Scheduler control Initialize "스케쥴러 테이블 제어 초기화"
+/*### Scheduler control Initialize "스케쥴러 테이블 제어 초기화"
 ---------------------------------------------------------------------
 + *ps_sch_control   : Control pointer       "제어 포인터"
 + *ps_table[]       : Pointer to table list "테이블 리스트 포인터"
@@ -122,23 +122,12 @@ void f_scheduler_init(
 }
 
 //===================================================================
-/*#### Execute schedule "스케쥴러 함수 수행"
+/*### Execute schedule "스케쥴러 함수 수행"
 ---------------------------------------------------------------------
 + *ps_sch_control : variable pointer "제어 포인터"
 -------------------------------------------------------------------*/
 void f_scheduler_run(ts_scheduler_control *ps_sch_control)
 {
-    if(ps_sch_control == d_NULL)
-    { 
-        f_scheduler_error(ps_sch_control, m_SCHEDULER_ERR_JOB_CTRL_NULL); 
-        return; 
-    }
-    if(ps_sch_control->pf_func == d_NULL)
-    { 
-        f_scheduler_error(ps_sch_control, m_SCHEDULER_ERR_JOB_RUN_NULL);
-        return;
-    }
-
     //+ Check interval
     if(ps_sch_control-> v_penalty_down_count != 0)
     {
@@ -151,23 +140,13 @@ void f_scheduler_run(ts_scheduler_control *ps_sch_control)
 }
 
 //===================================================================
-/*#### Move to the next workflow "다음 테이블 위치 변경"
+/*### Move to the next workflow "다음 테이블 위치 변경"
 ---------------------------------------------------------------------
 Start of the next overflow position 0           "다음 위치가 넘는 경우 자동 0으로 동작"
 + *ps_sch_control : control variable pointer    "제어 포인터"
 -------------------------------------------------------------------*/
 void f_scheduler_next(ts_scheduler_control *ps_sch_control)
 {
-    if(ps_sch_control == d_NULL)
-    { 
-        f_scheduler_error(ps_sch_control, m_SCHEDULER_ERR_JOB_CTRL_NULL); 
-        return; 
-    }
-    if(ps_sch_control->ps_table_list == d_NULL)
-    { 
-        f_scheduler_error(ps_sch_control, m_SCHEDULER_ERR_JOB_RUN_NULL); 
-        return;
-    }
     ps_sch_control->v_table_pos++;
     if(ps_sch_control->v_table_size <= ps_sch_control->v_table_pos)
         { ps_sch_control->v_table_pos = 0;}
@@ -177,26 +156,16 @@ void f_scheduler_next(ts_scheduler_control *ps_sch_control)
 }
 
 //===================================================================
-/*#### Scheduler job Jump "사용자 테이블 위치 변경"
+/*### Scheduler job Jump "사용자 테이블 위치 변경"
 ---------------------------------------------------------------------
 Jump number 0 ~ (MAX table size -1).
 + *ps_sch_control : variable pointer "제어 포인터"
 -------------------------------------------------------------------*/
 void f_scheduler_jump(ts_scheduler_control *ps_sch_control, tu32 v_jump_num)
 {
-    if(ps_sch_control == d_NULL)
-    { 
-        f_scheduler_error(ps_sch_control, m_SCHEDULER_ERR_JOB_CTRL_NULL); 
-        return; 
-    }
     if(ps_sch_control->v_table_size <= v_jump_num)
     {
         f_scheduler_error(ps_sch_control, m_SCHEDULER_ERR_JOB_JUMP_OVER);
-        return;
-    }
-    if(ps_sch_control->ps_table_list == d_NULL)
-    { 
-        f_scheduler_error(ps_sch_control, m_SCHEDULER_ERR_JOB_RUN_NULL); 
         return;
     }
     ps_sch_control->v_table_pos = v_jump_num;
@@ -206,18 +175,12 @@ void f_scheduler_jump(ts_scheduler_control *ps_sch_control, tu32 v_jump_num)
 }
 
 //===================================================================
-/*#### Scheduler job retry "오류 재시도 횟수 측정"
+/*### Scheduler job retry "오류 재시도 횟수 측정"
 ---------------------------------------------------------------------
 + *ps_sch_control : variable pointer "제어 포인터"
 -------------------------------------------------------------------*/
 te_schedule_error f_scheduler_retry(ts_scheduler_control *ps_sch_control)
 {
-    if(ps_sch_control == d_NULL)
-    { 
-        f_scheduler_error(ps_sch_control, m_SCHEDULER_ERR_JOB_CTRL_NULL); 
-        return m_SCHEDULER_ERR_JOB_CTRL_NULL; 
-    }
-
     if(ps_sch_control->v_retry_down_count != 0)
     {
         ps_sch_control->v_retry_down_count--;
@@ -228,18 +191,13 @@ te_schedule_error f_scheduler_retry(ts_scheduler_control *ps_sch_control)
 }
 
 //===================================================================
-/*#### Error indication print "에러 정보 출력"
+/*### Error indication print "에러 정보 출력"
 ---------------------------------------------------------------------
 + *ps_sch_control   : variable pointer  "제어 포인터"
 + e_error           : Error type        "에러 종류"
 -------------------------------------------------------------------*/
 void f_scheduler_error(ts_scheduler_control *ps_sch_control, te_schedule_error e_error)
 {
-    if(ps_sch_control == d_NULL)
-    { 
-        f_dbg_print_string(gpa_sch_string_msg_list[(tu32)m_SCHEDULER_ERR_JOB_CTRL_NULL]); 
-        return; 
-    }
     //+ 처음 발생한 에러에 대해서만 한번 표시 이후 에러 표시는 무시되는 조건.
     if(ps_sch_control->e_error != m_SCHEDULER_OK)
         { return; }
@@ -259,22 +217,17 @@ void f_scheduler_error(ts_scheduler_control *ps_sch_control, te_schedule_error e
 }
 
 //===================================================================
-/*#### Scheduler setting start time "시작 타임 설정"
+/*### Scheduler setting start time "시작 타임 설정"
 ---------------------------------------------------------------------
 + *ps_sch_control : variable pointer "제어 포인터"
 -------------------------------------------------------------------*/
 void f_scheduler_run_time_start(ts_scheduler_control *ps_sch_control)
 {
-    if(ps_sch_control == d_NULL)
-    { 
-        f_scheduler_error(ps_sch_control, m_SCHEDULER_ERR_JOB_CTRL_NULL); 
-        return;
-    }
-    f_base_tick_systick32_start(&ps_sch_control->v_time_run_count);
+    f_base_tick_time32_start_timer(&ps_sch_control->v_time_run_count);
 }
 
 //===================================================================
-/*#### Scheduler check finish time : 완료시간 측정
+/*### Scheduler check finish time : 완료시간 측정
 ---------------------------------------------------------------------
 update save time: now, max "현재,최대 시간 정보 저장"
 Warning: run_Time MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
@@ -282,12 +235,7 @@ Warning: run_Time MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 -------------------------------------------------------------------*/
 void f_scheduler_run_time_finish(ts_scheduler_control *ps_sch_control)
 {
-    if(ps_sch_control == d_NULL)
-    { 
-        f_scheduler_error(ps_sch_control, m_SCHEDULER_ERR_JOB_CTRL_NULL); 
-        return;
-    }
-    tu32 v_time_us = f_base_tick_systick32_finish(&ps_sch_control->v_time_run_count);
+    tu32 v_time_us = f_base_tick_time32_check_timer(&ps_sch_control->v_time_run_count);
 
     if(ps_sch_control->v_time_run_now_us == 0)
     {  
@@ -321,24 +269,9 @@ void f_scheduler_run_time_finish(ts_scheduler_control *ps_sch_control)
             { ps_sch_control->v_time_run_tick_us = 0; }
     }
 }
+
 //===================================================================
-/*#### Reset run time info "초기화 함수 수행 시간"
----------------------------------------------------------------------
-+ *ps_sch_control  : variable pointer "제어 포인터"
--------------------------------------------------------------------*/
-void f_scheduler_run_time_info_reset(ts_scheduler_control *ps_sch_control)
-{
-    if(ps_sch_control == d_NULL)
-    { 
-        f_scheduler_error(ps_sch_control, m_SCHEDULER_ERR_JOB_CTRL_NULL); 
-        return; 
-    }
-   ps_sch_control->v_time_run_now_us = 0;
-   ps_sch_control->v_time_run_max_us = 0;
-   ps_sch_control->v_time_run_tick_us = 0;
-}
-//===================================================================
-/*#### Scheduler Cycle time "주기 타임"
+/*### Scheduler Cycle time "주기 타임"
 ---------------------------------------------------------------------
 update save time: now, max "현재,최대 시간 정보 저장"
 Warning: loop_Time MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
@@ -346,13 +279,8 @@ Warning: loop_Time MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 -------------------------------------------------------------------*/
 void f_scheduler_loop_time_update(ts_scheduler_control *ps_sch_control)
 {
-    if(ps_sch_control == d_NULL)
-    { 
-        f_scheduler_error(ps_sch_control, m_SCHEDULER_ERR_JOB_CTRL_NULL); 
-        return; 
-    }
-    tu32 v_time_us = f_base_tick_systick32_finish(&ps_sch_control->v_time_loop_count);
-    f_base_tick_systick32_start(&ps_sch_control->v_time_loop_count);
+    tu32 v_time_us = f_base_tick_time32_check_timer(&ps_sch_control->v_time_loop_count);
+    f_base_tick_time32_start_timer(&ps_sch_control->v_time_loop_count);
 
     if(ps_sch_control->v_time_loop_now_us == 0)
     {  
@@ -386,24 +314,31 @@ void f_scheduler_loop_time_update(ts_scheduler_control *ps_sch_control)
             { ps_sch_control->v_time_loop_tick_us = 0; }
     }
 }
+
 //===================================================================
-/*#### Reset Loop time info "초기화 루프 수행 시간"
+/*### Reset run time info "초기화 함수 수행 시간"
+---------------------------------------------------------------------
++ *ps_sch_control  : variable pointer "제어 포인터"
+-------------------------------------------------------------------*/
+void f_scheduler_run_time_info_reset(ts_scheduler_control *ps_sch_control)
+{
+   ps_sch_control->v_time_run_now_us = 0;
+   ps_sch_control->v_time_run_max_us = 0;
+   ps_sch_control->v_time_run_tick_us = 0;
+}
+//===================================================================
+/*### Reset Loop time info "초기화 루프 수행 시간"
 ---------------------------------------------------------------------
 + *ps_sch_control : variable pointer "제어 포인터"
 -------------------------------------------------------------------*/
 void f_scheduler_loop_time_info_reset(ts_scheduler_control *ps_sch_control)
 {
-    if(ps_sch_control == d_NULL)
-    { 
-        f_scheduler_error(ps_sch_control, m_SCHEDULER_ERR_JOB_CTRL_NULL); 
-        return; 
-    }
    ps_sch_control->v_time_loop_now_us = 0;
    ps_sch_control->v_time_loop_max_us = 0;
    ps_sch_control->v_time_loop_tick_us = 0;
 }
 //===================================================================
-/*#### Wait time Setting " (수행 대기시간 설정)"
+/*### Wait time Setting " (수행 대기시간 설정)"
 + Function to use f_scheduler_wait_check
 ---------------------------------------------------------------------
 + *ps_sch_control : variable pointer "제어 포인터"
@@ -411,34 +346,24 @@ void f_scheduler_loop_time_info_reset(ts_scheduler_control *ps_sch_control)
 -------------------------------------------------------------------*/
 void f_scheduler_wait_set(ts_scheduler_control *ps_sch_control, tu32 v_time_us)
 {
-    if(ps_sch_control == d_NULL)
-    { 
-        f_scheduler_error(ps_sch_control, m_SCHEDULER_ERR_JOB_CTRL_NULL); 
-        return; 
-    }
-    f_base_tick_systick32_start(&ps_sch_control->v_wait_tick_count);
+    f_base_tick_time32_start_timer(&ps_sch_control->v_wait_tick_count);
     ps_sch_control->v_wait_set_us = v_time_us;
 }
 //===================================================================
-/*#### Wait time check "수행 대기시간 확인"
+/*### Wait time check "수행 대기시간 확인"
 ---------------------------------------------------------------------
 + *ps_sch_control : variable pointer "제어 포인터"
 + return : m_SCHEDULER_OK or m_SCHEDULER_WAIT
 -------------------------------------------------------------------*/
 te_schedule_error f_scheduler_wait_check(ts_scheduler_control *ps_sch_control)
 {
-    if(ps_sch_control == d_NULL)
-    { 
-        f_scheduler_error(ps_sch_control, m_SCHEDULER_ERR_JOB_CTRL_NULL); 
-        return m_SCHEDULER_ERR_JOB_CTRL_NULL;
-    }
-    if( f_base_tick_systick32_finish(&ps_sch_control->v_wait_tick_count)
+    if( f_base_tick_time32_check_timer(&ps_sch_control->v_wait_tick_count)
         >=  ps_sch_control->v_wait_set_us)
         { return m_SCHEDULER_OK; }
     return m_SCHEDULER_WAIT;
 }
 //===================================================================
-/*#### Delay Setting "통신용 지연시간 설정"
+/*### Delay Setting "통신용 지연시간 설정"
 + Function to use f_scheduler_delay_check
 ---------------------------------------------------------------------
 + *ps_sch_control : variable pointer "제어 포인터"
@@ -446,34 +371,24 @@ te_schedule_error f_scheduler_wait_check(ts_scheduler_control *ps_sch_control)
 -------------------------------------------------------------------*/
 void f_scheduler_delay_set(ts_scheduler_control *ps_sch_control, tu32 v_time_us)
 {
-    if(ps_sch_control == d_NULL)
-    { 
-        f_scheduler_error(ps_sch_control, m_SCHEDULER_ERR_JOB_CTRL_NULL); 
-        return;
-    }
-    f_base_tick_systick32_start(&ps_sch_control->v_delay_tick_count);
+    f_base_tick_time32_start_timer(&ps_sch_control->v_delay_tick_count);
     ps_sch_control->v_delay_set_us = v_time_us;
 }
 //===================================================================
-/*#### Delay Check "통신용 지연시간 확인"
+/*### Delay Check "통신용 지연시간 확인"
 ---------------------------------------------------------------------
 + *ps_sch_control : variable pointer "제어 포인터"
 + return : m_SCHEDULER_OK or m_SCHEDULER_WAIT
 -------------------------------------------------------------------*/
 te_schedule_error f_scheduler_delay_check(ts_scheduler_control *ps_sch_control)
 {
-    if(ps_sch_control == d_NULL)
-    { 
-        f_scheduler_error(ps_sch_control, m_SCHEDULER_ERR_JOB_CTRL_NULL); 
-        return m_SCHEDULER_ERR_JOB_CTRL_NULL; 
-    }
-    if( f_base_tick_systick32_finish(&ps_sch_control->v_delay_tick_count)
+    if( f_base_tick_time32_check_timer(&ps_sch_control->v_delay_tick_count)
         >=  ps_sch_control->v_delay_set_us)
         { return m_SCHEDULER_OK; }
     return m_SCHEDULER_WAIT;
 }
 //===================================================================
-/*#### print time(NOW,MAX) title name "타임정보 제목 출력"
+/*### print time(NOW,MAX) title name "타임정보 제목 출력"
 ---------------------------------------------------------------------
 + e_level : Debug print level "디버깅 프린터 레벨"
 -------------------------------------------------------------------*/
@@ -485,17 +400,12 @@ void f_scheduler_run_time_title_print(void)
     }
 }
 //===================================================================
-/*#### Scheduler run time print "스케쥴러 동작 시간 표시"
+/*### Scheduler run time print "스케쥴러 동작 시간 표시"
 ---------------------------------------------------------------------
 + *ps_sch_control   : variable pointer "제어 포인터"
 -------------------------------------------------------------------*/
 void f_scheduler_run_time_info_print(ts_scheduler_control *ps_sch_control)
 {
-    if(ps_sch_control == d_NULL)
-    { 
-        f_scheduler_error(ps_sch_control, m_SCHEDULER_ERR_JOB_CTRL_NULL); 
-        return; 
-    }
     if(f_dbg_mode_get(m_DBG_MODE_SCHEDULE) == m_YESNO_YES)
     {
         f_dbg_print_string("\r\nI: ");
@@ -517,20 +427,15 @@ void f_scheduler_run_time_info_print(ts_scheduler_control *ps_sch_control)
 }
 
 //===================================================================
-/*#### Error Print Table Infomation "스케쥴러 에러 정보 위치 표시"
+/*### Error Print Table Infomation "스케쥴러 에러 정보 위치 표시"
 ---------------------------------------------------------------------
 + *ps_sch_control   : variable pointer "제어 포인터"
 -------------------------------------------------------------------*/
 void f_scheduler_error_table_print(ts_scheduler_control *ps_sch_control)
 {
-    if(ps_sch_control == d_NULL)
-    { 
-        f_scheduler_error(ps_sch_control, m_SCHEDULER_ERR_JOB_CTRL_NULL); 
-        return; 
-    }
     if(f_dbg_mode_get(m_DBG_MODE_SCHEDULE) == m_YESNO_YES)
     {
-    	f_base_tick_systick_run_time_print();
+    	f_base_tick_time64_run_time_print();
         f_dbg_print_string("\r\nE: ");
         f_dbg_print_string(ps_sch_control->p_table_name);
         f_dbg_print_string(" (Table:");

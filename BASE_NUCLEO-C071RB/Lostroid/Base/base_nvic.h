@@ -10,10 +10,10 @@
 #include "base_nvic_type.h"
 
 void f_base_nvic_init(void);
-void f_base_nvic_set_flag(te_nvic e_nvic);
-void f_base_nvic_set_clear(te_nvic e_nvic);
+void f_base_nvic_flag_set(te_nvic e_nvic);
+void f_base_nvic_clear_set(te_nvic e_nvic);
 void f_base_nvic_pending_clear(te_nvic e_nvic);
-void f_base_nvic_set_priority(te_irq e_irq, tu32 v_priority);
+void f_base_nvic_priority_set(te_irq e_irq, tu32 v_priority);
 
 void NMI_Handler(void);
 void HardFault_Handler(void);

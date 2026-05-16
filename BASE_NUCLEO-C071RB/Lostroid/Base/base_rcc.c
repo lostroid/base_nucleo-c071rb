@@ -74,11 +74,11 @@ void f_base_rcc_hse_switch_select(void)
 tu32 f_base_rcc_hse_ready(void)
 {
     tu32 v_time;
-    f_base_tick_systick32_start(&v_time);
+    f_base_tick_time32_start_timer(&v_time);
     while((RCC->CR & RCC_CR_HSERDY) == 0)           //+ HSE Ready
     {
         //+ Time Out 1ms */
-        if(f_base_tick_systick32_finish(&v_time) > 1000)
+        if(f_base_tick_time32_check_timer(&v_time) > 1000)
             { return 1; }   //+ Failed
     }
     return 0;               //+ OK
