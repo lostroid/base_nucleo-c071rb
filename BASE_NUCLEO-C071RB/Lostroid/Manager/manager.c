@@ -8,12 +8,12 @@
 #include "nucleo_c071.h"
 
 
-void f_Manager_Init(void)
+void f_manager_init(void)
 {
-    f_Nucleo_C071_Init();
+    f_nucleo_c071_init();
 }
 
-void f_Manager_Module(void)
+void f_manager_module(void)
 {
-    f_Nucleo_C071_Module();
+    f_nucleo_c071_module();
 }

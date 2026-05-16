@@ -13,12 +13,12 @@
 #include "base_adc.h"
 
 
-static ts_Scheduler_Control gs_base_adc_Job_ctrl;
+static ts_scheduler_control gs_base_adc_Job_ctrl;
 enum { m_BASE_ADC_JOB_TABLE_SIZE = 3, };
-static void (*paf_base_adc_job_table[m_BASE_ADC_JOB_TABLE_SIZE])(ts_Scheduler_Control *ps_adc_job_ctrl) = {
-    f_Base_ADC_Job_Start,       //+ 00
-    f_Base_ADC_Job_Complete,    //+ 01
-    f_Base_ADC_Job_Check        //+ 02
+static void (*paf_base_adc_job_table[m_BASE_ADC_JOB_TABLE_SIZE])(ts_scheduler_control *ps_adc_job_ctrl) = {
+    f_base_adc_job_start,       //+ 00
+    f_base_adc_job_complete,    //+ 01
+    f_base_adc_job_check        //+ 02
 };
 
 
@@ -27,20 +27,20 @@ static tu16 gpa_adc_buff[m_BASE_ADC_BUFF_SIZE] = {0};
 static ts_adc_info gs_adc_info = {0};
 
 enum { m_BASE_ADC_TIME_10MS = 10000u };                     //+ 10ms = 10000us
-static ts_Base_Tick_Context gs_base_adc_tick_context_10ms;  //+ time control
+static ts_base_tick_context gs_base_adc_tick_context_10ms;  //+ time control
 //===================================================================
 /* Base Base ADC initialize
 -------------------------------------------------------------------*/
-void f_Base_ADC_Init(void)
+void f_base_adc_init(void)
 {
-    f_Base_ADC_Regulator();
-    f_Scheduler_Init( 
+    f_base_adc_regulator();
+    f_scheduler_init( 
         &gs_base_adc_Job_ctrl
         , paf_base_adc_job_table
         , "adc_Job_table"
         , m_BASE_ADC_JOB_TABLE_SIZE);
     
-    f_Scheduler_Config(
+    f_scheduler_config(
         &gs_base_adc_Job_ctrl
         , 0
         , 3
@@ -48,36 +48,36 @@ void f_Base_ADC_Init(void)
         , 0
         , d_NULL);
         
-    f_Base_Tick_Systick32_Stopwatch_Start(&gs_base_adc_tick_context_10ms, m_BASE_ADC_TIME_10MS);
+    f_base_tick_systick32_stopwatch_start(&gs_base_adc_tick_context_10ms, m_BASE_ADC_TIME_10MS);
 }
 //===================================================================
 /* Base Base ADC Module
 -------------------------------------------------------------------*/
-void f_Base_ADC_Module(void)
+void f_base_adc_module(void)
 {
-    f_Scheduler_Run(&gs_base_adc_Job_ctrl);
+    f_scheduler_run(&gs_base_adc_Job_ctrl);
 }
 //===================================================================
 /*#### ADC Ragulator
 -------------------------------------------------------------------*/
-void f_Base_ADC_Regulator(void)
+void f_base_adc_regulator(void)
 {
     tu32 v_timeout;
     tu32 v_avg = 0;
     ADC1->CR = ADC_CR_ADVREGEN;
-    f_Base_Tick_Systick32_Blocking_Delay(10);   //+ Blocking delay 10us
-    f_Base_Tick_Systick32_Start(&v_timeout);
+    f_base_tick_systick32_blocking_delay(10);   //+ Blocking delay 10us
+    f_base_tick_systick32_start(&v_timeout);
     ADC1->CFGR1 = 0;
     for(tu32 v_for = 0; v_for < 8; v_for++)
     {
     	ADC1->CR = ADC_CR_ADCAL;
         while((ADC1->CR & ADC_CR_ADCAL) != 0)
         {
-            if(f_Base_Tick_Systick32_Finish(&v_timeout) > 10000000)
+            if(f_base_tick_systick32_finish(&v_timeout) > 10000000)
             {
-                f_DBG_Print_String("\r\n");
-                f_Base_Tick_Systick_Run_Time_Print();
-                f_DBG_Print_String("\r\nE: ADC FAIL");
+                f_dbg_print_string("\r\n");
+                f_base_tick_systick_run_time_print();
+                f_dbg_print_string("\r\nE: ADC FAIL");
                 return;
             }
         }
@@ -96,7 +96,7 @@ void f_Base_ADC_Regulator(void)
 //===================================================================
 /*#### ADC ADCART Start
 -------------------------------------------------------------------*/
-void f_Base_ADC_ADSTART(void)
+void f_base_adc_adstart(void)
 {
     ADC1->CR |= ADC_CR_ADSTART;
 }
@@ -106,27 +106,27 @@ void f_Base_ADC_ADSTART(void)
 + ADC_IN0
 + ADC_IN1
 -------------------------------------------------------------------*/
-void f_Base_ADC_Info_Print(void)
+void f_base_adc_info_print(void)
 {
     tu32 v_voltage;
-    f_DBG_Print_String("\r\nI: ADC_IN0: ");
+    f_dbg_print_string("\r\nI: ADC_IN0: ");
     v_voltage = d_BASE_ADC_TO_VOLTAGE(gs_adc_info.v_adc_ch0);
-    f_DBG_Print_Dec32(v_voltage / 1000);
-    f_DBG_Print_String(".");
-    f_DBG_Print_Dec32_Digit(3, v_voltage % 1000);
-    f_DBG_Print_String(" V\r\nI: ADC_IN1: ");
+    f_dbg_print_dec32(v_voltage / 1000);
+    f_dbg_print_string(".");
+    f_dbg_print_dec32_digit(3, v_voltage % 1000);
+    f_dbg_print_string(" V\r\nI: ADC_IN1: ");
     v_voltage = d_BASE_ADC_TO_VOLTAGE(gs_adc_info.v_adc_ch1);
-    f_DBG_Print_Dec32(v_voltage / 1000);
-    f_DBG_Print_String(".");
-    f_DBG_Print_Dec32_Digit(3, v_voltage % 1000);
-    f_DBG_Print_String(" V");
+    f_dbg_print_dec32(v_voltage / 1000);
+    f_dbg_print_string(".");
+    f_dbg_print_dec32_digit(3, v_voltage % 1000);
+    f_dbg_print_string(" V");
 }
 //===================================================================
 /*#### ADC CH0 Get
 ---------------------------------------------------------------------
 + Return uV
 -------------------------------------------------------------------*/
-tu32 f_Base_ADC_Get_ADC_CH0(void)
+tu32 f_base_adc_ch0_get(void)
 {
     return d_BASE_ADC_TO_VOLTAGE(gs_adc_info.v_adc_ch0);
 }
@@ -135,51 +135,51 @@ tu32 f_Base_ADC_Get_ADC_CH0(void)
 ---------------------------------------------------------------------
 + Return uV
 -------------------------------------------------------------------*/
-tu32 f_Base_ADC_Get_ADC_CH1(void)
+tu32 f_base_adc_ch1_get(void)
 {
     return d_BASE_ADC_TO_VOLTAGE(gs_adc_info.v_adc_ch1);
 }
 //===================================================================
 /*#### ADC Job Start
 -------------------------------------------------------------------*/
-void f_Base_ADC_Job_Start(ts_Scheduler_Control *ps_adc_job_ctrl)
+void f_base_adc_job_start(ts_scheduler_control *ps_adc_job_ctrl)
 {
-     f_Scheduler_LoopTime_Update(ps_adc_job_ctrl);
-    if(f_Base_Tick_Systick32_Stopwatch_Check(&gs_base_adc_tick_context_10ms) 
+     f_scheduler_loop_time_update(ps_adc_job_ctrl);
+    if(f_base_tick_systick32_stopwatch_check(&gs_base_adc_tick_context_10ms) 
     == m_RETURN_OK)
     {
-    	f_Base_DMA_Memory_Setting(d_BASE_DMA1_CH5_ADC1, (tu8 *)gpa_adc_buff, m_BASE_ADC_BUFF_SIZE);
-        f_Base_DMA_Start(d_BASE_DMA1_CH5_ADC1);
-        f_Base_ADC_ADSTART();
-        f_Scheduler_Next(ps_adc_job_ctrl);
+    	f_base_dma_memory_setting(d_BASE_DMA1_CH5_ADC1, (tu8 *)gpa_adc_buff, m_BASE_ADC_BUFF_SIZE);
+        f_base_dma_start(d_BASE_DMA1_CH5_ADC1);
+        f_base_adc_adstart();
+        f_scheduler_next(ps_adc_job_ctrl);
     }
 }
 //===================================================================
 /*#### ADC Job DMA  Transfer Complete flag
 -------------------------------------------------------------------*/
-void f_Base_ADC_Job_Complete(ts_Scheduler_Control *ps_adc_job_ctrl)
+void f_base_adc_job_complete(ts_scheduler_control *ps_adc_job_ctrl)
 {
     if(d_BASE_DMA1_CH5_ADC1_TC() != 0)
     {
-        d_Base_DMA1_CH5_ADC_CTC();
+        d_Base_dma1_ch5_adc_ctc();
         gs_adc_info.v_adc_ch0 = gpa_adc_buff[0];
         gs_adc_info.v_adc_ch1 = gpa_adc_buff[1];
-        f_Scheduler_Next(ps_adc_job_ctrl);
+        f_scheduler_next(ps_adc_job_ctrl);
     }
 }
 //===================================================================
 /*#### ADC Job Wait
 -------------------------------------------------------------------*/
-void f_Base_ADC_Job_Check(ts_Scheduler_Control *ps_adc_job_ctrl)
+void f_base_adc_job_check(ts_scheduler_control *ps_adc_job_ctrl)
 {
-    f_Scheduler_Next(ps_adc_job_ctrl);
+    f_scheduler_next(ps_adc_job_ctrl);
 }
 
 //===================================================================
 /*#### ADC module load print : ADC 모듈 사용률 보기
 -------------------------------------------------------------------*/
-void f_Base_ADC_Load_Print(void)
+void f_base_adc_load_print(void)
 {
-    f_Scheduler_RunTime_Info_print(&gs_base_adc_Job_ctrl);
+    f_scheduler_run_time_info_print(&gs_base_adc_Job_ctrl);
 }
 

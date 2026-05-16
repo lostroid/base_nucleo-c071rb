@@ -64,12 +64,12 @@ typedef enum
 {
     m_DBG_COLOR_MODE_DISABLE,
     m_DBG_COLOR_MODE_ENABLE
-}te_DBG_Color_Mode;
+}te_dbg_color_mode;
 
 typedef enum
 {
     m_DBG_MODE_SYSTEM   = d_DBG_ZONE_01,
-    m_DBG_MODE_SCHEDLUE = d_DBG_ZONE_02,
+    m_DBG_MODE_SCHEDULE = d_DBG_ZONE_02,
     m_DBG_MODE_UART     = d_DBG_ZONE_03,
     m_DBG_MODE_SPI      = d_DBG_ZONE_04,
     m_DBG_MODE_SAI      = d_DBG_ZONE_05,
@@ -87,6 +87,6 @@ typedef enum
     m_DBG_MODE_SDIO     = d_DBG_ZONE_17,
     m_DBG_MODE_DCMI     = d_DBG_ZONE_18,
     m_DBG_MODE_GUI      = d_DBG_ZONE_19
-}te_DBG_Mode;
+}te_dbg_mode;
 
 #endif

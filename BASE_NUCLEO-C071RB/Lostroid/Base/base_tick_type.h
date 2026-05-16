@@ -48,6 +48,6 @@ typedef struct
     tu32 v_ct;    //+ Current tick  "현재 틱 값"
     tu32 v_st;    //+ Setting tick  "설정 틱 값"
     tu32 v_tt;    //+ Total tick    "총 틱 값"
-}ts_Base_Tick_Context;
+}ts_base_tick_context;
 
 #endif

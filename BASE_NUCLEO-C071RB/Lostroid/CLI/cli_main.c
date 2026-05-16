@@ -16,34 +16,34 @@
 #include "cli_05_uz.h"
 #include "cli_main.h"
 
-#define d_CLI_SEND_TARGET(DATA,LEN)   f_Base_UART2_TX_Buff_Write(DATA,LEN)
+#define d_CLI_SEND_TARGET(DATA,LEN)   f_base_uart2_tx_buff_write(DATA,LEN)
 static tu32 (*gfpa_base_cli_func[d_CLI_MAIN_FUNC_SIZE])(tu8** pa_Data) = {
-    f_Cli_Check_a,   // 00
-    f_Cli_Check_b,   // 01
-    f_Cli_Check_c,   // 02
-    f_Cli_Check_d,   // 03
-    f_Cli_Check_e,   // 04
-    f_Cli_Check_f,   // 05
-    f_Cli_Check_g,   // 06
-    f_Cli_Check_h,   // 07
-    f_Cli_Check_i,   // 08
-    f_Cli_Check_j,   // 09
-    f_Cli_Check_k,   // 10
-    f_Cli_Check_l,   // 11
-    f_Cli_Check_m,   // 12
-    f_Cli_Check_n,   // 13
-    f_Cli_Check_o,   // 14
-    f_Cli_Check_p,   // 15
-    f_Cli_Check_q,   // 16
-    f_Cli_Check_r,   // 17
-    f_Cli_Check_s,   // 18
-    f_Cli_Check_t,   // 19
-    f_Cli_Check_u,   // 20
-    f_Cli_Check_v,   // 21
-    f_Cli_Check_w,   // 22
-    f_Cli_Check_x,   // 23
-    f_Cli_Check_y,   // 24
-    f_Cli_Check_z    // 25
+    f_cli_check_a,   // 00
+    f_cli_check_b,   // 01
+    f_cli_check_c,   // 02
+    f_cli_check_d,   // 03
+    f_cli_check_e,   // 04
+    f_cli_check_f,   // 05
+    f_cli_check_g,   // 06
+    f_cli_check_h,   // 07
+    f_cli_check_i,   // 08
+    f_cli_check_j,   // 09
+    f_cli_check_k,   // 10
+    f_cli_check_l,   // 11
+    f_cli_check_m,   // 12
+    f_cli_check_n,   // 13
+    f_cli_check_o,   // 14
+    f_cli_check_p,   // 15
+    f_cli_check_q,   // 16
+    f_cli_check_r,   // 17
+    f_cli_check_s,   // 18
+    f_cli_check_t,   // 19
+    f_cli_check_u,   // 20
+    f_cli_check_v,   // 21
+    f_cli_check_w,   // 22
+    f_cli_check_x,   // 23
+    f_cli_check_y,   // 24
+    f_cli_check_z    // 25
 };
 
 static tu8 gv_base_cli_cmd_historyBuff[d_CLI_MAIN_CMD_HISTORY_SIZE][d_CLI_MAIN_CMD_BUFF_SIZE] = {{0},};
@@ -55,7 +55,7 @@ static tu32 gv_Base_Cli_CMD_DataPos;            /// 현재까지 저장된 문�
 //----------------------------------------------------------------------------
 // Command line interface Initialize
 //----------------------------------------------------------------------------
-void f_Cli_Init(void)
+void f_cli_init(void)
 {
     gv_base_cli_cmd_history_SetFlag = 0;
     gv_base_cli_cmd_history_RunPos = 0;
@@ -73,54 +73,54 @@ void f_base_cil_module(void)
 //----------------------------------------------------------------------------
 // Command name
 //----------------------------------------------------------------------------
-void f_Base_CLI_Name(void)
+void f_cli_base_name(void)
 {
-    f_DBG_Print_String(d_CLI_MAIN_CMD_NAME);
+    f_dbg_print_string(d_CLI_MAIN_CMD_NAME);
 }
 //----------------------------------------------------------------------------
 // Message Error
 //----------------------------------------------------------------------------
-void f_Cli_MsgError(te_CLI_MAIN_MSG e_Massage)
+void f_cli_msg_error(te_CLI_MAIN_MSG e_Massage)
 {
     switch(e_Massage)
     {
         case m_CLI_MAIN_MSG_NO_CMD :
         {
-            f_DBG_Print_String("\r\n No Command.");
+            f_dbg_print_string("\r\n No Command.");
             break;
         }
         case m_CLI_MAIN_MSG_BUSY :
         {
-            f_DBG_Print_String("\r\n Wait Busy.");
+            f_dbg_print_string("\r\n Wait Busy.");
             break;
         }
         case m_CLI_MAIN_MSG_ERR :
         {
-            f_DBG_Print_String("\r\n Error Command.");
+            f_dbg_print_string("\r\n Error Command.");
             break;
         }
         case m_CLI_MAIN_MSG_LEN :
         {
-            f_DBG_Print_String("\r\n Error Len.");
+            f_dbg_print_string("\r\n Error Len.");
             break;
         }
         case m_CLI_MAIN_MSG_ADDR :
         {
-            f_DBG_Print_String("\r\n Error Addr.");
+            f_dbg_print_string("\r\n Error Addr.");
             break;
         }
         default :
         {
-            f_DBG_Print_String("\r\n Error MSG Code.");
+            f_dbg_print_string("\r\n Error MSG Code.");
             break;
         }
     }
-    f_Base_CLI_Name();
+    f_cli_base_name();
 }
 //----------------------------------------------------------------------------
 // Command line interface Module
 //----------------------------------------------------------------------------
-void f_Cli_BuffCheck(tu8* pa_Data, ts_Base_Uart_Buff_Ctrol* s_Postion)
+void f_cli_Buff_check(tu8* pa_Data, ts_base_uart_buff_ctrol* s_Postion)
 {
     /// 순환 버퍼에 command 를 수집 하여 정상적이면 다음 순환 위치로 가는 방식 입니다.
     /// command 가 잘못되면 현재 순환 버퍼를 다시 덥어쓰기 하여 사용 합니다.
@@ -140,7 +140,7 @@ void f_Cli_BuffCheck(tu8* pa_Data, ts_Base_Uart_Buff_Ctrol* s_Postion)
                     if(gv_Base_Cli_CMD_DataPos < d_CLI_MAIN_CMD_BUFF_SIZE)
                     {
                         gv_base_cli_cmd_historyBuff[gv_base_cli_cmd_history_NewPos][gv_Base_Cli_CMD_DataPos] = 0;          /// NULL 삽입
-                        if(f_Cli_Command_Check(&gv_base_cli_cmd_historyBuff[gv_base_cli_cmd_history_NewPos][1]) == 0)    /// 수신된 문자열 전송
+                        if(f_cli_command_check(&gv_base_cli_cmd_historyBuff[gv_base_cli_cmd_history_NewPos][1]) == 0)    /// 수신된 문자열 전송
                         {
                             gv_base_cli_cmd_history_NewPos++;                                                            /// 다음 순환버퍼 내역 이동동
                             if(gv_base_cli_cmd_history_NewPos >= d_CLI_MAIN_CMD_HISTORY_SIZE)                            /// 순환 버퍼 끝 확인.
@@ -153,7 +153,7 @@ void f_Cli_BuffCheck(tu8* pa_Data, ts_Base_Uart_Buff_Ctrol* s_Postion)
                             /// Command Fail.
                             gv_Base_Cli_CMD_DataPos = 1;
                             gv_base_cli_cmd_history_SetFlag = 0;
-                            f_Cli_MsgError(m_CLI_MAIN_MSG_NO_CMD);
+                            f_cli_msg_error(m_CLI_MAIN_MSG_NO_CMD);
                         }
                     }
                     else
@@ -161,14 +161,14 @@ void f_Cli_BuffCheck(tu8* pa_Data, ts_Base_Uart_Buff_Ctrol* s_Postion)
                         /// MAX Over
                         gv_Base_Cli_CMD_DataPos = 1;
                         gv_base_cli_cmd_history_SetFlag = 0;
-                        f_Cli_MsgError(m_CLI_MAIN_MSG_NO_CMD);
+                        f_cli_msg_error(m_CLI_MAIN_MSG_NO_CMD);
                     }
                 }
                 else
                 {
                     gv_Base_Cli_CMD_DataPos = 1;
                     gv_base_cli_cmd_history_SetFlag = 0;
-                    f_Base_CLI_Name();
+                    f_cli_base_name();
                 }
                 break;
             }	
@@ -254,7 +254,7 @@ void f_Cli_BuffCheck(tu8* pa_Data, ts_Base_Uart_Buff_Ctrol* s_Postion)
                 if(gv_Base_Cli_CMD_DataPos >= d_CLI_MAIN_CMD_BUFF_SIZE)
                 {
                     gv_Base_Cli_CMD_DataPos--;
-                    f_DBG_Print_String("W: Buff Over.");
+                    f_dbg_print_string("W: Buff Over.");
                     /// MAX OVER
                 }
                 break;
@@ -270,7 +270,7 @@ void f_Cli_BuffCheck(tu8* pa_Data, ts_Base_Uart_Buff_Ctrol* s_Postion)
 //----------------------------------------------------------------------------
 // Command line interface Module
 //----------------------------------------------------------------------------
-tu32 f_Cli_Command_Check(tu8* pa_Data)
+tu32 f_cli_command_check(tu8* pa_Data)
 {
     tu32 v_error = 1;
     tu8 *p_Token[d_CLI_MAIN_CMD_BUFF_SIZE] = {0};
@@ -311,14 +311,14 @@ tu32 f_Cli_Command_Check(tu8* pa_Data)
             { v_error++; }
     }
     else
-        { f_Base_CLI_Name(); }
+        { f_cli_base_name(); }
     
     return v_error;
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Compare String
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tu32 f_Cli_CompareString(tu8 *p_Data1, const tu8 *p_Data2)
+tu32 f_cli_compare_string(tu8 *p_Data1, const tu8 *p_Data2)
 {
     tu32 v_Err = 0;
     tu8 v_Loop;
@@ -339,7 +339,7 @@ tu32 f_Cli_CompareString(tu8 *p_Data1, const tu8 *p_Data2)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  String Dec -> Dec ("999999" -> 999999)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tu32 f_Cli_StringToDec(tu8 *p_Data)
+tu32 f_cli_string_to_dec(tu8 *p_Data)
 {
     tu32 v_Data = 0xFFFFFFFFu;	//- Set Err Velue.
     tu8 v_Pos = 0;
@@ -367,7 +367,7 @@ tu32 f_Cli_StringToDec(tu8 *p_Data)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //  String Hex -> Dec ("FF" -> 255)
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tu32 f_Cli_StringToHex(tu8 *p_Data)
+tu32 f_cli_string_to_hex(tu8 *p_Data)
 {
     tu32 v_Data = 0xFFFFFFFFu;     //- Set Err Velue.
     tu8 v_Pos = 0;

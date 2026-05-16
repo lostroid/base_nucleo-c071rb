@@ -15,22 +15,22 @@
 //===================================================================
 /* Base RCC initialize
 -------------------------------------------------------------------*/
-void f_Base_RCC_Init(void)
+void f_base_rcc_init(void)
 {
-    f_Base_Flash_Set_Latency01();                 //+ Modify flash latency
-    f_Base_RCC_APB_Enable();                      //+ Enable APB
-    f_Base_RCC_HSE_Enable();                      //+ Enable HSE
-    if(f_Base_RCC_HSE_Ready() == 0)               //+ Check HSE RUN
-        { f_Base_RCC_HSE_Switch_Select(); }
+    f_base_flash_latency01_set();                 //+ Modify flash latency
+    f_base_rcc_apb_enable();                      //+ Enable APB
+    f_base_rcc_hse_enable();                      //+ Enable HSE
+    if(f_base_rcc_hse_ready() == 0)               //+ Check HSE RUN
+        { f_base_rcc_hse_switch_select(); }
     else
-        { f_Base_RCC_HSE_Disable(); }             //+ Fail
-    f_Base_RCC_Clock_Selection();
-    f_Base_RCC_Clock_Enable();                    //+ Periphearl clock enable
+        { f_base_rcc_hse_disable(); }             //+ Fail
+    f_base_rcc_clock_selection();
+    f_base_rcc_clock_enable();                    //+ Periphearl clock enable
 }
 //===================================================================
 /* Base RCC Module
 -------------------------------------------------------------------*/
-void f_Base_RCC_Module(void)
+void f_base_rcc_module(void)
 {
 
 }
@@ -38,7 +38,7 @@ void f_Base_RCC_Module(void)
 //===================================================================
 /* Base RCC Power and Clock Enable
 -------------------------------------------------------------------*/
-void f_Base_RCC_APB_Enable(void)
+void f_base_rcc_apb_enable(void)
 {
     RCC->APBENR2 |= RCC_APBENR2_SYSCFGEN;           //+ APB Clock enable
     while( (RCC->APBENR2 & RCC_APBENR2_SYSCFGEN) != RCC_APBENR2_SYSCFGEN);
@@ -49,21 +49,21 @@ void f_Base_RCC_APB_Enable(void)
 //===================================================================
 /* Base RCC HSE Enable
 -------------------------------------------------------------------*/
-void f_Base_RCC_HSE_Enable(void)
+void f_base_rcc_hse_enable(void)
 {
     RCC->CR |= RCC_CR_HSEON;                        //+ HSE Enable
 }
 //===================================================================
 /* Base RCC HSE Disable
 -------------------------------------------------------------------*/
-void f_Base_RCC_HSE_Disable(void)
+void f_base_rcc_hse_disable(void)
 {
     RCC->CR &= (~RCC_CR_HSEON);                     //+ HSE Disable
 }
 //===================================================================
 /* Base RCC HSE Sysclk Set
 -------------------------------------------------------------------*/
-void f_Base_RCC_HSE_Switch_Select(void)
+void f_base_rcc_hse_switch_select(void)
 {
     RCC->CFGR |= RCC_CFGR_SW_0;                     //+ Select HSE Switch
     while( (RCC->CFGR & RCC_CFGR_SWS) != RCC_CFGR_SWS_0);
@@ -71,14 +71,14 @@ void f_Base_RCC_HSE_Switch_Select(void)
 //===================================================================
 /* Base RCC HSE Ready
 -------------------------------------------------------------------*/
-tu32 f_Base_RCC_HSE_Ready(void)
+tu32 f_base_rcc_hse_ready(void)
 {
     tu32 v_time;
-    f_Base_Tick_Systick32_Start(&v_time);
+    f_base_tick_systick32_start(&v_time);
     while((RCC->CR & RCC_CR_HSERDY) == 0)           //+ HSE Ready
     {
         //+ Time Out 1ms */
-        if(f_Base_Tick_Systick32_Finish(&v_time) > 1000)
+        if(f_base_tick_systick32_finish(&v_time) > 1000)
             { return 1; }   //+ Failed
     }
     return 0;               //+ OK
@@ -86,7 +86,7 @@ tu32 f_Base_RCC_HSE_Ready(void)
 //===================================================================
 /* Base RCC Clock Enable
 -------------------------------------------------------------------*/
-void f_Base_RCC_Clock_Enable(void)
+void f_base_rcc_clock_enable(void)
 {
     //+ GPIOF:5|-|GPIOD:3|GPIOC:2|GPIOB:1|GPIOA:0
     RCC->IOPENR = ( RCC_IOPENR_GPIOAEN 
@@ -117,7 +117,7 @@ void f_Base_RCC_Clock_Enable(void)
 //===================================================================
 /* Base RCC Clock Selection
 -------------------------------------------------------------------*/
-void f_Base_RCC_Clock_Selection(void)
+void f_base_rcc_clock_selection(void)
 {
     RCC->CCIPR = 0;
     RCC->CCIPR2 = 0;
@@ -125,7 +125,7 @@ void f_Base_RCC_Clock_Selection(void)
 //===================================================================
 /* Base RCC Sleep/Stop Clock Disable
 -------------------------------------------------------------------*/
-void f_Base_RCC_Sleep_Stip_Clock_Disable(void)
+void f_base_rcc_sleep_stip_clock_disable(void)
 {
 
 }

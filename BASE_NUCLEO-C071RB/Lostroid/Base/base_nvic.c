@@ -15,39 +15,39 @@
 //===================================================================
 /* Base NVIC initialize
 -------------------------------------------------------------------*/
-void f_Base_NVIC_Init(void)
+void f_base_nvic_init(void)
 {
-    f_Base_NVIC_Set_Flag(m_NVIC_DMA1_Channel1);
-    f_Base_NVIC_Set_Flag(m_NVIC_DMA1_Channel2_3);
-    f_Base_NVIC_Set_Flag(m_NVIC_DMAMUX1_DMA1_CH4_5);
-    f_Base_NVIC_Set_Flag(m_NVIC_TIM1_CC);
-    f_Base_NVIC_Set_Flag(m_NVIC_TIM3);
+    f_base_nvic_set_flag(m_NVIC_DMA1_Channel1);
+    f_base_nvic_set_flag(m_NVIC_DMA1_Channel2_3);
+    f_base_nvic_set_flag(m_NVIC_DMAMUX1_DMA1_CH4_5);
+    f_base_nvic_set_flag(m_NVIC_TIM1_CC);
+    f_base_nvic_set_flag(m_NVIC_TIM3);
 }
 //===================================================================
 /*#### Interrupt Setting
 -------------------------------------------------------------------*/
-void f_Base_NVIC_Set_Flag(te_NVIC e_nvic)
+void f_base_nvic_set_flag(te_nvic e_nvic)
 {
     NVIC->ISER[0] = (0x01 << e_nvic);
 }
 //===================================================================
 /*#### Interrupt setting clear
 -------------------------------------------------------------------*/
-void f_Base_NVIC_Set_Clear(te_NVIC e_nvic)
+void f_base_nvic_set_clear(te_nvic e_nvic)
 {
     NVIC->ICER[0] = (0x01 << e_nvic);
 }
 //===================================================================
 /*#### Interrupt Call reset
 -------------------------------------------------------------------*/
-void f_Base_NVIC_Pending_Clear(te_NVIC e_nvic)
+void f_base_nvic_pending_clear(te_nvic e_nvic)
 {
     NVIC->ICPR[0] = (0x01 << e_nvic);
 }
 //===================================================================
 /*#### Priority Set
 -------------------------------------------------------------------*/
-void f_Base_NVIC_Set_Priority(te_IRQ e_irq, tu32 v_priority)
+void f_base_nvic_set_priority(te_irq e_irq, tu32 v_priority)
 {
     tu32 v_ip_num = (tu32)(0x04 & (e_irq >> 16));
     tu32 v_shift = (tu32)(0x04 & e_irq);
@@ -158,8 +158,8 @@ void DMA1_Channel1_IRQHandler(void)
 {
     if (d_BASE_DMA1_CH1_SPI1_TX_TC())               //+ Channel 1 Transfer Complete flag
     {
-        f_Base_DMA1_CH1_SPI1_TX_CTC();              //+ Channel 1 Transfer Complete clear
-        // f_Base_DMA_Stop(d_BASE_DMA1_CH1_SPI1_TX);   //+ Option Circular
+        f_base_dma1_ch1_spi1_tx_ctc();              //+ Channel 1 Transfer Complete clear
+        // f_base_dma_stop(d_BASE_DMA1_CH1_SPI1_TX);   //+ Option Circular
     }
 }
 //===================================================================
@@ -169,15 +169,15 @@ void DMA1_Channel2_3_IRQHandler(void)
 {
     if (d_BASE_DMA1_CH2_SPI1_RX_TC())           //+ Channel 2 Transfer Complete flag
     {
-        f_Base_DMA1_CH2_SPI1_RX_CTC();              //+ Channel 2 Transfer Complete clear
-        f_Base_SPI1_DMA_Count_UP();
-        // f_Base_DMA_Stop(d_BASE_DMA1_CH2_SPI1_RX);   //+ Option Circular
+        f_base_dma1_ch2_spi1_rx_ctc();              //+ Channel 2 Transfer Complete clear
+        f_base_spi1_dma_count_up();
+        // f_base_dma_stop(d_BASE_DMA1_CH2_SPI1_RX);   //+ Option Circular
     }
     else if (d_BASE_DMA1_CH3_UART2_TX_TC())      //+ Channel3 Transfer Complete flag
     {
-        f_Base_UART2_TX_Done_Count_UP();
-        f_Base_DMA1_CH3_UART2_TX_CTC();          //+ Channel3 Transfer Complete clear
-        //f_Base_DMA_Stop(d_BASE_DMA1_CH3_UART2_TX);   //+ Option Circular
+        f_base_uart2_tx_done_count_up();
+        f_base_dma1_ch3_uart2_tx_ctc();          //+ Channel3 Transfer Complete clear
+        //f_base_dma_stop(d_BASE_DMA1_CH3_UART2_TX);   //+ Option Circular
     }
 }
 //===================================================================
@@ -187,7 +187,7 @@ void DMAMUX1_DMA1_CH4_5_IRQHandler(void)
 {
     if (d_BASE_DMA1_CH4_UART2_RX_TC())           //+ Channel 4 Transfer Complete flag
     {
-        d_Base_DMA1_CH4_UART2_RX_CTC();          //+  Channel 3 Transfer Complete clear
+        d_base_dma1_ch4_uart2_rx_ctc();          //+  Channel 3 Transfer Complete clear
     }
 }
 //===================================================================
@@ -211,12 +211,12 @@ void TIM1_CC_IRQHandler(void)
 {
     if((TIM1->SR & TIM_SR_CC2IF) != 0u)
     {
-        f_Base_TIM1_CH2_SW_A_Count_Up();
+        f_base_tim1_ch2_sw_a_count_up();
         TIM1->SR &= (~TIM_SR_CC2IF);
     }
     else if((TIM1->SR & TIM_SR_CC3IF) != 0u)
     {
-        f_Base_TIM1_CH3_SW_B_Count_Up();
+        f_base_tim1_ch3_sw_b_count_up();
         TIM1->SR &= (~TIM_SR_CC3IF);
     }
 }
@@ -234,7 +234,7 @@ void TIM3_IRQHandler(void)
 {
     if((TIM3->SR & TIM_SR_CC1IF) != 0u)
     {
-        f_Base_TIM3_CH1_SW_OK_Count_Up();
+        f_base_tim3_ch1_sw_ok_count_up();
         TIM3->SR &= (~TIM_SR_CC1IF);
     }
 }

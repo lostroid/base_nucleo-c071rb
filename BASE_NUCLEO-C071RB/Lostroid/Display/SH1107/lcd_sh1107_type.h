@@ -1,7 +1,7 @@
 /********************************************************************
-* File:    base_spi_type.h
+* File:    lcd_sh1107_type.h
 * Author:  Lostroid
-* Created: 2026-05-01
+* Created: 2026-05-11
 * Encoding: UTF-8
 ---------------------------------------------------------------------
 01. a_ = array                         e.g. a_data[]
@@ -20,16 +20,38 @@
 14. u_ = union                         e.g. u_Data 
 15. v_ = variable                      e.g. v_Data
 16. x_ = extern variable               e.g. xv_data
+*********************************************************************
++ Support maximum 128 X 128 dot matrix panel
++ Embedded 128 X 128 bits SRAM
++ Operating voltage:
+    - Logic voltage supply: VDD = 1.65V - 3.5V
+    - DC-DC voltage supply: AVDD = 2.4V -3.5V
+    - OLED Operating voltage supply: Vpp=7.0V - 16.5V
++ Maximum segment output current: 500mA
++ Maximum common sink current: 64mA
++ 8-bit 6800-series parallel interface, 8-bit 8080-series
+    parallel interface, and 3-wire & 4-wire serial peripheral
+
+interface.
++ 400KHz fast I2C bus interface
++ Programmable frame frequency and multiplexing ratio
++ Row re-mapping and column re-mapping
++ Vertical scrolling
++ On-chip oscillator
++ Available internal DC-DC converter
++ 256-step contrast control on monochrome passive OLED
+
+panel
++ Low power consumption
+    - Sleep mode: <5mA
++ Wide range of operating temperatures: -40 to +85°C
++ Available in COG form.
+
 ********************************************************************/
-#ifndef H_BASE_SPI_TYPE_H
-#define H_BASE_SPI_TYPE_H
+#ifndef H_LCD_SH1107_TYPE_H
+#define H_LCD_SH1107_TYPE_H
+#include "../../Base/types.h"
 
-#include "types.h"
 
-//+ Data update count "데이터 갱신 카운터"
-typedef struct {
-    tu32 v_new;     //+ New data "신규 데이터"
-    tu32 v_old;     //+ Old data "이전 데이터"
-}ts_base_spi_count;  
 
 #endif

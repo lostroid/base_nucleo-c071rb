@@ -52,7 +52,7 @@ Reset_Handler:
   ldr   r0, =_estack
   mov   sp, r0          /* set stack pointer */
 /* Call the clock system initialization function.*/
-  bl  f_Base_Main_Vector_Setting
+  bl  f_base_main_vector_set
 
 /* Copy the data segment initializers from flash to SRAM */
   movs r1, #0
@@ -88,7 +88,7 @@ LoopFillZerobss:
 /* Call static constructors */
   bl __libc_init_array
 /* Call the application's entry point.*/
-  bl f_Base_Main
+  bl f_base_main
 
 LoopForever:
     b LoopForever

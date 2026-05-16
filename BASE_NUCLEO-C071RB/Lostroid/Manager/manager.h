@@ -9,7 +9,7 @@
 
 #include "manager_type.h"
 
-void f_Manager_Init(void);
-void f_Manager_Module(void);
+void f_manager_init(void);
+void f_manager_module(void);
 
 #endif

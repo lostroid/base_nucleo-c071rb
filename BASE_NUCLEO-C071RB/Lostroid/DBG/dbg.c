@@ -8,17 +8,17 @@
 #include "dbg.h"
 
 #define d_DBG_STRING_MAX          256
-#define d_SPI_SEND_DBG_TARGET(DATA,LEN)   f_Base_UART2_TX_Buff_Write(DATA,LEN)
+#define d_SPI_SEND_DBG_TARGET(DATA,LEN)   f_base_uart2_tx_buff_write(DATA,LEN)
 static tu32 gv_dbg_mode = 0;
 //===================================================================
 /*#### DBG Init
 ---------------------------------------------------------------------
 
 ------------------------------------------------------------------ */
-void f_DBG_Init(void)
+void f_dbg_init(void)
 {
-    f_DBG_Set_Enable_Mode(m_DBG_MODE_SYSTEM);
-    f_DBG_Set_Enable_Mode(m_DBG_MODE_SCHEDLUE);
+    f_dbg_enable_mode_set(m_DBG_MODE_SYSTEM);
+    f_dbg_enable_mode_set(m_DBG_MODE_SCHEDULE);
 }
 //===================================================================
 /*#### Get debug mode
@@ -26,7 +26,7 @@ void f_DBG_Init(void)
 + e_mode : enum value
 + return : m_YESNO_NO, m_YESNO_YES
 -------------------------------------------------------------------*/
-te_YesNo f_DBG_Get_Mode(te_DBG_Mode e_mode)
+te_yes_no f_dbg_mode_get(te_dbg_mode e_mode)
 {
     if((gv_dbg_mode & (tu32)e_mode) == 0)
         { return m_YESNO_NO; }
@@ -38,7 +38,7 @@ te_YesNo f_DBG_Get_Mode(te_DBG_Mode e_mode)
 ---------------------------------------------------------------------
 + e_mode : enum value "디버깅 정보"
 -------------------------------------------------------------------*/
-void f_DBG_Set_Enable_Mode(te_DBG_Mode e_mode)
+void f_dbg_enable_mode_set(te_dbg_mode e_mode)
 {
     gv_dbg_mode |= (tu32)e_mode;
 }
@@ -47,7 +47,7 @@ void f_DBG_Set_Enable_Mode(te_DBG_Mode e_mode)
 ---------------------------------------------------------------------
 + e_mode : enum value
 -------------------------------------------------------------------*/
-void f_DBG_Set_Disable_Mode(te_DBG_Mode e_mode)
+void f_dbg_disable_mode_set(te_dbg_mode e_mode)
 {
     gv_dbg_mode &= (tu32)(~e_mode);
 }
@@ -57,7 +57,7 @@ void f_DBG_Set_Disable_Mode(te_DBG_Mode e_mode)
 + *p_data : String "배열 문자 포인터"
 + return :  0(ok), 1(error)
 -------------------------------------------------------------------*/
-tu32 f_DBG_Print_String(char *p_data)
+tu32 f_dbg_print_string(const char *p_data)
 {
     tu32 v_len = 0;
     if(p_data == d_NULL)    //+ NULL Point Check
@@ -79,7 +79,7 @@ tu32 f_DBG_Print_String(char *p_data)
 ---------------------------------------------------------------------
 + v_dec : 64bit "64bit 입력"
 -------------------------------------------------------------------*/
-void f_DBG_Print_Dec64(tu64 v_dec)
+void f_dbg_print_dec64(tu64 v_dec)
 {
     tu8 a_data[20];
     tu8 v_index = 20;
@@ -87,7 +87,7 @@ void f_DBG_Print_Dec64(tu64 v_dec)
     if(v_dec == 0)  //+ zero
     {
         a_data[0] = '0';
-        d_SPI_SEND_DBG_TARGET(a_data, 1);
+        d_SPI_SEND_DBG_TARGET((const tu8*)a_data, 1);
         return;
     }
     while(v_dec > 0 && v_index > 0)
@@ -95,7 +95,7 @@ void f_DBG_Print_Dec64(tu64 v_dec)
         a_data[--v_index] = (v_dec % 10) + '0';
         v_dec /= 10;
     }
-    d_SPI_SEND_DBG_TARGET(&a_data[v_index], 20 - v_index);
+    d_SPI_SEND_DBG_TARGET((const tu8*)&a_data[v_index], 20 - v_index);
 }
 //===================================================================
 /*#### Print Digit Dec64  "자리수 고정 64bit 숫자 출력"
@@ -104,7 +104,7 @@ DigtNum:5, 100 -> "00100"
 + v_min_digits : max 20 zero padding  "자리수 고정"
 + v_dec : 64bit                     "64비트 입력"
 -------------------------------------------------------------------*/
-void f_DBG_Print_Dec64_Digit(tu32 v_min_digits, tu64 v_dec)
+void f_dbg_print_dec64_digit(tu32 v_min_digits, tu64 v_dec)
 {
     tu8 a_data[20];
     tu8 v_index = 20;
@@ -139,7 +139,7 @@ void f_DBG_Print_Dec64_Digit(tu32 v_min_digits, tu64 v_dec)
         v_total_len++;
     }
 
-    d_SPI_SEND_DBG_TARGET(&a_data[v_index], v_total_len);
+    d_SPI_SEND_DBG_TARGET((const tu8*)&a_data[v_index], v_total_len);
 }
 //===================================================================
 /*#### Print Dec32
@@ -147,7 +147,7 @@ void f_DBG_Print_Dec64_Digit(tu32 v_min_digits, tu64 v_dec)
 100 -> "100"
 + v_dec : 32bit
 -------------------------------------------------------------------*/
-void f_DBG_Print_Dec32(tu32 v_dec)
+void f_dbg_print_dec32(tu32 v_dec)
 {
     tu8 a_data[10];
     tu8 v_index = 10;
@@ -155,7 +155,7 @@ void f_DBG_Print_Dec32(tu32 v_dec)
     if(v_dec == 0)  //+ zero
     {
         a_data[0] = '0';
-        d_SPI_SEND_DBG_TARGET(a_data, 1);
+        d_SPI_SEND_DBG_TARGET((const tu8*)a_data, 1);
         return;
     }
 
@@ -165,7 +165,7 @@ void f_DBG_Print_Dec32(tu32 v_dec)
         v_dec /= 10;
     }
 
-    d_SPI_SEND_DBG_TARGET(&a_data[v_index], 10 - v_index);
+    d_SPI_SEND_DBG_TARGET((const tu8*)&a_data[v_index], 10 - v_index);
 }
 //===================================================================
 /*#### Print Digit Dec32
@@ -174,7 +174,7 @@ v_min_digits : 5(332 -> 00332), (12345678 -> 12345678)
 + v_min_digits : max 10
 + v_dec : 32bit
 -------------------------------------------------------------------*/
-void f_DBG_Print_Dec32_Digit(tu32 v_min_digits, tu32 v_dec)
+void f_dbg_print_dec32_digit(tu32 v_min_digits, tu32 v_dec)
 {
     tu8 a_data[10];
     tu8 v_index = 10;
@@ -209,7 +209,7 @@ void f_DBG_Print_Dec32_Digit(tu32 v_min_digits, tu32 v_dec)
         v_total_len++;
     }
 
-    d_SPI_SEND_DBG_TARGET(&a_data[v_index], v_total_len);
+    d_SPI_SEND_DBG_TARGET((const tu8*)&a_data[v_index], v_total_len);
 }
 //===================================================================
 /*#### Print Hex64 (테스트 필요)
@@ -217,7 +217,7 @@ void f_DBG_Print_Dec32_Digit(tu32 v_min_digits, tu32 v_dec)
  18,446,744,073,709,551,615 -> "FFFFFFFFFFFFFFFF"
 + v_hex64 : 64bit
 -------------------------------------------------------------------*/
-void f_DBG_Print_Hex64(tu64 v_hex64)
+void f_dbg_print_hex64(tu64 v_hex64)
 {
     tu8 a_data[16];
     tu8 v_temp = 0u;
@@ -232,7 +232,7 @@ void f_DBG_Print_Hex64(tu64 v_hex64)
         a_data[v_while] = (v_temp <= 9u) ? (v_temp + (tu8)'0') : (v_temp + (tu8)'7'); 
         v_while++;
     }
-    d_SPI_SEND_DBG_TARGET(a_data, 16u);
+    d_SPI_SEND_DBG_TARGET((const tu8*)a_data, 16u);
 }
 //===================================================================
 /*#### Print Hex32
@@ -240,7 +240,7 @@ void f_DBG_Print_Hex64(tu64 v_hex64)
  4,294,967,295 -> "FFFFFFFF"
 + v_hex32 : 32bit
 -------------------------------------------------------------------*/
-void f_DBG_Print_Hex32(tu32 v_hex32)
+void f_dbg_print_hex32(tu32 v_hex32)
 {
     tu8 a_data[8];
     tu8 v_temp = 0u;
@@ -254,7 +254,7 @@ void f_DBG_Print_Hex32(tu32 v_hex32)
         a_data[v_while] = (v_temp <= 9u) ? (v_temp + (tu8)'0') : (v_temp + (tu8)'7'); 
         v_while++;
     }
-    d_SPI_SEND_DBG_TARGET(a_data, 8u);
+    d_SPI_SEND_DBG_TARGET((const tu8*)a_data, 8u);
 }
 //===================================================================
 /*#### Print Hex16
@@ -262,7 +262,7 @@ void f_DBG_Print_Hex32(tu32 v_hex32)
  65,535 -> "FFFF"
 + v_hex16 : 16bit
 -------------------------------------------------------------------*/
-void f_DBG_Print_Hex16(tu16 v_hex16)
+void f_dbg_print_hex16(tu16 v_hex16)
 {
     tu8 a_data[4];
     tu8 v_temp = 0u;
@@ -276,7 +276,7 @@ void f_DBG_Print_Hex16(tu16 v_hex16)
         a_data[v_while] = (v_temp <= 9u) ? (v_temp + (tu8)'0') : (v_temp + (tu8)'7');
         v_while++;
     }
-    d_SPI_SEND_DBG_TARGET(a_data, 4u);
+    d_SPI_SEND_DBG_TARGET((const tu8*)a_data, 4u);
 }
 //===================================================================
 /*#### Print Hex8
@@ -284,7 +284,7 @@ void f_DBG_Print_Hex16(tu16 v_hex16)
  255 -> "FF"
 + v_hex8 : 8bit
 -------------------------------------------------------------------*/
-void f_DBG_Print_Hex8(tu8 v_hex8)
+void f_dbf_print_hex8(tu8 v_hex8)
 {
     tu8 a_data[2];
     tu8 v_temp = 0u;
@@ -296,5 +296,19 @@ void f_DBG_Print_Hex8(tu8 v_hex8)
     v_temp = (0x0F & v_hex8);
     //+ 65('A') = 10 + 55('7')
     a_data[1] = (v_temp <= 9u) ? (v_temp + (tu8)'0') : (v_temp + (tu8)'7');
-    d_SPI_SEND_DBG_TARGET(a_data, 2u);
+    d_SPI_SEND_DBG_TARGET((const tu8*)a_data, 2u);
+}
+//===================================================================
+/*### Error Return print 
+---------------------------------------------------------------------
++ p_ver: string
++ v_major: version
++ v_minor: version
+-------------------------------------------------------------------*/
+void f_dbg_print_version(char *p_ver, tu32 v_major, tu32 minor)
+{
+    f_dbg_print_string(p_ver);
+    f_dbg_print_dec32_digit(2, (tu32)v_major);
+    f_dbg_print_string(".");
+    f_dbg_print_dec32_digit(2, (tu32)minor);
 }

@@ -10,16 +10,18 @@
 #include "base_adc_type.h"
 #include "../Scheduler/scheduler_type.h"
 
-void f_Base_ADC_Init(void);
-void f_Base_ADC_Module(void);
-void f_Base_ADC_Regulator(void);
-void f_Base_ADC_ADSTART(void);
-void f_Base_ADC_Info_Print(void);
-tu32 f_Base_ADC_Get_ADC_CH0(void);
-tu32 f_Base_ADC_Get_ADC_CH1(void);
-void f_Base_ADC_Job_Start(ts_Scheduler_Control *ps_adc_job_ctrl);
-void f_Base_ADC_Job_Complete(ts_Scheduler_Control *ps_adc_job_ctrl);
-void f_Base_ADC_Job_Check(ts_Scheduler_Control *ps_adc_job_ctrl);
-void f_Base_ADC_Load_Print(void);
+void f_base_adc_init(void);
+void f_base_adc_module(void);
+void f_base_adc_regulator(void);
+void f_base_adc_adstart(void);
+void f_base_adc_info_print(void);
+tu32 f_base_adc_ch0_get(void);
+tu32 f_base_adc_ch1_get(void);
+
+void f_base_adc_job_start(ts_scheduler_control *ps_adc_job_ctrl);
+void f_base_adc_job_complete(ts_scheduler_control *ps_adc_job_ctrl);
+void f_base_adc_job_check(ts_scheduler_control *ps_adc_job_ctrl);
+
+void f_base_adc_load_print(void);
 
 #endif

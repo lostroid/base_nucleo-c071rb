@@ -9,34 +9,34 @@
 
 #include "lcd_ST7735S_type.h"
 
-void f_LCD_ST7735S_Init(void);
-void f_LCD_ST7735S_Set_start_Mode(void);
-void f_LCD_ST7735S_Set_Run_Mode(void);
-void f_LCD_ST7735S_Module(void);
-void f_LCD_ST7735S_Error_Send_Fail(void);
-void f_LCD_ST7735S_Error_Case(void);
+void f_lcd_st7735s_init(void);
+void f_lcd_st7735s_set_start_mode(void);
+void f_lcd_st7735s_set_run_mode(void);
+void f_lcd_st7735s_module(void);
+void f_lcd_st7735s_error_send_fail(void);
+void f_lcd_st7735s_error_case(void);
 
-void f_LCD_ST7735S_Font_Print(tu32 v_offset_x, const char *p_ascii, tu16 v_color_f, tu16 v_color_b);
+void f_lcd_st7735s_font_print(tu32 v_offset_x, const char *p_ascii, tu16 v_color_f, tu16 v_color_b);
 
-void f_LCD_ST7753S_Job_Start(ts_Scheduler_Control *ps_lcd_st7735s_Job_ctrl);
-void f_LCD_ST7753S_Job_Reset_L(ts_Scheduler_Control *ps_lcd_st7735s_Job_ctrl);
-void f_LCD_ST7753S_Job_Delay(ts_Scheduler_Control *ps_lcd_st7735s_Job_ctrl);
-void f_LCD_ST7753S_Job_Reset_H(ts_Scheduler_Control *ps_lcd_st7735s_Job_ctrl);
-void f_LCD_ST7753S_Job_SWRESET(ts_Scheduler_Control *ps_lcd_st7735s_Job_ctrl);
-void f_LCD_ST7753S_Job_SLPOUT(ts_Scheduler_Control *ps_lcd_st7735s_Job_ctrl);
-void f_LCD_ST7753S_Job_DISPON(ts_Scheduler_Control *ps_lcd_st7735s_Job_ctrl);
-void f_LCD_ST7753S_Job_INVOFF(ts_Scheduler_Control *ps_lcd_st7735s_Job_ctrl);
-void f_LCD_ST7753S_Job_INVON(ts_Scheduler_Control *ps_lcd_st7735s_Job_ctrl);
-void f_LCD_ST7753S_Job_MADCTL(ts_Scheduler_Control *ps_lcd_st7735s_Job_ctrl);
-void f_LCD_ST7753S_Job_CASET(ts_Scheduler_Control *ps_lcd_st7735s_Job_ctrl);
-void f_LCD_ST7753S_Job_RASET(ts_Scheduler_Control *ps_lcd_st7735s_Job_ctrl);
-void f_LCD_ST7753S_Job_COLMOD(ts_Scheduler_Control *ps_lcd_st7735s_Job_ctrl);
-void f_LCD_ST7753S_Job_RAMWR(ts_Scheduler_Control *ps_lcd_st7735s_Job_ctrl);
-void f_LCD_ST7753S_Job_Image(ts_Scheduler_Control *ps_lcd_st7735s_Job_ctrl);
-void f_LCD_ST7753S_Job_Init_Finish(ts_Scheduler_Control *ps_lcd_st7735s_Job_ctrl);
-void f_LCD_ST7735S_Load_Print(void);
-void f_LCD_ST7735S_Color_Fill(tu16 v_color);
-void f_LCD_ST7735S_Voltage_Bar(tu32 v_voltage, tu16 v_color_f);
-void f_LCD_ST7735S_Monitor_View(tu32 v_line);
+void f_lcd_st7735s_job_start(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl);
+void f_lcd_st7735s_job_reset_low(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl);
+void f_lcd_st7735s_job_delay(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl);
+void f_lcd_st7735s_job_reset_high(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl);
+void f_lcd_st7735s_job_swreset(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl);
+void f_lcd_st7735s_Job_slpout(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl);
+void f_lcd_st7735s_job_dispon(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl);
+void f_lcd_st7735s_job_invoff(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl);
+void f_lcd_st7735s_job_invon(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl);
+void f_lcd_st7735s_job_madctl(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl);
+void f_lcd_st7735s_job_caset(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl);
+void f_lcd_st7735s_job_raset(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl);
+void f_lcd_st7735s_job_colmod(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl);
+void f_lcd_st7735s_job_ramwr(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl);
+void f_lcd_st7735s_job_image(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl);
+void f_lcd_st7735s_job_init_finish(ts_scheduler_control *ps_lcd_st7735s_Job_ctrl);
+void f_lcd_st7735s_load_print(void);
+void f_lcd_st7735s_color_fill(tu16 v_color);
+void f_lcd_st7735s_voltage_bar(tu32 v_voltage, tu16 v_color_f);
+void f_lcd_st7735s_monitor_view(tu32 v_line);
 
 #endif

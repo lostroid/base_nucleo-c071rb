@@ -22,15 +22,15 @@ static tu32 v_base_tim3_ch1_sw_ok_cnt = 0;
 //===================================================================
 /*#### Base TIMx initialize
 -------------------------------------------------------------------*/
-void f_Base_TIMx_Init(void)
+void f_base_tim_init(void)
 {
-	f_Base_TIM2_Init();
-    f_Base_TIMx_Input_Captur_Init();
+	f_base_tim2_init();
+    f_base_tim_input_captur_init();
 }
 //===================================================================
 /*#### Base TIMx Module
 -------------------------------------------------------------------*/
-void f_Base_TIMx_Module(void)
+void f_base_tim_module(void)
 {
 
 }
@@ -39,7 +39,7 @@ void f_Base_TIMx_Module(void)
 ---------------------------------------------------------------------
 +  Return : m_RETURN_OK, m_RETURN_WAIT
 -------------------------------------------------------------------*/
-te_Return f_Base_TIM14_Check_100us(ts_Base_Tick_Context* ps_time)
+te_return f_base_tim14_check_100us(ts_base_tick_context* ps_time)
 {
     ps_time->v_ct = d_TICK_TIM14_100US;  //- 100us counter data.
     ps_time->v_tt += (tu32)((tu16)ps_time->v_ct - (tu16)ps_time->v_pt);
@@ -57,15 +57,15 @@ te_Return f_Base_TIM14_Check_100us(ts_Base_Tick_Context* ps_time)
 //===================================================================
 /*#### Base TIM1 initialize
 -------------------------------------------------------------------*/
-void f_Base_TIM2_Init(void)
+void f_base_tim2_init(void)
 {
     //+ TIM2
     TIM2->PSC = (d_BASE_TICK_HCLK / 1000000) - 1;       //+ 48Mhz -> 1Mhz
     TIM2->ARR = 1000 - 1;                               //+ 1Mhz -> 1khz
-    f_Base_TIM2_CH1_CCR(999);                         //+ CCR 500
-    f_Base_TIM2_CH2_CCR(999);                         //+ CCR 500
-    f_Base_TIM2_CH1_Mode_set(m_BASE_TIM_MODE_H);
-    f_Base_TIM2_CH2_Mode_set(m_BASE_TIM_MODE_H);
+    f_base_tim2_ch1_ccr(999);                         //+ CCR 500
+    f_base_tim2_ch2_ccr(999);                         //+ CCR 500
+    f_base_tim2_ch1_mode_set(m_BASE_TIM_MODE_H);
+    f_base_tim2_ch2_mode_set(m_BASE_TIM_MODE_H);
     TIM2->CCMR1 = TIM_CCMR1_OC1PE | TIM_CCMR1_OC2PE;    //+ OUTPUT Compare enable
     TIM2->CCER = TIM_CCER_CC1E | TIM_CCER_CC2E;         //+ complementary output enable
     TIM2->BDTR = TIM_BDTR_MOE;                          //+ Main output enable
@@ -83,7 +83,7 @@ void f_Base_TIM2_Init(void)
 MAX 16 bit
 + v_cnt : Compare cnt value 
 -------------------------------------------------------------------*/
-void f_Base_TIM2_CH1_CCR(tu16 v_cnt)
+void f_base_tim2_ch1_ccr(tu16 v_cnt)
 {
     TIM2->CCR1 = v_cnt;
 }
@@ -93,7 +93,7 @@ void f_Base_TIM2_CH1_CCR(tu16 v_cnt)
 MAX 16 bit
 + v_cnt : Compare cnt value 
 -------------------------------------------------------------------*/
-void f_Base_TIM2_CH2_CCR(tu16 v_cnt)
+void f_base_tim2_ch2_ccr(tu16 v_cnt)
 {
     TIM2->CCR2 = v_cnt;
 }
@@ -102,7 +102,7 @@ void f_Base_TIM2_CH2_CCR(tu16 v_cnt)
 ---------------------------------------------------------------------
 + e_mode : H, L, PWM
 -------------------------------------------------------------------*/
-void f_Base_TIM2_CH1_Mode_set(te_Base_TIM_Mode e_mode)
+void f_base_tim2_ch1_mode_set(te_Base_tim_mode e_mode)
 {
     switch(e_mode)
     {
@@ -135,7 +135,7 @@ void f_Base_TIM2_CH1_Mode_set(te_Base_TIM_Mode e_mode)
 ---------------------------------------------------------------------
 + e_mode : H, L, PWM
 -------------------------------------------------------------------*/
-void f_Base_TIM2_CH2_Mode_set(te_Base_TIM_Mode e_mode)
+void f_base_tim2_ch2_mode_set(te_Base_tim_mode e_mode)
 {
     switch(e_mode)
     {
@@ -168,7 +168,7 @@ void f_Base_TIM2_CH2_Mode_set(te_Base_TIM_Mode e_mode)
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
-void f_Base_TIMx_Input_Captur_Init(void)
+void f_base_tim_input_captur_init(void)
 {
     
     TIM1->TISEL = d_BASE_TIM_TI1_SEL(d_BASE_TIM_TI_00)    //+ Not use
@@ -204,7 +204,7 @@ void f_Base_TIMx_Input_Captur_Init(void)
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
-void f_Base_TIM1_CH2_SW_A_Count_Up(void)
+void f_base_tim1_ch2_sw_a_count_up(void)
 {
     v_base_tim1_ch2_sw_a_cnt++;
 }
@@ -213,7 +213,7 @@ void f_Base_TIM1_CH2_SW_A_Count_Up(void)
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
-void f_Base_TIM1_CH3_SW_B_Count_Up(void)
+void f_base_tim1_ch3_sw_b_count_up(void)
 {
     v_base_tim1_ch3_sw_b_cnt++;
 }
@@ -222,7 +222,7 @@ void f_Base_TIM1_CH3_SW_B_Count_Up(void)
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
-void f_Base_TIM3_CH1_SW_OK_Count_Up(void)
+void f_base_tim3_ch1_sw_ok_count_up(void)
 {
     v_base_tim3_ch1_sw_ok_cnt++;
 }
@@ -231,7 +231,7 @@ void f_Base_TIM3_CH1_SW_OK_Count_Up(void)
 ---------------------------------------------------------------------
 + return: cnt
 -------------------------------------------------------------------*/
-tu32 f_Base_TIM1_CH2_SW_A_Get_Count(void)
+tu32 f_base_tim1_ch2_sw_a_count_get(void)
 {
     return v_base_tim1_ch2_sw_a_cnt;
 }
@@ -240,7 +240,7 @@ tu32 f_Base_TIM1_CH2_SW_A_Get_Count(void)
 ---------------------------------------------------------------------
 + return: cnt
 -------------------------------------------------------------------*/
-tu32 f_Base_TIM1_CH3_SW_B_Get_Count(void)
+tu32 f_base_tim1_ch3_sw_b_count_get(void)
 {
     return v_base_tim1_ch3_sw_b_cnt;
 }
@@ -258,7 +258,7 @@ tu32 f_Base_TIM3_CH1_SW_OK_Get_Count(void)
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
-void f_Base_TIMx_Info_Print(void)
+void f_base_tim_info_print(void)
 {
 
 }

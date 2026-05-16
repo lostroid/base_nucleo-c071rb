@@ -73,23 +73,23 @@ typedef enum {
     m_STATE_IDLE = 0,       //+ Idle: 대기 상태
     m_STATE_DONE,           //+ Done: 완료 상태
     m_STATE_BUSY            //+ Busy: 작업 중
-} te_State;
+} te_state;
 
 typedef enum {
     m_RESULT_OK = 0,        //+ OK: 정상
     m_RESULT_PASS = 0,      //+ Pass: 통과
     m_RESULT_FAIL           //+ Fail: 실패
-} te_Result;
+} te_result;
 
 typedef enum {
     m_ENABLE_OFF = 0,       //+ Off: 꺼짐
     m_ENABLE_ON             //+ On: 켜짐
-} te_Enable;
+} te_enable;
 
 typedef enum {
     m_YESNO_NO = 0,         //+ No: 아니오
     m_YESNO_YES             //+ Yes: 예
-} te_YesNo;
+} te_yes_no;
 
 typedef enum {
     m_RETURN_OK,            //+ OK                      "정상"
@@ -109,6 +109,6 @@ typedef enum {
     m_RETURN_ERR_ARG,       //+ Invalid Argument        "잘못된 인자 오류"
     m_RETURN_ERR_LOCK,      //+ Failed to Lock Resource "리소스 잠금 실패 오류"
     m_RETURN_ERR_UNKNOWN    //+ Unknown Error           "알 수 없는 오류 오류"
-} te_Return;
+} te_return;
 
 #endif

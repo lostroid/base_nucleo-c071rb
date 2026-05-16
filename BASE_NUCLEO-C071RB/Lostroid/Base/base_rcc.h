@@ -9,15 +9,15 @@
 
 #include "base_rcc_type.h"
 
-void f_Base_RCC_Init(void);
-void f_Base_RCC_Module(void);
-void f_Base_RCC_APB_Enable(void);
-void f_Base_RCC_HSE_Enable(void);
-void f_Base_RCC_HSE_Disable(void);
-void f_Base_RCC_HSE_Switch_Select(void);
-tu32 f_Base_RCC_HSE_Ready(void);
-void f_Base_RCC_Clock_Enable(void);
-void f_Base_RCC_Clock_Selection(void);
-void f_Base_RCC_Sleep_Stip_Clock_Disable(void);
+void f_base_rcc_init(void);
+void f_base_rcc_module(void);
+void f_base_rcc_apb_enable(void);
+void f_base_rcc_hse_enable(void);
+void f_base_rcc_hse_disable(void);
+void f_base_rcc_hse_switch_select(void);
+tu32 f_base_rcc_hse_ready(void);
+void f_base_rcc_clock_enable(void);
+void f_base_rcc_clock_selection(void);
+void f_base_rcc_sleep_stip_clock_disable(void);
 
 #endif

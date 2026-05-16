@@ -17,18 +17,18 @@ static tu32 gv_base_tick_end = 0;
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
-void f_Base_Tick_Init(void)
+void f_base_tick_init(void)
 {
-    f_Base_Tick_Systick_Init();
-    f_Base_Tick_Systick_Get_Time32_Tick();
-    f_Base_Tick_Systick_Get_Time64_Tick();
+    f_base_tick_systick_init();
+    f_base_tick_systick_time32_get();
+    f_base_tick_systick_time64_get();
 }
 //===================================================================
 /*#### Tick Module (Polling Type) 
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
-void f_Base_Tick_Module(void)
+void f_base_tick_module(void)
 {
 
 }
@@ -38,7 +38,7 @@ void f_Base_Tick_Module(void)
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
-void f_Base_Tick_Systick_Init(void)
+void f_base_tick_systick_init(void)
 {
     SysTick->LOAD   = 0x00FFFFFF;                   //+ Reload Max 24bit
     SysTick->VAL    = 0UL;                          //+ Count reset
@@ -55,7 +55,7 @@ Max 349ms overflow "최대 349ms 넘지 않습니다"
 Call at least once per 100ms " 최소 100ms 마다 호출 권장"
 + return : Convert 32-bit tick  "리턴값 32비트 틱 카운터 변환 마이크로초"
 -------------------------------------------------------------------*/
-tu32 f_Base_Tick_Systick_Get_Time32_Tick(void)
+tu32 f_base_tick_systick_time32_get(void)
 {
     static tu32 v_tick_total = 0;
     static tu32 v_tick_pave = 0;
@@ -72,7 +72,7 @@ Max 349ms overflow "최대 349ms 넘지 않습니다"
 Call at least once per 100ms " 최소 100ms 마다 호출 권장"
 + return : Convert 64-bit tick "리턴값 64비트 틱 카운터 변환 마이크로초"
 -------------------------------------------------------------------*/
-tu64 f_Base_Tick_Systick_Get_Time64_Tick(void)
+tu64 f_base_tick_systick_time64_get(void)
 {
     static tu64 v_tick_total = 0;
     static tu32 v_tick_pave = 0;
@@ -89,12 +89,12 @@ Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 + ps_timeTaget : struct variable pointer
 + v_time_us : convert microsecond to tick count "us 단위를 tick 값으로 변경저장"
 -------------------------------------------------------------------*/
-void f_Base_Tick_Systick32_Stopwatch_Start(ts_Base_Tick_Context *ps_time, tu32 v_time_us)
+void f_base_tick_systick32_stopwatch_start(ts_base_tick_context *ps_time, tu32 v_time_us)
 {
     if(ps_time == d_NULL)
         { return; }
-    ps_time->v_pt = f_Base_Tick_Systick_Get_Time32_Tick();
-    ps_time->v_ct = f_Base_Tick_Systick_Get_Time32_Tick();
+    ps_time->v_pt = f_base_tick_systick_time32_get();
+    ps_time->v_ct = f_base_tick_systick_time32_get();
     ps_time->v_st = d_BASE_TICK_SYS_GET_TICK(v_time_us);;
     ps_time->v_tt = 0;
 }
@@ -106,11 +106,11 @@ Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 + ps_time : struct variable pointer
 +  Return : m_RETURN_OK, m_RETURN_WAIT
 -------------------------------------------------------------------*/
-te_Return f_Base_Tick_Systick32_Stopwatch_Check(ts_Base_Tick_Context *ps_time)
+te_return f_base_tick_systick32_stopwatch_check(ts_base_tick_context *ps_time)
 {
     if(ps_time == d_NULL)
         { return m_RETURN_ERR_NULL; }
-    ps_time->v_ct = f_Base_Tick_Systick_Get_Time32_Tick();
+    ps_time->v_ct = f_base_tick_systick_time32_get();
     ps_time->v_tt += (ps_time->v_ct - ps_time->v_pt);
     ps_time->v_pt = ps_time->v_ct;
     if(ps_time->v_tt >= ps_time->v_st)
@@ -131,11 +131,11 @@ Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 + ps_time : struct variable pointer
 +  Return : m_RETURN_OK, m_RETURN_WAIT
 -------------------------------------------------------------------*/
-te_Return f_Base_Tick_Systick32_Elapsed_Flag(ts_Base_Tick_Context *ps_time)
+te_return f_base_tick_systick32_elapsed_flag(ts_base_tick_context *ps_time)
 {
     if(ps_time == d_NULL)
         { return m_RETURN_ERR_NULL; }
-    ps_time->v_ct = f_Base_Tick_Systick_Get_Time32_Tick();
+    ps_time->v_ct = f_base_tick_systick_time32_get();
     ps_time->v_tt += (ps_time->v_ct - ps_time->v_pt);
     ps_time->v_pt = ps_time->v_ct;
     if(ps_time->v_tt >= ps_time->v_st)
@@ -151,15 +151,15 @@ Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 Timeout : 10s
 + v_time_us : microseconds Max 17,000,000 "최대 17,000,000us 를 넘지 않습니다."
 -------------------------------------------------------------------*/
-void f_Base_Tick_Systick32_Blocking_Delay(tu32 v_time_us)
+void f_base_tick_systick32_blocking_delay(tu32 v_time_us)
 {
-    ts_Base_Tick_Context s_time;
-    s_time.v_pt = f_Base_Tick_Systick_Get_Time32_Tick();
+    ts_base_tick_context s_time;
+    s_time.v_pt = f_base_tick_systick_time32_get();
     s_time.v_st = d_BASE_TICK_SYS_GET_TICK(v_time_us);
     s_time.v_tt = 0;
     while(1)
     {
-        s_time.v_ct = f_Base_Tick_Systick_Get_Time32_Tick();
+        s_time.v_ct = f_base_tick_systick_time32_get();
         s_time.v_tt += (s_time.v_ct - s_time.v_pt);
         s_time.v_pt = s_time.v_ct;
         if(s_time.v_tt >= s_time.v_st)
@@ -178,11 +178,11 @@ Overflow MAX 89s = 4,294,967,296 / 48,000,000 Hz
 "최대 측정 시간은 89초를 넘기지 않습니다."
 + p_tick_buff: save tick count point "시간 정보 포인터"
 -------------------------------------------------------------------*/
-void f_Base_Tick_Systick32_Start(tu32 *p_tick_buff)
+void f_base_tick_systick32_start(tu32 *p_tick_buff)
 {
     if(p_tick_buff == d_NULL)
         { return; }
-    *p_tick_buff = f_Base_Tick_Systick_Get_Time32_Tick();
+    *p_tick_buff = f_base_tick_systick_time32_get();
 }
 
 //===================================================================
@@ -194,11 +194,11 @@ Overflow MAX 89s = 4,294,967,296 / 48,000,000 Hz
 + p_pave_tick_buff: Start tick count point "시작 tick정보 포인터"
 + return: Convert 32-bit tick to us
 -------------------------------------------------------------------*/
-tu32 f_Base_Tick_Systick32_Finish(tu32 *p_pave_tick_buff)
+tu32 f_base_tick_systick32_finish(tu32 *p_pave_tick_buff)
 {
     if(p_pave_tick_buff == d_NULL)
         { return 0; }
-    tu32 v_current_tick = f_Base_Tick_Systick_Get_Time32_Tick();
+    tu32 v_current_tick = f_base_tick_systick_time32_get();
     v_current_tick = (v_current_tick - *p_pave_tick_buff);
     return d_BASE_TICK_SYS_GET_US(v_current_tick);
 }
@@ -209,11 +209,11 @@ tu32 f_Base_Tick_Systick32_Finish(tu32 *p_pave_tick_buff)
 ---------------------------------------------------------------------
 + ps_time: Time Context point "시간 정보 포인터"
 -------------------------------------------------------------------*/
-void f_Base_Tick_Systick64_Start(tu64 *p_tick_buff)
+void f_base_tick_systick64_start(tu64 *p_tick_buff)
 {
     if(p_tick_buff == d_NULL)
         { return; }
-    *p_tick_buff = f_Base_Tick_Systick_Get_Time64_Tick();
+    *p_tick_buff = f_base_tick_systick_time64_get();
 }
 
 //===================================================================
@@ -223,11 +223,11 @@ Warning: Start ~ finish
 + ps_time: Time Context point "시간 정보 포인터"
 + return: Convert 64-bit tick to us
 -------------------------------------------------------------------*/
-tu64 f_Base_Tick_Systick64_Finish(tu64 *p_pave_tick_buff)
+tu64 f_base_tick_systick64_finish(tu64 *p_pave_tick_buff)
 {
     if(p_pave_tick_buff == d_NULL)
         { return 0; }
-    tu64 v_current_tick = f_Base_Tick_Systick_Get_Time64_Tick();
+    tu64 v_current_tick = f_base_tick_systick_time64_get();
     v_current_tick = (v_current_tick - *p_pave_tick_buff);
     return d_BASE_TICK_SYS_GET_US(v_current_tick);
 }
@@ -239,13 +239,13 @@ tu64 f_Base_Tick_Systick64_Finish(tu64 *p_pave_tick_buff)
 Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 + void
 -------------------------------------------------------------------*/
-void f_Base_Tick_Systick_StartTime_Print(void)
+void f_base_tick_systick_start_time_print(void)
 {
-    if(f_DBG_Get_Mode(m_DBG_MODE_SCHEDLUE) == m_YESNO_YES)
+    if(f_dbg_mode_get(m_DBG_MODE_SCHEDULE) == m_YESNO_YES)
     {
-        gv_base_tick_strart = f_Base_Tick_Systick_Get_Time32_Tick();
-        f_DBG_Print_String("\r\nI: Start Tick count: ");
-        f_DBG_Print_Dec32(gv_base_tick_strart);
+        gv_base_tick_strart = f_base_tick_systick_time32_get();
+        f_dbg_print_string("\r\nI: Start Tick count: ");
+        f_dbg_print_dec32(gv_base_tick_strart);
     }
 }
 
@@ -256,17 +256,17 @@ void f_Base_Tick_Systick_StartTime_Print(void)
 Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 + void
 -------------------------------------------------------------------*/
-void f_Base_Tick_Systick_EndTime_Print(void)
+void f_base_tick_systick_end_time_print(void)
 {
-    if(f_DBG_Get_Mode(m_DBG_MODE_SCHEDLUE) == m_YESNO_YES)
+    if(f_dbg_mode_get(m_DBG_MODE_SCHEDULE) == m_YESNO_YES)
     {
-        gv_base_tick_end = f_Base_Tick_Systick_Get_Time32_Tick();
-        f_DBG_Print_String("\r\nI: End Tick Count: ");
-        f_DBG_Print_Dec32(gv_base_tick_end);
-        f_DBG_Print_String("\r\nI: Run Time: ");
+        gv_base_tick_end = f_base_tick_systick_time32_get();
+        f_dbg_print_string("\r\nI: End Tick Count: ");
+        f_dbg_print_dec32(gv_base_tick_end);
+        f_dbg_print_string("\r\nI: Run Time: ");
         tu32 v_Time_US;
         v_Time_US = gv_base_tick_end - gv_base_tick_strart;
-        f_DBG_Print_Dec32(d_BASE_TICK_SYS_GET_US(v_Time_US));
+        f_dbg_print_dec32(d_BASE_TICK_SYS_GET_US(v_Time_US));
     }
 }
 
@@ -275,24 +275,24 @@ void f_Base_Tick_Systick_EndTime_Print(void)
 ---------------------------------------------------------------------
 + Print [0d-00:00:00.000000]
 -------------------------------------------------------------------*/
-void f_Base_Tick_Systick_Run_Time_Print(void)
+void f_base_tick_systick_run_time_print(void)
 {
-    tu64 v_time = d_BASE_TICK_SYS_GET_US(f_Base_Tick_Systick_Get_Time64_Tick());
-    f_DBG_Print_String("\r\n[");      
-    f_DBG_Print_Dec32((tu32)(v_time / 86400000000));
-    f_DBG_Print_String("d-");
+    tu64 v_time = d_BASE_TICK_SYS_GET_US(f_base_tick_systick_time64_get());
+    f_dbg_print_string("\r\n[");      
+    f_dbg_print_dec32((tu32)(v_time / 86400000000));
+    f_dbg_print_string("d-");
     v_time %= 86400000000;
-    f_DBG_Print_Dec32_Digit(2, (tu32)(v_time / 3600000000));
-    f_DBG_Print_String(":");
+    f_dbg_print_dec32_digit(2, (tu32)(v_time / 3600000000));
+    f_dbg_print_string(":");
     v_time %= 3600000000;
-    f_DBG_Print_Dec32_Digit(2, (tu32)(v_time / 60000000));
-    f_DBG_Print_String(":");
+    f_dbg_print_dec32_digit(2, (tu32)(v_time / 60000000));
+    f_dbg_print_string(":");
     v_time %= 60000000;
-    f_DBG_Print_Dec32_Digit(2, (tu32)(v_time / 1000000));
-    f_DBG_Print_String(".");
+    f_dbg_print_dec32_digit(2, (tu32)(v_time / 1000000));
+    f_dbg_print_string(".");
     v_time %= 1000000;
-    f_DBG_Print_Dec32_Digit(6, v_time);
-    f_DBG_Print_String("]");
+    f_dbg_print_dec32_digit(6, v_time);
+    f_dbg_print_string("]");
 }
 
 
@@ -308,7 +308,7 @@ void f_Base_Tick_Systick_Run_Time_Print(void)
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
-void f_Base_Tick_DWT_Init(void)
+void f_base_tick_dwt_init(void)
 {
     #ifdef d_TICK_DWT_CNT
     //+ DWT Counter Setting
@@ -325,7 +325,7 @@ Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 Call at least once per second " 최소 1s 마다 호출 권장"
 + return 64bit Tick to microseconds "리턴값 64비트 틱 카운터 변환 마이크로초"
 -------------------------------------------------------------------*/
-tu64 f_Base_Tick_DWT_Get_Time64_Tick(void)
+tu64 f_base_tick_dwt_time64_get(void)
 {
     static tu64 v_tick_total = 0;
     static tu32 v_tick_pave = 0;                //+ Init value
@@ -342,7 +342,7 @@ Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 + ps_timeTaget : struct variable pointer
 + v_time_us : setting microsecond
 -------------------------------------------------------------------*/
-void f_Base_Tick_DWT_Stopwatch_Start(ts_Base_Tick_Context *ps_time, tu32 v_time_us)
+void f_base_tick_dwt_stopwatch_start(ts_base_tick_context *ps_time, tu32 v_time_us)
 {
     if(ps_time == d_NULL)
         { return; }
@@ -361,7 +361,7 @@ Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 m_RETURN_OK
 m_RETURN_WAIT
 -------------------------------------------------------------------*/
-te_Return f_Base_Tick_DWT_Stopwatch_Check(ts_Base_Tick_Context* ps_time)
+te_return f_base_tick_dwt_stopwatch_check(ts_base_tick_context* ps_time)
 {
     if(ps_time == d_NULL)
         { return m_RETURN_ERR_NULL; }
@@ -388,7 +388,7 @@ Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 m_RETURN_OK
 m_RETURN_WAIT
 -------------------------------------------------------------------*/
-te_Return f_Base_Tick_DWT_Elapsed_Flag(ts_Base_Tick_Context* ps_time)
+te_return f_base_tick_dwt_elapsed_flag(ts_base_tick_context* ps_time)
 {
     if(ps_time == d_NULL)
         { return m_RETURN_ERR_NULL; }
@@ -408,9 +408,9 @@ Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 Timeout : 10s
 + v_time_us : tu32
 -------------------------------------------------------------------*/
-void f_Base_Tick_DWT_Blocking_Delay(tu32 v_time_us)
+void f_base_tick_dwt_blocking_delay(tu32 v_time_us)
 {
-    ts_Base_Tick_Context s_time;
+    ts_base_tick_context s_time;
     s_time.v_pt = d_TICK_DWT_CNT;
     s_time.v_st = d_BASE_TICK_DWT_GET_TICK(v_time_us);
     s_time.v_tt = 0;
@@ -434,7 +434,7 @@ void f_Base_Tick_DWT_Blocking_Delay(tu32 v_time_us)
 Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 + *v_time_us : tu32 pointor
 -------------------------------------------------------------------*/
-void f_Base_Tick_DWT_Check_Start(tu32 *p_tick)
+void f_base_tick_dwt_check_start(tu32 *p_tick)
 {
     if(p_tick == d_NULL)
         { return; }
@@ -449,7 +449,7 @@ Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 + p_count : Tick count vaule
 + Return : us(microsecond)
 -------------------------------------------------------------------*/
-tu32 f_Base_Tick_DWT_Check_Finish(tu32 *p_tick)
+tu32 f_base_tick_dwt_check_finish(tu32 *p_tick)
 {
     if(p_tick == d_NULL)
         { return 0; }
@@ -465,13 +465,13 @@ tu32 f_Base_Tick_DWT_Check_Finish(tu32 *p_tick)
 Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 + void
 -------------------------------------------------------------------*/
-void f_Base_Tick_DWT_StartTime_Print(void)
+void f_base_tick_dwt_start_time_print(void)
 {
-    if(f_DBG_Get_Mode(m_DBG_MODE_SCHEDLUE) == m_YESNO_YES)
+    if(f_dbg_mode_get(m_DBG_MODE_SCHEDULE) == m_YESNO_YES)
     {
         gv_base_tick_strart = d_TICK_DWT_CNT;
-        f_DBG_Print_String("\r\nI: Start DWT Count: ");
-        f_DBG_Print_Dec32(gv_base_tick_strart);
+        f_dbg_print_string("\r\nI: Start DWT Count: ");
+        f_dbg_print_dec32(gv_base_tick_strart);
     }
 }
 
@@ -482,17 +482,17 @@ void f_Base_Tick_DWT_StartTime_Print(void)
 Warning: MAX 17s = (4,294,967,295(32bit) / 250,000,000 Hz)
 + void
 -------------------------------------------------------------------*/
-void f_Base_Tick_DWT_EndTime_Print(void)
+void f_base_tick_dwt_end_time_print(void)
 {
-    if(f_DBG_Get_Mode(m_DBG_MODE_SCHEDLUE) == m_YESNO_YES)
+    if(f_dbg_mode_get(m_DBG_MODE_SCHEDULE) == m_YESNO_YES)
     {
         gv_base_tick_end = d_TICK_DWT_CNT;
-        f_DBG_Print_String("\r\nI: End DWT Count: ");
-        f_DBG_Print_Dec32(gv_base_tick_end);
-        f_DBG_Print_String("\r\nI: Run Time: ");
+        f_dbg_print_string("\r\nI: End DWT Count: ");
+        f_dbg_print_dec32(gv_base_tick_end);
+        f_dbg_print_string("\r\nI: Run Time: ");
         tu32 v_Time_Tick;
         v_Time_Tick = gv_base_tick_end - gv_base_tick_strart;
-        f_DBG_Print_Dec32(d_BASE_TICK_DWT_GET_US(v_Time_Tick));
+        f_dbg_print_dec32(d_BASE_TICK_DWT_GET_US(v_Time_Tick));
     }
 }
 
@@ -501,24 +501,24 @@ void f_Base_Tick_DWT_EndTime_Print(void)
 ---------------------------------------------------------------------
 + Print [0d-00:00:00.000000]
 -------------------------------------------------------------------*/
-void f_Base_Tick_DWT_Run_Time_Print(void)
+void f_base_tick_dwt_run_time_print(void)
 {
-    tu64 v_time_us = d_BASE_TICK_DWT_GET_US(f_Base_Tick_DWT_Get_Time64_Tick());
-    f_DBG_Print_String("\r\n[");      
-    f_DBG_Print_Dec32((tu32)(v_time_us / 86400000000));
-    f_DBG_Print_String("d ");
+    tu64 v_time_us = d_BASE_TICK_DWT_GET_US(f_base_tick_dwt_time64_get());
+    f_dbg_print_string("\r\n[");      
+    f_dbg_print_dec32((tu32)(v_time_us / 86400000000));
+    f_dbg_print_string("d ");
     v_time_us %= 86400000000;
-    f_DBG_Print_Dec32_Digit(2, (tu32)(v_time_us / 3600000000));
-    f_DBG_Print_String(":");
+    f_dbg_print_dec32_digit(2, (tu32)(v_time_us / 3600000000));
+    f_dbg_print_string(":");
     v_time_us %= 3600000000;
-    f_DBG_Print_Dec32_Digit(2, (tu32)(v_time_us / 60000000));
-    f_DBG_Print_String(":");
+    f_dbg_print_dec32_digit(2, (tu32)(v_time_us / 60000000));
+    f_dbg_print_string(":");
     v_time_us %= 60000000;
-    f_DBG_Print_Dec32_Digit(2, (tu32)(v_time_us / 1000000));
-    f_DBG_Print_String(".");
+    f_dbg_print_dec32_digit(2, (tu32)(v_time_us / 1000000));
+    f_dbg_print_string(".");
     v_time_us %= 1000000;
-    f_DBG_Print_Dec32_Digit(6, v_time_us);
-    f_DBG_Print_String("]");
+    f_dbg_print_dec32_digit(6, v_time_us);
+    f_dbg_print_string("]");
 }
 
 #endif

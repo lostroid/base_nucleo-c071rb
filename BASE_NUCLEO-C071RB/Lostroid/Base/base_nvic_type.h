@@ -60,7 +60,7 @@ typedef enum
     m_NVIC_USART3_4,
     m_NVIC_FDCAN_IT0,
     m_NVIC_FDCAN_IT1
-}te_NVIC;
+}te_nvic;
 
 typedef enum
 {
@@ -103,7 +103,7 @@ typedef enum
     m_IRQ29_USART3_4 = 4,
     m_IRQ30_FDCAN_IT0 = 8,
     m_IRQ31_FDCAN_IT1 = 12
-}te_IRQ;
+}te_irq;
 
 
 #endif

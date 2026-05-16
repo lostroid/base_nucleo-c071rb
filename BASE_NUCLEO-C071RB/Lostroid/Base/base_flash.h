@@ -9,6 +9,6 @@
 
 #include "base_flash_type.h"
 
-void f_Base_Flash_Init(void);
-void f_Base_Flash_Set_Latency01(void);
+void f_base_flash_init(void);
+void f_base_flash_latency01_set(void);
 #endif

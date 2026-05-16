@@ -25,21 +25,21 @@
 #define d_BASE_GPIO_SPI1_CS_H       (GPIOA->BSRR = GPIO_BSRR_BS15)
 #define d_BASE_GPIO_SPI1_CS_L       (GPIOA->BSRR = GPIO_BSRR_BR15)
 
-void f_Base_GPIO_Init(void);
-void f_Base_GPIO_MODE_Initialize(void);
-void f_Base_GPIO_SPEED_Initialize(void);
-void f_Base_GPIO_PUPD_Initialize(void);
-void f_Base_GPIO_AF_Initialize(void);
+void f_base_gpio_init(void);
+void f_base_gpio_mode_init(void);
+void f_base_gpio_speed_initialize(void);
+void f_base_gpio_pupd_initialize(void);
+void f_base_gpio_af_initialize(void);
 
-void f_LL_GPIO_LED_LD1_OnOff(te_GPIO_Output e_onoff);
-void f_LL_GPIO_LED_LD2_OnOff(te_GPIO_Output e_onoff);
+void f_base_gpio_led_ld1_on_off(te_gpio_output e_onoff);
+void f_base_gpio_led_ld2_on_off(te_gpio_output e_onoff);
 
-te_GPIO_Output f_Base_GPIO_SW_OK_In(void);
-te_GPIO_Output f_Base_GPIO_SW_OK_A_In(void);
-te_GPIO_Output f_Base_GPIO_SW_OK_B_In(void);
-te_GPIO_Output f_Base_GPIO_MT_Open_In(void);
-te_GPIO_Output f_Base_GPIO_MT_Close_In(void);
-te_GPIO_Output f_Base_GPIO_Charge_In(void);
-te_GPIO_Output f_Base_GPIO_SW_Power_In(void);
+te_gpio_output f_base_gpio_sw_ok_in(void);
+te_gpio_output f_base_gpio_sw_ok_a_in(void);
+te_gpio_output f_base_gpio_sw_ok_b_in(void);
+te_gpio_output f_base_gpio_mt_open_in(void);
+te_gpio_output f_base_gpio_mt_close_in(void);
+te_gpio_output f_base_gpio_charge_in(void);
+te_gpio_output f_base_gpio_sw_power_in(void);
 
 #endif

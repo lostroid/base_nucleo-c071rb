@@ -85,7 +85,7 @@ typedef enum{
     m_DMA_MUX_USART3_TX_DMA,
     m_DMA_MUX_USART4_RX_DMA,
     m_DMA_MUX_USART4_TX_DMA
-}te_DMAMUX_Multiplexer;
+}te_dmamux_multiplexer;
 
 typedef enum{
     m_DMAMUX_TRIGGER_EXTI0,
@@ -112,7 +112,7 @@ typedef enum{
     m_DMAMUX_TRIGGER_RESERVED_22,
     m_DMAMUX_TRIGGER_TIM14_TRGO,
     m_DMAMUX_TRIGGER_RESERVED_24
-}te_DMANUX_Trigger;
+}te_dmamux_trigger;
 
 typedef enum{
     m_DMAMUX_TRIGGER_SYNC_EXTI0,
@@ -139,7 +139,7 @@ typedef enum{
     m_DMAMUX_TRIGGER_SYNC_TIM14_TRGO,
     m_DMAMUX_TRIGGER_SYNC_RESERVED_22,
     m_DMAMUX_TRIGGER_SYNC_RESERVED_24
-}te_DMANUX_Trigger_Sync;
+}te_dmamux_trigger_sync;
 
 #endif
 

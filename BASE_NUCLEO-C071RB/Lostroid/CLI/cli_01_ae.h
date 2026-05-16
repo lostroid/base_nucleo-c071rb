@@ -9,10 +9,10 @@
 
 #include "cli_main_type.h"
 
-tu32 f_Cli_Check_a(tu8** pp_Data);
-tu32 f_Cli_Check_b(tu8** pp_Data);
-tu32 f_Cli_Check_c(tu8** pp_Data);
-tu32 f_Cli_Check_d(tu8** pp_Data);
-tu32 f_Cli_Check_e(tu8** pp_Data);
+tu32 f_cli_check_a(tu8** pp_Data);
+tu32 f_cli_check_b(tu8** pp_Data);
+tu32 f_cli_check_c(tu8** pp_Data);
+tu32 f_cli_check_d(tu8** pp_Data);
+tu32 f_cli_check_e(tu8** pp_Data);
 
 #endif

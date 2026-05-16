@@ -11,21 +11,21 @@
 //===================================================================
 /* Base Base Syscfg Initialize
 -------------------------------------------------------------------*/
-void f_Base_SYSCFG_Init(void)
+void f_base_syscfg_init(void)
 {
-    //f_Base_SYSCFG_Remap();
+    //f_base_syscfg_remap();
 }
 //===================================================================
 /* Base Base Syscfg Module
 -------------------------------------------------------------------*/
-void f_Base_SYSCFG_Module(void)
+void f_base_syscfg_module(void)
 {
 
 }
 //===================================================================
 /* Base Base Syscfg Remap
 -------------------------------------------------------------------*/
-void f_Base_SYSCFG_Remap(void)
+void f_base_syscfg_remap(void)
 {
     SYSCFG->CFGR1 |=  (SYSCFG_CFGR1_PA11_RMP | SYSCFG_CFGR1_PA12_RMP);
 }

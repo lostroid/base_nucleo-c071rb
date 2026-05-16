@@ -12,7 +12,7 @@
 #include "base_dma.h"
 #include "base_spi.h"
 
-static ts_Base_SPI_Count gs_base_spi1_count = {
+static ts_base_spi_count gs_base_spi1_count = {
     .v_new = 0,
     .v_old = 0
 };
@@ -22,17 +22,17 @@ static ts_Base_SPI_Count gs_base_spi1_count = {
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
-void f_Base_SPI_Init(void)
+void f_base_spi_init(void)
 {   
     d_BASE_GPIO_SPI1_CS_H;
-    f_Base_SPI1_Init();
+    f_base_spi1_init();
 }
 //===================================================================
 /*#### SPI Module
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
-void f_Base_SPI_Module(void)
+void f_base_spi_module(void)
 {
 
 }
@@ -41,7 +41,7 @@ void f_Base_SPI_Module(void)
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
-void f_Base_SPI1_Init(void)
+void f_base_spi1_init(void)
 {   
     SPI1->CR1 = SPI_CR1_MSTR        //+ 24Mzh,, Master, Mode0
               //| SPI_CR1_BR_0        //+ 001: fPCLK/4
@@ -58,7 +58,7 @@ void f_Base_SPI1_Init(void)
 ---------------------------------------------------------------------
 + void
 -------------------------------------------------------------------*/
-void f_Base_SPI1_DMA_Count_UP(void)
+void f_base_spi1_dma_count_up(void)
 {
     d_BASE_GPIO_SPI1_CS_H;
     gs_base_spi1_count.v_new++;
@@ -68,7 +68,7 @@ void f_Base_SPI1_DMA_Count_UP(void)
 ---------------------------------------------------------------------
 + return: m_YESNO_YES, m_YESNO_NO
 -------------------------------------------------------------------*/
-te_YesNo f_Base_SPI1_DMA_Send_Count_Check(void)
+te_yes_no f_base_spi1_dma_count_check(void)
 {
     if(gs_base_spi1_count.v_old != gs_base_spi1_count.v_new)
     { 
@@ -83,14 +83,14 @@ te_YesNo f_Base_SPI1_DMA_Send_Count_Check(void)
 ---------------------------------------------------------------------
 + retrun: 1(running), 0(Idle)
 -------------------------------------------------------------------*/
-tu32 f_Base_SPI1_DMA_Idle(SPI_TypeDef *ps_spi)
+tu32 f_base_spi1_dma_idle(SPI_TypeDef *ps_spi)
 {
     tu32 v_check = (SPI_SR_TXE) 
                  ^ ((SPI_SR_FTLVL | SPI_SR_FRLVL | SPI_SR_TXE | SPI_SR_RXNE | SPI_SR_BSY) & ps_spi->SR);
     if(v_check == 0)
     {
-        f_Base_DMA_Stop(d_BASE_DMA1_CH1_SPI1_TX);   //+ Re dheck DMA disable
-        f_Base_DMA_Stop(d_BASE_DMA1_CH2_SPI1_RX);   //+ Re check DMA disable.
+        f_base_dma_stop(d_BASE_DMA1_CH1_SPI1_TX);   //+ Re dheck DMA disable
+        f_base_dma_stop(d_BASE_DMA1_CH2_SPI1_RX);   //+ Re check DMA disable.
         return 0;
     }
     return 1;
@@ -103,7 +103,7 @@ tu32 f_Base_SPI1_DMA_Idle(SPI_TypeDef *ps_spi)
 + p_rx : Recive buff pointer    "수신버퍼 포인터"
 + v_len : Data len              "데이터 길이"
 -------------------------------------------------------------------*/
-te_Result f_Base_SPI1_DMA_Send(const tu8 *p_tx_buff, tu8 *p_rx_buff, tu16 v_len)
+te_result f_base_spi1_dma_send(const tu8 *p_tx_buff, tu8 *p_rx_buff, tu16 v_len)
 {
     
     if((d_BASE_DMA1_CH1_SPI1_TX->CCR & DMA_CCR_EN) == DMA_CCR_EN)
@@ -111,10 +111,10 @@ te_Result f_Base_SPI1_DMA_Send(const tu8 *p_tx_buff, tu8 *p_rx_buff, tu16 v_len)
     else
     {
         d_BASE_GPIO_SPI1_CS_L;
-        f_Base_DMA_Memory_Setting(d_BASE_DMA1_CH2_SPI1_RX, p_rx_buff, v_len);
-        f_Base_DMA_Memory_Setting(d_BASE_DMA1_CH1_SPI1_TX, p_tx_buff, v_len);
-        f_Base_DMA_Start(d_BASE_DMA1_CH2_SPI1_RX);
-        f_Base_DMA_Start(d_BASE_DMA1_CH1_SPI1_TX);
+        f_base_dma_memory_setting(d_BASE_DMA1_CH2_SPI1_RX, p_rx_buff, v_len);
+        f_base_dma_memory_setting(d_BASE_DMA1_CH1_SPI1_TX, p_tx_buff, v_len);
+        f_base_dma_start(d_BASE_DMA1_CH2_SPI1_RX);
+        f_base_dma_start(d_BASE_DMA1_CH1_SPI1_TX);
         return m_RESULT_OK;
     }
 }

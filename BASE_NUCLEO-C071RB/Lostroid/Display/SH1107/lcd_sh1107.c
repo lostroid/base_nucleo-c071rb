@@ -1,25 +1,31 @@
 /********************************************************************
-* File:    base_flash.c
+* File:    display_sh1107.c
 * Author:  Lostroid
-* Created: 2026-02-19
+* Created: 2026-04-29
 * Encoding: UTF-8
 ********************************************************************/
 
-#include "stm32c071xx.h"
-#include "base_flash.h"
+#include "../../Base/base_adc.h"
+#include "../../Base/base_gpio.h"
+#include "../../Base/base_spi.h"
+#include "../../Base/base_tick.h"
+#include "../../Font/font_default.h"
+#include "../../Scheduler/scheduler.h"
+#include "../../DBG/dbg.h"
+#include "../display.h"
+#include "lcd_sh1107.h"
 
 //===================================================================
-/* Base Base flash initialize
+/*#### LCD SH1107 initialize
 -------------------------------------------------------------------*/
-void f_base_flash_init(void)
+void f_lcd_sh1107_init(void)
 {
-    
+
 }
 //===================================================================
-/* Base Base flash Latency initialize
+/*#### LCD SH1107 Module
 -------------------------------------------------------------------*/
-void f_base_flash_latency01_set(void)
+void f_lcd_sh1107_module(void)
 {
-    FLASH->ACR &= (~FLASH_ACR_LATENCY);     //+ Clean
-    FLASH->ACR |= (FLASH_ACR_LATENCY_0);    //+ ≤ 48 001 (2 HCLK cycles)
+
 }

@@ -64,7 +64,7 @@ typedef enum
     m_BASE_TIM_MODE_H,
     m_BASE_TIM_MODE_L
 
-}te_Base_TIM_Mode;
+}te_Base_tim_mode;
 
 
 #endif

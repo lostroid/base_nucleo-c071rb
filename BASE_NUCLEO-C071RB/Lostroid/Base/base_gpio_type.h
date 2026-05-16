@@ -164,6 +164,6 @@
 typedef enum {
     m_GPIO_ON,
     m_GPIO_OFF
-}te_GPIO_Output;
+}te_gpio_output;
 
 #endif

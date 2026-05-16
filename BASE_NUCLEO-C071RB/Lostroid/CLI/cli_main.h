@@ -9,14 +9,14 @@
 #include "../base/base_uart_type.h"
 #include "cli_main_type.h"
 
-void f_Cli_Init(void);
-void f_Cli_Module(void);
-void f_Base_CLI_Name(void);
-void f_Cli_BuffCheck(tu8* pa_Data,ts_Base_Uart_Buff_Ctrol* s_Postion);
-tu32 f_Cli_Command_Check(tu8* pa_Data);
-void f_Cli_MsgError(te_CLI_MAIN_MSG e_Massage);
-tu32 f_Cli_CompareString(tu8 *p_Data1, const tu8 *p_Data2);
-tu32 f_Cli_StringToDec(tu8 *p_Data);
-tu32 f_Cli_StringToHex(tu8 *p_Data);
+void f_cli_init(void);
+void f_cli_module(void);
+void f_cli_base_name(void);
+void f_cli_Buff_check(tu8* pa_Data,ts_base_uart_buff_ctrol* s_Postion);
+tu32 f_cli_command_check(tu8* pa_Data);
+void f_cli_msg_error(te_CLI_MAIN_MSG e_Massage);
+tu32 f_cli_compare_string(tu8 *p_Data1, const tu8 *p_Data2);
+tu32 f_cli_string_to_dec(tu8 *p_Data);
+tu32 f_cli_string_to_hex(tu8 *p_Data);
 
 #endif

@@ -8,12 +8,12 @@
 #include "nucleo_c071_type.h"
 
 
-void f_Nucleo_C071_Init(void)
+void f_nucleo_c071_init(void)
 {
 
 }
 
-void f_Nucleo_C071_Module(void)
+void f_nucleo_c071_module(void)
 {
     
 }

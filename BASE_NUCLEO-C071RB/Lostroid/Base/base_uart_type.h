@@ -32,6 +32,6 @@ typedef struct
     tu32 v_read_pos;            //+ Read Postion    "읽기 위치"
     tu32 v_write_pos;           //+ Write Postion   "쓰기 위치"
     tu32 v_Error;               //+ Error           "에러"
-}ts_Base_Uart_Buff_Ctrol;
+}ts_base_uart_buff_ctrol;
 
 #endif

@@ -24,65 +24,65 @@
 #include "base_rcc.h"
 #include "base_main.h"
 
-static ts_Scheduler_Control gs_base_main_Job_ctrl;
-static ts_Base_Main_Context gs_base_main_context;
+static ts_scheduler_control gs_base_main_Job_ctrl;
+static ts_base_main_context gs_base_main_context;
 enum { m_BASE_MAIN_JOB_TABLE_SIZE = 6 };
-static void (*paf_base_main_job_table[m_BASE_MAIN_JOB_TABLE_SIZE])(ts_Scheduler_Control *ps_main_job_ctrl) = {
-    f_Base_Main_Job_Start,  //+ 00
-    f_Base_Main_Job_1ms,    //+ 01
-    f_Base_Main_Job_10ms,   //+ 02
-    f_Base_Main_Job_100ms,  //+ 03
-    f_Base_Main_Job_500ms,  //+ 04
-    f_Base_Main_Job_1s      //+ 05
+static void (*paf_base_main_job_table[m_BASE_MAIN_JOB_TABLE_SIZE])(ts_scheduler_control *ps_main_job_ctrl) = {
+    f_base_main_job_start,  //+ 00
+    f_base_main_job_1ms,    //+ 01
+    f_base_main_job_10ms,   //+ 02
+    f_base_main_job_100ms,  //+ 03
+    f_base_main_job_500ms,  //+ 04
+    f_base_main_job_1s      //+ 05
 };
 //===================================================================
 /* Low Level Main (startup code)
 -------------------------------------------------------------------*/
-void f_Base_Main(void)
+void f_base_main(void)
 {
-    f_Base_Main_Initialize();
+    f_base_main_init();
 
     while (1)
     {
-        f_Base_Main_Module();
+        f_base_main_module();
     }
 }
 //===================================================================
 /* Base Main Setting vector (Startup code)
 -------------------------------------------------------------------*/
-void f_Base_Main_Vector_Setting(void)
+void f_base_main_vector_set(void)
 {
     SCB->VTOR = FLASH_BASE;     // Vector postion
 }
 //===================================================================
 /* Base main initialize
 -------------------------------------------------------------------*/
-void f_Base_Main_Initialize(void)
+void f_base_main_init(void)
 {
-    f_Base_RCC_Init();
-    f_Base_SYSCFG_Init();
-    f_Base_Flash_Init();
-    f_Base_NVIC_Init();
-    f_Base_DMA_Init();
-    f_Base_GPIO_Init();
-    f_Base_UART_Init();
-    f_Base_Tick_Init();
-    f_Base_TIMx_Init();
-    f_Base_ADC_Init();
-    f_Base_SPI_Init();
-    f_Base_Main_Time_Init();
-    f_Display_Init();
-    f_DBG_Init();
-    f_DBG_Print_String(d_CONFIG_START);
-    f_DBG_Print_String(d_CONFIG_FW_VER);
+    f_base_rcc_init();
+    f_base_syscfg_init();
+    f_base_flash_init();
+    f_base_nvic_init();
+    f_base_dma_init();
+    f_base_gpio_init();
+    f_base_uart_init();
+    f_base_tick_init();
+    f_base_tim_init();
+    f_base_adc_init();
+    f_base_spi_init();
+    f_base_main_time_init();
+    f_display_init();
+    f_dbg_init();
+    f_dbg_print_string(d_CONFIG_START);
+    f_dbg_print_string(d_CONFIG_FW_VER);
 
-    f_Scheduler_Init( 
+    f_scheduler_init( 
         &gs_base_main_Job_ctrl
         , paf_base_main_job_table
         , "main_Job_table"
         , m_BASE_MAIN_JOB_TABLE_SIZE);
     
-    f_Scheduler_Config(
+    f_scheduler_config(
         &gs_base_main_Job_ctrl
         , 0
         , 3
@@ -93,64 +93,64 @@ void f_Base_Main_Initialize(void)
 //===================================================================
 /* Base main Module
 -------------------------------------------------------------------*/
-void f_Base_Main_Module(void)
+void f_base_main_module(void)
 {
-    f_Scheduler_Run(&gs_base_main_Job_ctrl);
-    f_Base_UART_Module();
-    f_Base_ADC_Module();
-    f_Display_Module();
+    f_scheduler_run(&gs_base_main_Job_ctrl);
+    f_base_uart_module();
+    f_base_adc_module();
+    f_display_module();
 }
 //===================================================================
 /* Main Time Initialize
 -------------------------------------------------------------------*/
-void f_Base_Main_Time_Init(void)
+void f_base_main_time_init(void)
 {
-    f_Base_Tick_Systick32_Stopwatch_Start(&gs_base_main_context.gs_time_1ms,    d_BASE_TICK_1MS);
-    f_Base_Tick_Systick32_Stopwatch_Start(&gs_base_main_context.gs_time_10ms,   d_BASE_TICK_10MS);
-    f_Base_Tick_Systick32_Stopwatch_Start(&gs_base_main_context.gs_time_100ms,  d_BASE_TICK_100MS);
-    f_Base_Tick_Systick32_Stopwatch_Start(&gs_base_main_context.gs_time_500ms,  d_BASE_TICK_500MS);
-    f_Base_Tick_Systick32_Stopwatch_Start(&gs_base_main_context.gs_time_1s,     d_BASE_TICK_1S);
+    f_base_tick_systick32_stopwatch_start(&gs_base_main_context.gs_time_1ms,    d_BASE_TICK_1MS);
+    f_base_tick_systick32_stopwatch_start(&gs_base_main_context.gs_time_10ms,   d_BASE_TICK_10MS);
+    f_base_tick_systick32_stopwatch_start(&gs_base_main_context.gs_time_100ms,  d_BASE_TICK_100MS);
+    f_base_tick_systick32_stopwatch_start(&gs_base_main_context.gs_time_500ms,  d_BASE_TICK_500MS);
+    f_base_tick_systick32_stopwatch_start(&gs_base_main_context.gs_time_1s,     d_BASE_TICK_1S);
 }
 //===================================================================
 /* Start Main Job.
 -------------------------------------------------------------------*/
-void f_Base_Main_Job_Start(ts_Scheduler_Control *ps_main_job_ctrl)
+void f_base_main_job_start(ts_scheduler_control *ps_main_job_ctrl)
 {
-    f_Scheduler_LoopTime_Update(ps_main_job_ctrl);
-    f_Scheduler_Next(ps_main_job_ctrl);
+    f_scheduler_loop_time_update(ps_main_job_ctrl);
+    f_scheduler_next(ps_main_job_ctrl);
 }
 //===================================================================
 /* 1ms Time base.
 -------------------------------------------------------------------*/
-void f_Base_Main_Job_1ms(ts_Scheduler_Control *ps_main_job_ctrl)
+void f_base_main_job_1ms(ts_scheduler_control *ps_main_job_ctrl)
 {
-    ts_Base_Main_Context *s_context = ps_main_job_ctrl->ps_user_struct;
-    if(f_Base_Tick_Systick32_Stopwatch_Check(&s_context->gs_time_1ms) == m_RETURN_OK)
+    ts_base_main_context *s_context = ps_main_job_ctrl->ps_user_struct;
+    if(f_base_tick_systick32_stopwatch_check(&s_context->gs_time_1ms) == m_RETURN_OK)
     {    
         
     }
-    f_Scheduler_Next(ps_main_job_ctrl);
+    f_scheduler_next(ps_main_job_ctrl);
 }
 //===================================================================
 /* 10ms Time base.
 -------------------------------------------------------------------*/
-void f_Base_Main_Job_10ms(ts_Scheduler_Control *ps_main_job_ctrl)
+void f_base_main_job_10ms(ts_scheduler_control *ps_main_job_ctrl)
 {
-    ts_Base_Main_Context *s_context = ps_main_job_ctrl->ps_user_struct;
-    if(f_Base_Tick_Systick32_Stopwatch_Check(&s_context->gs_time_10ms) == m_RETURN_OK)
+    ts_base_main_context *s_context = ps_main_job_ctrl->ps_user_struct;
+    if(f_base_tick_systick32_stopwatch_check(&s_context->gs_time_10ms) == m_RETURN_OK)
     {
 
     }
-    f_Scheduler_Next(ps_main_job_ctrl);
+    f_scheduler_next(ps_main_job_ctrl);
 }
 //===================================================================
 /* 100ms Time base.
 -------------------------------------------------------------------*/
-void f_Base_Main_Job_100ms(ts_Scheduler_Control *ps_main_job_ctrl)
+void f_base_main_job_100ms(ts_scheduler_control *ps_main_job_ctrl)
 {
     static tu32 lv_led_onoff = 0;
-    ts_Base_Main_Context *s_context = ps_main_job_ctrl->ps_user_struct;
-    if(f_Base_Tick_Systick32_Stopwatch_Check(&s_context->gs_time_100ms) == m_RETURN_OK)
+    ts_base_main_context *s_context = ps_main_job_ctrl->ps_user_struct;
+    if(f_base_tick_systick32_stopwatch_check(&s_context->gs_time_100ms) == m_RETURN_OK)
     {
         if(lv_led_onoff == 0)
         { 
@@ -162,20 +162,20 @@ void f_Base_Main_Job_100ms(ts_Scheduler_Control *ps_main_job_ctrl)
             d_BASE_GPIO_LED_LD1_L;
             lv_led_onoff = 0;
         }
-        f_Base_Main_System_Print();
-        f_Base_Tick_Systick_Get_Time32_Tick();
-        f_Base_Tick_Systick_Get_Time64_Tick();
+        f_base_main_system_print();
+        f_base_tick_systick_time32_get();
+        f_base_tick_systick_time64_get();
     }
-    f_Scheduler_Next(ps_main_job_ctrl);
+    f_scheduler_next(ps_main_job_ctrl);
 }
 //===================================================================
 /* 500ms Time base.
 -------------------------------------------------------------------*/
-void f_Base_Main_Job_500ms(ts_Scheduler_Control *ps_main_job_ctrl)
+void f_base_main_job_500ms(ts_scheduler_control *ps_main_job_ctrl)
 {
     static tu32 lv_led_onoff = 0;
-    ts_Base_Main_Context *s_context = ps_main_job_ctrl->ps_user_struct;
-    if(f_Base_Tick_Systick32_Stopwatch_Check(&s_context->gs_time_500ms) == m_RETURN_OK)
+    ts_base_main_context *s_context = ps_main_job_ctrl->ps_user_struct;
+    if(f_base_tick_systick32_stopwatch_check(&s_context->gs_time_500ms) == m_RETURN_OK)
     {
         if(lv_led_onoff == 0)
         { 
@@ -188,42 +188,42 @@ void f_Base_Main_Job_500ms(ts_Scheduler_Control *ps_main_job_ctrl)
             lv_led_onoff = 0;
         }
     }
-    f_Scheduler_Next(ps_main_job_ctrl);
+    f_scheduler_next(ps_main_job_ctrl);
 }
 //===================================================================
 /* 1s Time base.
 -------------------------------------------------------------------*/
-void f_Base_Main_Job_1s(ts_Scheduler_Control *ps_main_job_ctrl)
+void f_base_main_job_1s(ts_scheduler_control *ps_main_job_ctrl)
 {
     
-    ts_Base_Main_Context *s_context = ps_main_job_ctrl->ps_user_struct;
-    if(f_Base_Tick_Systick32_Stopwatch_Check(&s_context->gs_time_1s) == m_RETURN_OK)
+    ts_base_main_context *s_context = ps_main_job_ctrl->ps_user_struct;
+    if(f_base_tick_systick32_stopwatch_check(&s_context->gs_time_1s) == m_RETURN_OK)
     {
-        f_Display_FPS_Update();
+        f_display_fps_update();
     }
-    f_Scheduler_Next(ps_main_job_ctrl);
+    f_scheduler_next(ps_main_job_ctrl);
 }
 
 //===================================================================
 /*#### Main module load print : Main 모듈 사용률 보기
 -------------------------------------------------------------------*/
-void f_Base_Main_Load_Print(void)
+void f_base_main_load_print(void)
 {
-    f_Scheduler_RunTime_Info_print(&gs_base_main_Job_ctrl);
+    f_scheduler_run_time_info_print(&gs_base_main_Job_ctrl);
 }
 
 //===================================================================
 /*#### Main System print : Main 모듈 사용률 보기
 -------------------------------------------------------------------*/
-void f_Base_Main_System_Print(void)
+void f_base_main_system_print(void)
 {
-    f_DBG_Print_String("\r\n");
-    f_Base_Tick_Systick_Run_Time_Print();
-    f_Scheduler_RunTime_Title_print();
-    f_Base_Main_Load_Print();
-    f_Base_Uart_Load_Print();
-    f_Base_ADC_Load_Print();
-    f_LCD_ST7735S_Load_Print();
-    f_Base_TIMx_Info_Print();
-    f_Base_ADC_Info_Print();
+    f_dbg_print_string("\r\n");
+    f_base_tick_systick_run_time_print();
+    f_scheduler_run_time_title_print();
+    f_base_main_load_print();
+    f_base_uart_load_print();
+    f_base_adc_load_print();
+    f_lcd_st7735s_load_print();
+    f_base_tim_info_print();
+    f_base_adc_info_print();
 }

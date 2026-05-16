@@ -9,8 +9,8 @@
 
 #include "base_syscfg_type.h"
 
-void f_Base_SYSCFG_Init(void);
-void f_Base_SYSCFG_Module(void);
-void f_Base_SYSCFG_Remap(void);
+void f_base_syscfg_init(void);
+void f_base_syscfg_module(void);
+void f_base_syscfg_remap(void);
 
 #endif

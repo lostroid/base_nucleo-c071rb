@@ -12,26 +12,28 @@
 #include "base_main_type.h"
 
 typedef struct{
-    ts_Base_Tick_Context gs_time_1ms;
-    ts_Base_Tick_Context gs_time_10ms;
-    ts_Base_Tick_Context gs_time_100ms;
-    ts_Base_Tick_Context gs_time_500ms;
-    ts_Base_Tick_Context gs_time_1s;
-}ts_Base_Main_Context;
+    ts_base_tick_context gs_time_1ms;
+    ts_base_tick_context gs_time_10ms;
+    ts_base_tick_context gs_time_100ms;
+    ts_base_tick_context gs_time_500ms;
+    ts_base_tick_context gs_time_1s;
+}ts_base_main_context;
 
 
-void f_Base_Main_Initialize(void);
-void f_Base_Main_Module(void);
-void f_Base_Main_Time_Init(void);
-void f_Base_Main(void);
-void f_Base_Main_Vector_Setting(void);
-void f_Base_Main_Job_Start(ts_Scheduler_Control *ps_job_ctrl);
-void f_Base_Main_Job_1ms(ts_Scheduler_Control *ps_job_ctrl);
-void f_Base_Main_Job_10ms(ts_Scheduler_Control *ps_job_ctrl);
-void f_Base_Main_Job_100ms(ts_Scheduler_Control *ps_job_ctrl);
-void f_Base_Main_Job_500ms(ts_Scheduler_Control *ps_job_ctrl);
-void f_Base_Main_Job_1s(ts_Scheduler_Control *ps_job_ctrl);
-void f_Base_Main_Load_Print(void);
-void f_Base_Main_System_Print(void);
+void f_base_main_init(void);
+void f_base_main_module(void);
+void f_base_main_time_init(void);
+void f_base_main(void);
+void f_base_main_vector_set(void);
+
+void f_base_main_job_start(ts_scheduler_control *ps_job_ctrl);
+void f_base_main_job_1ms(ts_scheduler_control *ps_job_ctrl);
+void f_base_main_job_10ms(ts_scheduler_control *ps_job_ctrl);
+void f_base_main_job_100ms(ts_scheduler_control *ps_job_ctrl);
+void f_base_main_job_500ms(ts_scheduler_control *ps_job_ctrl);
+void f_base_main_job_1s(ts_scheduler_control *ps_job_ctrl);
+
+void f_base_main_load_print(void);
+void f_base_main_system_print(void);
 
 #endif

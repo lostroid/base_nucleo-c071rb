@@ -10,18 +10,19 @@
 #include "../Base/base_main_type.h"
 #include "dbg_type.h"
 
-void f_DBG_Init(void);
-te_YesNo f_DBG_Get_Mode(te_DBG_Mode e_mode);
-void f_DBG_Set_Enable_Mode(te_DBG_Mode e_mode);
-void f_DBG_Set_Disable_Mode(te_DBG_Mode e_mode);
-tu32 f_DBG_Print_String(char *p_Data);
-void f_DBG_Print_Dec64(tu64 v_Dec);
-void f_DBG_Print_Dec64_Digit(tu32 v_DigtNum, tu64 v_Dec);
-void f_DBG_Print_Dec32(tu32 v_Dec);
-void f_DBG_Print_Dec32_Digit(tu32 v_DigtNum, tu32 v_Dec);
-void f_DBG_Print_Hex64(tu64 v_Hex64);
-void f_DBG_Print_Hex32(tu32 v_Hex32);
-void f_DBG_Print_Hex16(tu16 v_Hex16);
-void f_DBG_Print_Hex8(tu8 v_Hex8);
+void f_dbg_init(void);
+te_yes_no f_dbg_mode_get(te_dbg_mode e_mode);
+void f_dbg_enable_mode_set(te_dbg_mode e_mode);
+void f_dbg_disable_mode_set(te_dbg_mode e_mode);
+tu32 f_dbg_print_string(const char *p_Data);
+void f_dbg_print_dec64(tu64 v_Dec);
+void f_dbg_print_dec64_digit(tu32 v_DigtNum, tu64 v_Dec);
+void f_dbg_print_dec32(tu32 v_Dec);
+void f_dbg_print_dec32_digit(tu32 v_DigtNum, tu32 v_Dec);
+void f_dbg_print_hex64(tu64 v_Hex64);
+void f_dbg_print_hex32(tu32 v_Hex32);
+void f_dbg_print_hex16(tu16 v_Hex16);
+void f_dbf_print_hex8(tu8 v_Hex8);
+void f_dbg_print_version(char *p_ver, tu32 v_major, tu32 minor);
 
 #endif

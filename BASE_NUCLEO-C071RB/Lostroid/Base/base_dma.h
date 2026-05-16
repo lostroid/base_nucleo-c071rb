@@ -35,17 +35,17 @@
 #define d_BASE_DMA1_CH4_UART2_RX_TC()       (DMA1->ISR & DMA_ISR_TCIF4)
 #define d_BASE_DMA1_CH5_ADC1_TC()           (DMA1->ISR & DMA_ISR_TCIF5)
 
-void f_Base_DMA_Init(void);
-void f_Base_DMA_Module(void);
-void f_Base_DMA_Memory_Setting(DMA_Channel_TypeDef *ps_dma_ch, const tu8 *p_buffer_addr, const tu32 v_length);
-void f_Base_DMA_Setting(DMA_Channel_TypeDef *ps_dma_ch, volatile tu32 *p_peripheral, tu32 v_ccr_value);
-void f_Base_DMA_Start(DMA_Channel_TypeDef *ps_dma_ch);
-void f_Base_DMA_Stop(DMA_Channel_TypeDef *ps_dma_ch);
-void f_Base_DMAMUX_Channel_ID_Set(DMAMUX_Channel_TypeDef *ps_dmaaux, te_DMAMUX_Multiplexer e_id);
-void f_Base_DMA1_CH1_SPI1_TX_CTC(void);
-void f_Base_DMA1_CH2_SPI1_RX_CTC(void);
-void f_Base_DMA1_CH3_UART2_TX_CTC(void);
-void d_Base_DMA1_CH4_UART2_RX_CTC(void);
-void d_Base_DMA1_CH5_ADC_CTC(void);
+void f_base_dma_init(void);
+void f_base_dma_module(void);
+void f_base_dma_memory_setting(DMA_Channel_TypeDef *ps_dma_ch, const tu8 *p_buffer_addr, const tu32 v_length);
+void f_base_dma_set(DMA_Channel_TypeDef *ps_dma_ch, volatile tu32 *p_peripheral, tu32 v_ccr_value);
+void f_base_dma_start(DMA_Channel_TypeDef *ps_dma_ch);
+void f_base_dma_stop(DMA_Channel_TypeDef *ps_dma_ch);
+void f_base_dmamux_channel_id_set(DMAMUX_Channel_TypeDef *ps_dmaaux, te_dmamux_multiplexer e_id);
+void f_base_dma1_ch1_spi1_tx_ctc(void);
+void f_base_dma1_ch2_spi1_rx_ctc(void);
+void f_base_dma1_ch3_uart2_tx_ctc(void);
+void d_base_dma1_ch4_uart2_rx_ctc(void);
+void d_Base_dma1_ch5_adc_ctc(void);
 
 #endif

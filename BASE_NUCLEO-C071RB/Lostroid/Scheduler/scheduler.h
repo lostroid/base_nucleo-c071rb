@@ -10,39 +10,41 @@
 #include "../DBG/dbg_type.h"
 #include "scheduler_type.h"
 
-void f_Scheduler_Config(
-    ts_Scheduler_Control *ps_sch_control
+void f_scheduler_config(
+    ts_scheduler_control *ps_sch_control
     , tu32 v_penalty_set_value
     , tu32 v_retry_set_value
     , tu32 v_timeout_set_value_us
     , tu32 v_cycle_run_time_us
     , void *p_user_struct);
 
-void f_Scheduler_Init( 
-    ts_Scheduler_Control *ps_sch_control
-    , void(*ps_table[])(ts_Scheduler_Control *ps_sch_control)
-    , char* p_table_name
+void f_scheduler_init( 
+    ts_scheduler_control *ps_sch_control
+    , void(*ps_table[])(ts_scheduler_control *ps_sch_control)
+    , const char* p_table_name
     , tu32 v_table_size);
+    
+//+ Scheduler control
+void f_scheduler_run(ts_scheduler_control *ps_sch_control);
+void f_scheduler_next(ts_scheduler_control *ps_sch_control);
+void f_scheduler_jump(ts_scheduler_control *ps_sch_control, tu32 v_jump_num);
+te_schedule_error f_scheduler_retry(ts_scheduler_control *ps_sch_control);
+void f_scheduler_error(ts_scheduler_control *ps_sch_control, te_schedule_error e_error);
+//+ Scheduler time
+void f_scheduler_run_time_start(ts_scheduler_control *ps_sch_control);
+void f_scheduler_run_time_finish(ts_scheduler_control *ps_sch_control);
+void f_scheduler_run_time_info_reset(ts_scheduler_control *ps_sch_control);
+void f_scheduler_loop_time_update(ts_scheduler_control *ps_sch_control);
+void f_scheduler_loop_time_info_reset(ts_scheduler_control *ps_sch_control);
+//+ Shceduler delay
+void f_scheduler_wait_set(ts_scheduler_control *ps_sch_control, tu32 v_time_us);
+te_schedule_error f_scheduler_wait_check(ts_scheduler_control *ps_sch_control);
+void f_scheduler_delay_set(ts_scheduler_control *ps_sch_control, tu32 v_time_us);
+te_schedule_error f_scheduler_delay_check(ts_scheduler_control *ps_sch_control);
+//+ Scheduler print
+void f_scheduler_run_time_title_print(void);
+void f_scheduler_run_time_info_print(ts_scheduler_control *ps_sch_control);
+void f_scheduler_error_table_print(ts_scheduler_control *ps_sch_control);
 
-void f_Scheduler_Run(ts_Scheduler_Control *ps_sch_control);
-void f_Scheduler_Next(ts_Scheduler_Control *ps_sch_control);
-void f_Scheduler_Jump(ts_Scheduler_Control *ps_sch_control, tu32 v_jump_num);
-tu32 f_Scheduler_Retry(ts_Scheduler_Control *ps_sch_control);
-void f_Scheduler_Error(ts_Scheduler_Control *ps_sch_control, te_SCHEDULER_ERR e_error);
-
-void f_Scheduler_RunTime_Start(ts_Scheduler_Control *ps_sch_control);
-void f_Scheduler_RunTime_Finish(ts_Scheduler_Control *ps_sch_control);
-void f_Scheduler_LoopTime_Update(ts_Scheduler_Control *ps_sch_control);
-void f_Scheduler_RunTime_Info_Reset(ts_Scheduler_Control *ps_sch_control);
-void f_Scheduler_LoopTime_Info_Reset(ts_Scheduler_Control *ps_sch_control);
-
-void f_Scheduler_Job_To_Job_Set_Delay(ts_Scheduler_Control *ps_sch_control, tu32 v_time_us);
-void f_Scheduler_Job_To_Job_Delay(ts_Scheduler_Control *ps_sch_control);
-void f_Scheduler_Job_To_Job_Set_Delay(ts_Scheduler_Control *ps_sch_control, tu32 v_time_us);
-void f_Scheduler_Job_To_Job_Wait(ts_Scheduler_Control *ps_sch_control);
-
-void f_Scheduler_RunTime_Title_print(void);
-void f_Scheduler_RunTime_Info_print(ts_Scheduler_Control *ps_sch_control);
-void f_Scheduler_Error_Table_print(ts_Scheduler_Control *ps_sch_control);
 
 #endif
